@@ -11,7 +11,7 @@ import WalletScreen from "../src/screens/Wallet";
 import Config from "../src/screens/config";
 import Profile from "../src/screens/profile";
 import { NativeBaseProvider } from "native-base";
-import { AntDesign, Ionicons, Foundation } from "@expo/vector-icons";
+import { AntDesign, Ionicons, Foundation, Feather } from "@expo/vector-icons";
 import PayButton from "./components/PayButton";
 import Pay from "../src/screens/Pay";
 
@@ -25,8 +25,8 @@ import Jogo from "../src/screens/Jogo";
 
 const icons = {
   Home: {
-    lib: Foundation,
-    name: "list-bullet",
+    lib: Feather,
+    name: "user",
   },
   Wallet: {
     lib: Ionicons,
@@ -74,7 +74,7 @@ export function Tabs() {
     >
       <Tab.Screen
         name="Home"
-        component={Pay}
+        component={Profile}
         options={{
           title: "",
           headerTransparent: "true",

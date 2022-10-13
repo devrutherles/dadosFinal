@@ -144,6 +144,7 @@ export default function Register() {
               onChangeText={onChange}
               value={value}
               placeholder="Seu nome"
+              placeholderTextColor={"#fff"}
             />
           )}
         />
@@ -166,6 +167,7 @@ export default function Register() {
               onChangeText={onChange}
               value={value}
               placeholder="000.000.000-00"
+              placeholderTextColor={"#fff"}
             />
           )}
         />
@@ -188,6 +190,7 @@ export default function Register() {
               onChangeText={onChange}
               value={value}
               placeholder="exemplo@email.com"
+              placeholderTextColor={"#fff"}
             />
           )}
         />
@@ -212,6 +215,7 @@ export default function Register() {
               onChangeText={onChange}
               value={value}
               placeholder="(00) 90000-0000"
+              placeholderTextColor={"#fff"}
             />
           )}
         />
@@ -230,10 +234,11 @@ export default function Register() {
           style={styles.input}
           date={date} //initial date from state
           mode="date" //The enum of date, datetime and time
-          placeholder="select date"
+          placeholder="Selecionar data"
+          placeholderTextColor={"#fff"}
           format="DD-MM-YYYY"
-          minDate="01-01-2016"
-          maxDate="01-01-2019"
+          minDate="01-01-1900"
+          maxDate="31-12-2004"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           customStyles={{
@@ -254,7 +259,7 @@ export default function Register() {
         />
       </View>
 
-      <View>
+      <View style={{ marginTop: -30 }}>
         <Text style={styles.subTitles}>CEP</Text>
 
         <TextInput
@@ -263,6 +268,7 @@ export default function Register() {
           value={cep}
           maxLength={8}
           placeholder="00000000"
+          placeholderTextColor={"#fff"}
         />
       </View>
 
@@ -273,6 +279,7 @@ export default function Register() {
           style={styles.input}
           value={endereco.logradouro}
           placeholder="Rua Exemplo, número 00"
+          placeholderTextColor={"#fff"}
         />
       </View>
       <View>
@@ -280,6 +287,7 @@ export default function Register() {
           style={styles.input}
           value={endereco.localidade}
           placeholder="Cidade Exemplo"
+          placeholderTextColor={"#fff"}
         />
       </View>
       <View>
@@ -289,6 +297,7 @@ export default function Register() {
           style={styles.input}
           value={endereco.uf}
           placeholder="Estado Exemplo"
+          placeholderTextColor={"#fff"}
         />
       </View>
 
@@ -308,6 +317,7 @@ export default function Register() {
               value={value}
               secureTextEntry={true}
               placeholder="********"
+              placeholderTextColor={"#fff"}
             />
           )}
         />
@@ -335,14 +345,14 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     margin: 12,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#404040",
     borderRadius: 8,
     padding: 10,
+    color: "#fff",
   },
   container: {
-    marginTop: 20,
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
   },
   title: {
     fontSize: 20,
@@ -350,8 +360,10 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginTop: 20,
     textAlign: "center",
+    color: "#fff",
   },
   iconRight: {
+    color: "#fff",
     fontSize: 20,
     marginRight: 30,
     marginTop: 20,
@@ -361,11 +373,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
+    color: "#fff",
   },
   subTitles: {
     marginLeft: 20,
     marginTop: 20,
     fontWeight: "bold",
+    color: "#fff",
   },
   button: {
     backgroundColor: "#ff0000",

@@ -25,8 +25,8 @@ export default function Login({ route }) {
   const [offsetX] = useState(new Animated.Value(0));
   const [offsetY] = useState(new Animated.Value(95));
   const [opacity] = useState(new Animated.Value(0));
-  const [logoX] = useState(new Animated.Value(150));
-  const [logoY] = useState(new Animated.Value(200));
+  const [logoX] = useState(new Animated.Value(350));
+  const [logoY] = useState(new Animated.Value(100));
   const [token, setToken] = useState();
   const [erro, setErro] = useState();
 
@@ -129,7 +129,7 @@ export default function Login({ route }) {
   function keyboardDidShow() {
     Animated.parallel([
       Animated.timing(logoX, {
-        toValue: 70,
+        toValue: 350,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -143,12 +143,12 @@ export default function Login({ route }) {
   function keyboardDidHide() {
     Animated.parallel([
       Animated.timing(logoX, {
-        toValue: 150,
+        toValue: 350,
         duration: 100,
         useNativeDriver: false,
       }),
       Animated.timing(logoY, {
-        toValue: 200,
+        toValue: 100,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -169,8 +169,7 @@ export default function Login({ route }) {
           source={require("../../images/logo.png")}
         />
 
-        <Text style={styles.LogoText}>Aumente suas chances </Text>
-        <Text style={{ marginTop: 20, color: "#0ed830", fontWeight: "bold" }}>
+        <Text style={{ color: "#0ed830", fontWeight: "bold" }}>
           {cadastro ? cadastro : null}
         </Text>
       </View>
@@ -206,6 +205,7 @@ export default function Login({ route }) {
                 placeholder="Email"
                 autoCorrect={false}
                 keyboardType="email-address"
+                placeholderTextColor="#fff"
               />
             )}
           />
@@ -236,8 +236,9 @@ export default function Login({ route }) {
                 value={value}
                 secureTextEntry={true}
                 style={styles.input}
-                placeholder="password"
+                placeholder="********"
                 autoCorrect={false}
+                placeholderTextColor="#fff"
               />
             )}
           />
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
   },
   containerLogo: {
     flex: 1,
@@ -280,24 +281,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
+    marginTop: -40,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    paddingBottom: 35,
+    paddingBottom: 55,
   },
   input: {
-    backgroundColor: "#f8f8ff",
+    backgroundColor: "#404040",
     width: "90%",
     marginBottom: 15,
-    color: "#222",
+    color: "#fff",
     fontSize: 17,
     borderRadius: 7,
-    paddin: 10,
+    paddingLeft: 15,
     height: 45,
   },
   btnSubmit: {
-    backgroundColor: "#0ed830",
+    backgroundColor: "#ff0000",
     width: "90%",
     height: 45,
     alignItems: "center",
@@ -311,7 +313,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   RegisterText: {
-    color: "#151515",
+    color: "#fff",
   },
   LogoText: {
     fontWeight: "bold",

@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 
 export const Wrapper = styled.View`
-  background: #fff;
+  background: #000;
   flex: 1;
 `;
 
@@ -71,7 +71,7 @@ export const ActionLabel = styled.Text`
 `;
 
 export const UseBalance = styled.View`
-  background: #fafafa;
+  background: #404040;
   height: 60px;
   flex-direction: row;
   padding: 0 16px;
@@ -80,7 +80,7 @@ export const UseBalance = styled.View`
 `;
 
 export const UseBalanceTitle = styled.Text`
-  color: #121212;
+  color: #fff;
   font-size: 12px;
   font-weight: 500;
 `;
@@ -88,16 +88,17 @@ export const UseBalanceTitle = styled.Text`
 export const PaymentMethods = styled.View`
   margin-top: 25px;
   padding: 0 14px;
+  background: #000;
 `;
 
 export const PaymentMethodsTitle = styled.Text`
-  color: #121212;
+  color: #fff;
   font-size: 12px;
   text-transform: uppercase;
 `;
 
 export const Card = styled.View`
-  background: #fafafa;
+  background: #404040;
   padding: 20px;
   border-radius: 8px;
   margin-top: 10px;
@@ -115,7 +116,7 @@ export const CardDetails = styled.View`
 export const CardTitle = styled.Text`
   font-size: 14px;
   font-weight: bold;
-  color: #121212;
+  color: #fff;
 `;
 
 export const CardInfo = styled.Text`
@@ -135,7 +136,7 @@ export const AddButton = styled.TouchableOpacity`
 `;
 
 export const AddLabel = styled.Text`
-  color: #121212;
+  color: #fff;
   font-size: 14px; ,
   font-weight: bold;
   margin-left: 15px;
@@ -151,7 +152,7 @@ export const UseTicketButton = styled.TouchableOpacity`
 `;
 
 export const UseTicketLabel = styled.Text`
-  color: #121212;
+  color: #fff;
   font-size: 14px;
   font-weight: bold;
   margin-left: 15px;

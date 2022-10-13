@@ -90,13 +90,10 @@ export default function Results({ navigation, route }) {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: "#fff", flex: 1 }}>
-      <View style={{ backgroundColor: "#fff", flex: 1 }}>
-        <Text style={styles.title}>BILHETES</Text>
-      </View>
+    <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
       {jogos.map((jogo) => (
-        <View style={{ backgroundColor: "#fff" }}>
-          <Card style={{ marginBottom: 30 }}>
+        <View style={{ backgroundColor: "#000", marginTop: 30 }}>
+          <Card style={{ marginBottom: 10 }}>
             <CardBody>
               <CardDetails>
                 <CardTitle>{jogo.nome}</CardTitle>
@@ -108,11 +105,7 @@ export default function Results({ navigation, route }) {
                 <CardInfo>{"Premiação  " + jogo.premiacao}</CardInfo>
               </CardDetails>
 
-              <Img
-                source={{
-                  uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa26Gdvts0CA9tLm3nA-1-FIVvxAuyOS4OrA&usqp=CAU",
-                }}
-              />
+              <Img source={require("../../images/dador.png")} />
             </CardBody>
 
             <AddButton>
@@ -146,17 +139,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 20,
     alignSelf: "center",
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.46,
-    shadowRadius: 11.14,
-
     elevation: 17,
+    color: "#fff",
   },
 });

@@ -52,200 +52,206 @@ export default function Profile() {
   const navigation = useNavigation();
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <View style={styles.title1}>
-        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-          <AntDesign style={styles.iconRight} name="left" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Informações pessoais</Text>
-      </View>
+      <View style={{ marginTop: 30 }}>
+        <View>
+          <Text style={styles.subTitles}>Nome</Text>
 
-      <View>
-        <Text style={styles.subTitles}>Nome</Text>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.nome}
+                placeholder="Seu nome"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>Cpf</Text>
+          <Controller
+            control={control}
+            name="cpf"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.cpf}
+                placeholder="000.000.000-00"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>E-mail</Text>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.email}
+                placeholder="exemplo@email.com"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>Telefone</Text>
+          <Controller
+            control={control}
+            name="telefone"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.telefone}
+                placeholder="(00) 90000-0000"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>Data de nascimento</Text>
+          <Controller
+            control={control}
+            name="nascimento"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.nascimento}
+                placeholder="00/00/0000"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>Endereço</Text>
+          <Controller
+            control={control}
+            name="endereco"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.endereco}
+                placeholder="Rua Exemplo, número 00"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>Cidade</Text>
+          <Controller
+            control={control}
+            name="cidade"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.cidade}
+                placeholder="Cidade Exemplo"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>Estado</Text>
+          <Controller
+            control={control}
+            name="estado"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.estado}
+                placeholder="Estado Exemplo"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}>CEP</Text>
+          <Controller
+            control={control}
+            name="cep"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.cep}
+                placeholder="00000-000"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
 
-        <Controller
-          control={control}
-          name="name"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.nome}
-              placeholder="Seu nome"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>Cpf</Text>
-        <Controller
-          control={control}
-          name="cpf"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.cpf}
-              placeholder="000.000.000-00"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>E-mail</Text>
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.email}
-              placeholder="exemplo@email.com"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>Telefone</Text>
-        <Controller
-          control={control}
-          name="telefone"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.telefone}
-              placeholder="(00) 90000-0000"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>Data de nascimento</Text>
-        <Controller
-          control={control}
-          name="nascimento"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.nascimento}
-              placeholder="00/00/0000"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>Endereço</Text>
-        <Controller
-          control={control}
-          name="endereco"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.endereco}
-              placeholder="Rua Exemplo, número 00"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>Cidade</Text>
-        <Controller
-          control={control}
-          name="cidade"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.cidade}
-              placeholder="Cidade Exemplo"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>Estado</Text>
-        <Controller
-          control={control}
-          name="estado"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.estado}
-              placeholder="Estado Exemplo"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}>CEP</Text>
-        <Controller
-          control={control}
-          name="cep"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.cep}
-              placeholder="00000-000"
-            />
-          )}
-        />
-      </View>
-
-      <View>
-        <Text style={styles.subTitles}>Senha</Text>
-        <Controller
-          control={control}
-          name="senha"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={users.senha}
-              secureTextEntry={true}
-              placeholder="********"
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text style={styles.subTitles}> Repetir a Senha</Text>
-        <Controller
-          control={control}
-          name="repeat"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onBlur={onBlur} //chamado quando text input é tocado
-              style={styles.input}
-              onChangeText={onChange}
-              value={value}
-              secureTextEntry={true}
-              placeholder="********"
-            />
-          )}
-        />
-      </View>
-      <View style={styles.btn}>
-        <TouchableOpacity
-          style={styles.btnSubmit}
-          onPress={handleSubmit(handleSignin)}
-        >
-          <Text style={styles.btnSubmitText}> Salvar </Text>
-        </TouchableOpacity>
+        <View>
+          <Text style={styles.subTitles}>Senha</Text>
+          <Controller
+            control={control}
+            name="senha"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={users.senha}
+                secureTextEntry={true}
+                placeholder="********"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={styles.subTitles}> Repetir a Senha</Text>
+          <Controller
+            control={control}
+            name="repeat"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onBlur={onBlur} //chamado quando text input é tocado
+                style={styles.input}
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry={true}
+                placeholder="********"
+                placeholderTextColor={"#fff"}
+              />
+            )}
+          />
+        </View>
+        <View style={styles.btn}>
+          <TouchableOpacity
+            style={styles.btnSubmit}
+            onPress={handleSubmit(handleSignin)}
+          >
+            <Text style={styles.btnSubmitText}> Salvar </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -254,14 +260,14 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     margin: 12,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#404040",
     borderRadius: 8,
     padding: 10,
+    color: "#fff",
   },
   container: {
-    marginTop: 20,
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
   },
   title: {
     fontSize: 20,
@@ -286,9 +292,10 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 20,
     fontWeight: "bold",
+    color: "#fff",
   },
   button: {
-    backgroundColor: "#0ed830",
+    backgroundColor: "#ff0000",
     width: "50%",
     alignContent: "center",
     alignSelf: "center",
@@ -297,7 +304,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   btnSubmit: {
-    backgroundColor: "#0ed830",
+    backgroundColor: "#ff0000",
     marginBottom: 40,
     marginTop: 10,
     height: 45,

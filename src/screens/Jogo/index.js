@@ -331,7 +331,7 @@ export default function Index({ navigation }) {
                       <TouchableOpacity onPress={() => dado({ id: item.id })}>
                         <Image
                           key={item.key}
-                          style={{ width: 60, height: 60 }}
+                          style={{ width: 55, height: 55, marginLeft: 5 }}
                           source={item.imagem}
                         />
 
@@ -453,7 +453,7 @@ export default function Index({ navigation }) {
                 <TouchableOpacity onPress={() => dado({ id: item.id })}>
                   <Image
                     key={item.key}
-                    style={{ width: 60, height: 60 }}
+                    style={{ width: 55, height: 55, marginLeft: 5 }}
                     source={item.imagem}
                   />
 
@@ -551,6 +551,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   gridView: {
+    width: 400,
     height: 900,
     display: "flex",
   },

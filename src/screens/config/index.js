@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginBottom: "20%",
     textAlign: "center",
-    color: "#000",
+    color: "#fff",
   },
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
     flex: 1,
     justifyContent: "center",
     textAlign: "left",
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   textContent: {
     fontWeight: "bold",
-    color: "#000",
+    color: "#fff",
   },
   divider: {
     marginTop: 30,
@@ -105,12 +105,12 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 25,
     marginRight: 20,
-    color: "#000",
+    color: "#fff",
   },
   iconRight: {
     fontSize: 20,
     marginRight: 30,
-    color: "#000",
+    color: "#fff",
   },
   rigth: {
     flexDirection: "row",

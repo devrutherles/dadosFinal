@@ -97,7 +97,7 @@ export const PaymentMethodsTitle = styled.Text`
 `;
 
 export const Card = styled.View`
-  background: #fafafa;
+  background: #404040;
   padding: 20px;
   border-radius: 10px;
   margin-top: 10px;
@@ -118,12 +118,12 @@ export const CardDetails = styled.View`
 export const CardTitle = styled.Text`
   font-size: 14px;
   font-weight: bold;
-  color: #121212;
+  color: #fff;
 `;
 
 export const CardInfo = styled.Text`
   font-size: 10px;
-  color: #121212;
+  color: #fff;
   margin-top: 15px;
 `;
 
@@ -140,7 +140,7 @@ export const AddButton = styled.TouchableOpacity`
 `;
 
 export const AddLabel = styled.Text`
-  color: #121212;
+  color: #fff;
   font-size: 14px; ,
   font-weight: bold;
   margin-left: 15px;
