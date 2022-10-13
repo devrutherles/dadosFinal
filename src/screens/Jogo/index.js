@@ -433,7 +433,6 @@ export default function Index({ navigation }) {
           <></>
         )}
       </View>
-<<<<<<< Updated upstream
 
       {!iniciada ? (
         <ScrollView key={dados.key} horizontal>
@@ -547,8 +546,6 @@ export default function Index({ navigation }) {
       ) : (
         <></>
       )}
-=======
->>>>>>> Stashed changes
     </View>
   );
 }
@@ -559,11 +556,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   gridView: {
-<<<<<<< Updated upstream
     width: 400,
     height: 900,
-=======
->>>>>>> Stashed changes
+
     display: "flex",
   },
   itemContainer: {
