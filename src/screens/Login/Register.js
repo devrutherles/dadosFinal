@@ -1,0 +1,396 @@
+import React from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Keyboard,
+  Platform,
+  SafeAreaView,
+  TextInput,
+} from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
+import axios from "axios";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DateTimePicker } from "react-native-ui-lib/src/components/dateTimePicker";
+export default function Register() {
+  const navigation = useNavigation();
+  //salvar token
+  const setToken = async (value) => {
+    try {
+      await AsyncStorage.setItem("@token", value);
+    } catch (e) {}
+  };
+  const [date, setDate] = React.useState(new Date());
+  const [cep, setCep] = React.useState("");
+  const [lop, setLop] = React.useState(true);
+  const [erro, setErro] = React.useState();
+
+  const [endereco, setEndereco] = React.useState("");
+
+  if (cep.length == 8 && lop) {
+    const options = {
+      method: "GET",
+      url: "http://viacep.com.br/ws/" + cep.replace(/[^0-9]/g, "") + "/json/",
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+        setEndereco(response.data);
+        setLop(false);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }
+
+  ///salvar ueser
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      nome: "",
+      email: "",
+      telefone: "",
+      senha: "",
+      cpf: "",
+    },
+  });
+
+  function handleSignin(data) {
+    const setUser = async (value) => {
+      try {
+        const jsonValue = JSON.stringify(value);
+        await AsyncStorage.setItem("@user", jsonValue);
+        global.id = jsonValue.id;
+      } catch (e) {
+        // saving error
+      }
+    };
+
+    console.log(data);
+    const options = {
+      method: "POST",
+      url: "https://rutherles.site/api/cadastro",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: {
+        name: data.nome,
+        email: data.email,
+        password: data.senha,
+        telefone: data.telefone,
+        cpf: data.cpf,
+        endereco: endereco.logradouro,
+        cidade: endereco.localidade,
+        nascimento: date,
+        estado: endereco.uf,
+        cep: endereco.cep,
+      },
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        // console.log(response.data.user)
+        setToken(response.data.token);
+        setUser(response.data.user);
+
+        if (cep.length > 7) {
+          navigation.navigate("Home", {
+            cadastro: "Usuário cadastrado com sucesso.",
+          });
+        } else {
+          alert("Por favor digite um CEP Válido");
+        }
+      })
+      .catch(function (error) {
+        console.error(error);
+        setErro("Email já cadastrado");
+      });
+  }
+  return (
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <View style={styles.title1}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <AntDesign style={styles.iconRight} name="left" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Cadastre-se</Text>
+      </View>
+
+      <View>
+        <Text style={styles.subTitles}>Nome</Text>
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="nome"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur} //chamado quando text input é tocado
+              style={styles.input}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Seu nome"
+            />
+          )}
+        />
+        {errors.nome && (
+          <Text style={{ marginLeft: 20, color: "red" }}>Digite seu nome.</Text>
+        )}
+      </View>
+      <View>
+        <Text style={styles.subTitles}>Cpf</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="cpf"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur} //chamado quando text input é tocado
+              style={styles.input}
+              onChangeText={onChange}
+              value={value}
+              placeholder="000.000.000-00"
+            />
+          )}
+        />
+        {errors.nome && (
+          <Text style={{ marginLeft: 20, color: "red" }}>Digite seu CPF.</Text>
+        )}
+      </View>
+      <View>
+        <Text style={styles.subTitles}>E-mail</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur} //chamado quando text input é tocado
+              style={styles.input}
+              onChangeText={onChange}
+              value={value}
+              placeholder="exemplo@email.com"
+            />
+          )}
+        />
+        {errors.email && (
+          <Text style={{ marginLeft: 20, color: "red" }}>
+            Digite seu email.
+          </Text>
+        )}
+      </View>
+      <View>
+        <Text style={styles.subTitles}>Telefone</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="telefone"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur} //chamado quando text input é tocado
+              style={styles.input}
+              onChangeText={onChange}
+              value={value}
+              placeholder="(00) 90000-0000"
+            />
+          )}
+        />
+
+        {errors.telefone && (
+          <Text style={{ marginLeft: 20, color: "red" }}>
+            Digite seu telefone.
+          </Text>
+        )}
+      </View>
+
+      <View>
+        <Text style={styles.subTitles}>Data de nascimento</Text>
+
+        <DateTimePicker
+          style={styles.input}
+          date={date} //initial date from state
+          mode="date" //The enum of date, datetime and time
+          placeholder="select date"
+          format="DD-MM-YYYY"
+          minDate="01-01-2016"
+          maxDate="01-01-2019"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              //display: 'none',
+              position: "absolute",
+              left: 0,
+              top: 4,
+              marginLeft: 0,
+            },
+            dateInput: {
+              marginLeft: 36,
+            },
+          }}
+          onDateChange={(date) => {
+            setDate(date);
+          }}
+        />
+      </View>
+
+      <View>
+        <Text style={styles.subTitles}>CEP</Text>
+
+        <TextInput
+          style={styles.input}
+          onChangeText={setCep}
+          value={cep}
+          maxLength={8}
+          placeholder="00000000"
+        />
+      </View>
+
+      <View>
+        <Text style={styles.subTitles}>Endereço</Text>
+
+        <TextInput
+          style={styles.input}
+          value={endereco.logradouro}
+          placeholder="Rua Exemplo, número 00"
+        />
+      </View>
+      <View>
+        <TextInput
+          style={styles.input}
+          value={endereco.localidade}
+          placeholder="Cidade Exemplo"
+        />
+      </View>
+      <View>
+        <Text style={styles.subTitles}>Estado</Text>
+
+        <TextInput
+          style={styles.input}
+          value={endereco.uf}
+          placeholder="Estado Exemplo"
+        />
+      </View>
+
+      <View>
+        <Text style={styles.subTitles}>Senha</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="senha"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur} //chamado quando text input é tocado
+              style={styles.input}
+              onChangeText={onChange}
+              value={value}
+              secureTextEntry={true}
+              placeholder="********"
+            />
+          )}
+        />
+
+        {errors.senha && (
+          <Text style={{ marginLeft: 20, color: "red" }}>
+            Digite sua senha.
+          </Text>
+        )}
+        <Text style={{ marginLeft: 20, color: "red" }}>{erro}</Text>
+      </View>
+
+      <View style={styles.btn}>
+        <TouchableOpacity
+          style={styles.btnSubmit}
+          onPress={handleSubmit(handleSignin)}
+        >
+          <Text style={styles.btnSubmitText}> Cadastre-se </Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
+}
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    backgroundColor: "#fafafa",
+    borderRadius: 8,
+    padding: 10,
+  },
+  container: {
+    marginTop: 20,
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    marginTop: 20,
+    textAlign: "center",
+  },
+  iconRight: {
+    fontSize: 20,
+    marginRight: 30,
+    marginTop: 20,
+    marginLeft: "17%",
+  },
+  title1: {
+    marginTop: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  subTitles: {
+    marginLeft: 20,
+    marginTop: 20,
+    fontWeight: "bold",
+  },
+  button: {
+    backgroundColor: "#ff0000",
+    width: "50%",
+    alignContent: "center",
+    alignSelf: "center",
+    marginVertical: "10%",
+    color: "#fff",
+    borderRadius: 5,
+  },
+  btnSubmit: {
+    backgroundColor: "#ff0000",
+    marginBottom: 40,
+    marginTop: 10,
+    height: 45,
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 7,
+  },
+  btnSubmitText: {
+    color: "#fff",
+  },
+  btn: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
