@@ -36,7 +36,7 @@ export function useAposta() {
     const timeout = setTimeout(() => {
       const options = {
         method: "GET",
-        url: "https://rutherles.site/api/jogos",
+        url: "https://rutherles.site/api/rodada",
         headers: { Accept: "application/json" },
       };
 

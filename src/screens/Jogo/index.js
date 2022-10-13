@@ -32,10 +32,12 @@ export default function Index({ navigation }) {
     avatar: 4,
     avatar: "jgf",
   });
+
+  let numeros = [];
   const [aposta, setAposta] = useState(null);
   const [array_valor_apostado, setArray_valor_apostado] = useState();
   const iconCancel = require("../../../assets/icons/no.png");
-  const { numeros, loading, nome, status, numeroPartida } = useAposta();
+  const { loading, nome, status, numeroPartida } = useAposta();
   const { token, loading2 } = useProfile();
   let dadosEscolhidos = "";
   let valorApostado = "";
@@ -43,7 +45,8 @@ export default function Index({ navigation }) {
   let imagemDaosEscolhidos = [];
   let iniciada = null;
   let finalizada = null;
-  let resultado = null;
+  let resultado = "";
+  let aposta_id = "";
 
   const salas = [
     { sala: 1, valor1: 2, valor2: 5, valor3: 10, avatar: "tg" },
@@ -57,25 +60,21 @@ export default function Index({ navigation }) {
   }
 
   if (nome.length > 0) {
-    iniciada = nome.find((item) => item.nome == "iniciado");
-    finalizada = nome.find((item) => item.nome == "finalizada");
-    resultado = nome.find((item) => item.cotas);
-    console.info(resultado);
-  }
+    iniciada = nome.find((item) => item.status == "iniciada");
+    resultado = nome.find((item) => item.status == "finalizada");
 
-  function geraStringAleatoria(tamanho) {
-    let stringAleatoria = "";
-
-    var caracteres = "abcdefghijklmnopqrstuvwx";
-    for (var i = 0; i < 1; i++) {
-      stringAleatoria += caracteres.charAt(
-        Math.floor(Math.random() * caracteres.length)
-      );
+    if (resultado) {
+      numeros = [
+        { id: resultado.resultd1 },
+        { id: resultado.resultd2 },
+        { id: resultado.resultd3 },
+      ];
     }
-    return stringAleatoria;
+
+    //console.warn(resultado.id);
   }
 
-  geraStringAleatoria(4);
+  //console.warn(aposta);
 
   if (aposta) {
     // console.log(aposta);
@@ -83,6 +82,10 @@ export default function Index({ navigation }) {
     resultadoJogo = numeros.map((item) => item.nome);
     valorApostado = aposta.map((item) => item.valor);
     imagemDaosEscolhidos = aposta.find((item) => item.img);
+
+    aposta.forEach((element) => {
+      aposta_id = element.jogo_id;
+    });
   }
 
   function selecionar(data) {
@@ -153,7 +156,7 @@ export default function Index({ navigation }) {
 
     let dados = select.map((item) => {
       let valores = {
-        jogo_id: numeroPartida,
+        jogo_id: iniciada.id,
         nome: item.nome,
         img: item.img,
         dados: item.id,
@@ -272,7 +275,9 @@ export default function Index({ navigation }) {
       </View>
 
       <View style={{ marginTop: 5 }}>
-        {1 == 3 && resultado ? (
+        {resultado &&
+        aposta_id == resultado.id &&
+        resultado.status == "finalizada" ? (
           <View
             style={{ flexDirection: "row", marginTop: 10, marginBottom: 10 }}
           >
@@ -287,23 +292,13 @@ export default function Index({ navigation }) {
           <></>
         )}
 
-        {iniciada ? (
+        {resultado ? (
           <View
             style={{
               height: 500,
               backgroundColor: "#131313",
             }}
           >
-            <Image
-              style={{
-                width: "30%",
-                height: 150,
-                justifyContent: "center",
-                alignSelf: "center",
-              }}
-              source={carregamento}
-            />
-
             <Center>
               <Text style={styles.title}>Aguardado inicio de nova partida</Text>
 
@@ -417,17 +412,28 @@ export default function Index({ navigation }) {
                 />
               </ScrollView>
             </Center>
+
+            <View style={styles.button}>
+              <Button
+                onPress={jogarD}
+                color="#000"
+                backgroundColor="#40e796"
+                style={{ marginBottom: 10, width: "90%", borderRadius: 7 }}
+                label="Apostar"
+              ></Button>
+            </View>
           </View>
         ) : (
           <></>
         )}
 
-        {!iniciada ? (
+        {iniciada ? (
           <YoutubePlayer height={150} play={true} videoId={"AccCr6dU44s"} />
         ) : (
           <></>
         )}
       </View>
+<<<<<<< Updated upstream
 
       {!iniciada ? (
         <ScrollView key={dados.key} horizontal>
@@ -541,6 +547,8 @@ export default function Index({ navigation }) {
       ) : (
         <></>
       )}
+=======
+>>>>>>> Stashed changes
     </View>
   );
 }
@@ -551,8 +559,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   gridView: {
+<<<<<<< Updated upstream
     width: 400,
     height: 900,
+=======
+>>>>>>> Stashed changes
     display: "flex",
   },
   itemContainer: {

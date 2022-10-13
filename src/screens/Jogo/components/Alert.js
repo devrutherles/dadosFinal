@@ -2,23 +2,21 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
 import React from "react";
-import { CloseIcon, Box, Progress } from "native-base";
+import { CloseIcon, Box, Progress, Image } from "native-base";
 
 export default function Alerta(props) {
   const { valor, dados, resultado, img, array } = props;
   let image = "";
+  let dadosV = "";
   const [imagem, setImagem] = React.useState();
-  if (array) {
-    image = array.map((item) => item.img);
-  }
-  let valoS = JSON.stringify(valor);
 
-  console.log(valor);
+  //console.warn(array.imgd1);
+
+  let valoS = JSON.stringify(valor);
 
   let textoVitoria = "Parabéns você ganhou R$ " + { valoS } + ",00";
   let textoDerrota = "Você não ganhou nessa rodada ";
@@ -44,12 +42,34 @@ export default function Alerta(props) {
             : textoDerrota}
         </Text>
 
-        <View style={styles.container2}>
-          {image.map((item) => (
-            <View>
-              <Image style={styles.imagem} source={{ uri: item }} />
+        <View>
+          {array ? (
+            <View style={styles.container2}>
+              <View>
+                <Image
+                  alt=""
+                  style={styles.imagem}
+                  source={{ uri: array.imgd1 }}
+                />
+              </View>
+              <View>
+                <Image
+                  alt=""
+                  style={styles.imagem}
+                  source={{ uri: array.imgd2 }}
+                />
+              </View>
+              <View>
+                <Image
+                  alt=""
+                  style={styles.imagem}
+                  source={{ uri: array.imgd3 }}
+                />
+              </View>
             </View>
-          ))}
+          ) : (
+            <></>
+          )}
         </View>
       </View>
     </ImageBackground>
@@ -75,6 +95,15 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     margin: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+
+    elevation: 12,
   },
 
   off: {
