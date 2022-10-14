@@ -8,12 +8,26 @@ import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
+<<<<<<< Updated upstream
 
+=======
+//<<<<<<< Updated upstream
+
+//===*//====
+//>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 import { Audio } from "expo-av";
+<<<<<<< Updated upstream
 
+=======
+//<<<<<<< Updated upstream
+
+//=======
+//>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
