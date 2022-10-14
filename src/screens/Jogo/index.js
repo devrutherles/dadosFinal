@@ -8,12 +8,11 @@ import { Center, Spinner, Text } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
-<<<<<<< Updated upstream
+
 import axios from "axios";
 
-=======
 import { Audio } from "expo-av";
->>>>>>> Stashed changes
+
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";

@@ -23,6 +23,7 @@ import Pix from "../src/screens/Pix/Pix";
 import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
 import Som from "./screens/Jogo/components/som";
+import Retirada from "./screens/Wallet/components/retirada";
 
 const icons = {
   Home: {
@@ -75,7 +76,7 @@ export function Tabs() {
     >
       <Tab.Screen
         name="Home"
-        component={Som}
+        component={Retirada}
         options={{
           title: "",
           headerTransparent: "true",
