@@ -4,16 +4,7 @@ import { Avatar, HStack, VStack } from "native-base";
 import { jogadores } from "./variaveis";
 
 export default function Cab(props) {
-  const { avatar } = props;
-  function geraStringAleatoria(tamanho) {
-    var caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx";
-    for (var i = 0; i < tamanho; i++) {
-      stringAleatoria += caracteres.charAt(
-        Math.floor(Math.random() * caracteres.length)
-      );
-    }
-    return stringAleatoria;
-  }
+
 
   return jogadores.map((jogo) => (
     <View

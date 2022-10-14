@@ -1,36 +1,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useProfile } from "./useProfile";
 
-export function useAposta() {
+export function useAposta(cart) {
   const [numeros, setNumeros] = useState();
   const [nome, setNome] = useState([]);
   const [status, setStatus] = useState("");
   const [numeroPartida, setNumeroPartida] = useState("");
   const [loading, setLoading] = useState(true);
+  const [carteira, setCarteira] = useState();
 
-  let resultados = [
-    {
-      id: 1,
-      jogos: [
-        {
-          id: "dadop1",
-          nome: "Dado Branco 1, ",
-          img: "https://orvalhosj.com/dadoP1.png",
-        },
-        {
-          id: "dadop2",
-          nome: "Dado Branco 2, ",
-          img: "https://orvalhosj.com/dadoP2.png",
-        },
-        {
-          id: "dadop3",
-          nome: "Dado Branco 3, ",
-          img: "https://orvalhosj.com/dadoP3.png",
-        },
-      ],
-      status: "finalizado",
-    },
-  ];
+  const { token, loading2 } = useProfile();
+
+  let id = loading2 ? token.id : 1;
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -49,7 +31,51 @@ export function useAposta() {
         .catch(function (error) {
           //console.error(error);
         });
-    }, 5000);
+
+      const options2 = {
+        method: "GET",
+        url: "https://rutherles.site/api/usuario/" + id,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization:
+            "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+        },
+      };
+
+      axios
+        .request(options2)
+        .then(function (response) {
+          let carteira = response.data;
+          carteira.forEach((element) => {
+            setCarteira(element.carteira);
+          });
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+
+      const options3 = {
+        method: "PUT",
+        url: "https://rutherles.site/api/usuario/81",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization:
+            "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+        },
+        data: { carteira: parseInt(carteira) + parseInt(cart) },
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }, 2000);
 
     return () => {
       // clears timeout before running the new effect
@@ -57,5 +83,12 @@ export function useAposta() {
     };
   }, [nome]);
 
-  return { loading, numeros, resultados, status, nome, numeroPartida };
+  return {
+    loading,
+    numeros,
+    status,
+    nome,
+    numeroPartida,
+    carteira,
+  };
 }
