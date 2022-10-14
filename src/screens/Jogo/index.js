@@ -8,18 +8,12 @@ import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 import { Audio } from "expo-av";
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
@@ -31,6 +25,8 @@ export default function Index({ navigation }) {
   let valor = 0;
   const [visible, setVisible] = useState(false);
   const [sound, setSound] = useState();
+  const [sound1, setSound1] = useState();
+  const [sound2, setSound2] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
@@ -158,13 +154,37 @@ export default function Index({ navigation }) {
   async function playSound() {
     //console.warn("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(
-      require("../../../assets/som.mp3")
+      require("../../../assets/dado.wav")
     );
 
     setSound(sound);
 
     //console.warn("Playing Sound");
     await sound.playAsync();
+  }
+
+  async function playSound1() {
+    //console.warn("Loading Sound1");
+    const { sound1 } = await Audio.Sound.createAsync(
+      require("../../../assets/win.mp3")
+    );
+
+    setSound1(sound1);
+
+    //console.warn("Playing Sound1");
+    await sound1.playAsync();
+  }
+
+  async function playSound2() {
+    //console.warn("Loading Sound2");
+    const { sound2 } = await Audio.Sound.createAsync(
+      require("../../../assets/lose.wav")
+    );
+
+    setSound2(sound2);
+
+    //console.warn("Playing Sound2");
+    await sound2.playAsync();
   }
 
   function apostas() {
@@ -238,7 +258,7 @@ export default function Index({ navigation }) {
   }
 
   if (resultado && valor > 0 && aposta_id == resultado.id && verificaAposta) {
-    playSound();
+    playSound1();
 
     postWallet(valor, carteira);
     setTimeout(() => {
@@ -254,7 +274,7 @@ export default function Index({ navigation }) {
     aposta.forEach((element) => {
       valorApostado = element.valor;
     });
-    playSound();
+    playSound2();
 
     postWallet(-valorApostado, carteira);
     setTimeout(() => {
@@ -348,7 +368,7 @@ export default function Index({ navigation }) {
           flexDirection: "row",
           justifyContent: "space-between",
           margin: 10,
-          marginTop: 50,
+          marginTop: 30,
         }}
       >
         <Text style={{ color: "gray" }}>Jogadores Online</Text>
@@ -425,7 +445,7 @@ export default function Index({ navigation }) {
             }}
           >
             <YoutubePlayer
-              height={aposta ? 300 : 150}
+              height={aposta ? 300 : 170}
               play={true}
               videoId={"AccCr6dU44s"}
             />

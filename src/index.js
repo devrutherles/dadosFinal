@@ -11,7 +11,13 @@ import WalletScreen from "../src/screens/Wallet";
 import Config from "../src/screens/config";
 import Profile from "../src/screens/profile";
 import { NativeBaseProvider } from "native-base";
-import { AntDesign, Ionicons, Foundation, Feather } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Ionicons,
+  Foundation,
+  Feather,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import PayButton from "./components/PayButton";
 import Pay from "../src/screens/Pay";
 
@@ -27,8 +33,8 @@ import Retirada from "./screens/Wallet/components/retirada";
 
 const icons = {
   Home: {
-    lib: Feather,
-    name: "user",
+    lib: MaterialIcons,
+    name: "attach-money",
   },
   Wallet: {
     lib: Ionicons,
