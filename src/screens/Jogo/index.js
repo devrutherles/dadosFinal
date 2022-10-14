@@ -8,8 +8,12 @@ import { Center, Spinner, Text } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
+<<<<<<< Updated upstream
 import axios from "axios";
 
+=======
+import { Audio } from "expo-av";
+>>>>>>> Stashed changes
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
@@ -140,6 +144,26 @@ export default function Index({ navigation }) {
     set;
   }
 
+  const [sound, setSound] = useState();
+
+  async function playSound() {
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../../assets/som.mp3")
+    );
+
+    setSound(sound);
+
+    console.log("Playing Sound");
+    await sound.playAsync();
+  }
+  function sounds() {
+    if ((valor = 0)) {
+      return playSound;
+    }
+  }
+
+  sounds();
   function apostas() {
     const obj2 = select;
     const obj1 = numeros;
@@ -232,6 +256,9 @@ export default function Index({ navigation }) {
           marginTop: "15%",
         }}
       >
+        <Button style={{ backgroundColor: "#fff" }} onPress={playSound}>
+          <Text>tocar</Text>
+        </Button>
         <View>
           <Playes style={{ alignSelf: "center" }} />
         </View>

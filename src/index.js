@@ -22,6 +22,7 @@ import Register from "../src/screens/Login/Register";
 import Pix from "../src/screens/Pix/Pix";
 import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
+import Som from "./screens/Jogo/components/som";
 
 const icons = {
   Home: {
@@ -74,7 +75,7 @@ export function Tabs() {
     >
       <Tab.Screen
         name="Home"
-        component={Profile}
+        component={Som}
         options={{
           title: "",
           headerTransparent: "true",
