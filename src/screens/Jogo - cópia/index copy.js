@@ -1,25 +1,16 @@
 import { Feather, AntDesign, Ionicons } from "@expo/vector-icons";
-import { React, useState, useEffect, useRef } from "react";
+import { React, useState, useEffect } from "react";
 import { StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
-import { View, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
+import { View, Button, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
+const carteira = require("../../../assets/img/carteira.jpeg");
+const dadosR = require("../../../assets/img/dadosR.gif");
 import { FlatGrid } from "react-native-super-grid";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
+import { Center, Spinner, Text } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
-
-import { Audio } from "expo-av";
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
@@ -30,16 +21,8 @@ export default function Index({ navigation }) {
   const carregamento = require("../../../assets/img/dice.gif");
   let valor = 0;
   const [visible, setVisible] = useState(false);
-  const [sound, setSound] = useState();
-  const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false);
-  const cancelRef = useRef(null);
-
   const [select, setSelect] = useState([]);
-  const [verificaAposta, setVerificaAposta] = useState(true);
   const [ids, setIds] = useState();
-  const [alertaCreditos, setAlertaCreditos] = useState(null);
-
   const [sala, setSala] = useState({
     sala: 1,
     valor1: 2,
@@ -54,7 +37,7 @@ export default function Index({ navigation }) {
   const [aposta, setAposta] = useState(null);
   const [array_valor_apostado, setArray_valor_apostado] = useState();
   const iconCancel = require("../../../assets/icons/no.png");
-  const { loading, nome, status, numeroPartida, carteira } = useAposta();
+  const { loading, nome, status, numeroPartida } = useAposta();
   const { token, loading2 } = useProfile();
   let dadosEscolhidos = "";
   let valorApostado = "";
@@ -78,8 +61,7 @@ export default function Index({ navigation }) {
 
   if (nome.length > 0) {
     iniciada = nome.find((item) => item.status == "iniciada");
-
-    resultado = nome.find((item) => item.status == "finalizada" && item.id);
+    resultado = nome.find((item) => item.status == "finalizada");
 
     if (resultado) {
       numeros = [
@@ -89,36 +71,13 @@ export default function Index({ navigation }) {
       ];
     }
 
-    // console.warn(iniciada);
+    //console.warn(resultado.id);
   }
 
-  const postWallet = (valor, wallet, verifica) => {
-    let id = token ? token.id : 1;
-
-    const options = {
-      method: "PUT",
-      url: "https://rutherles.site/api/usuario/" + id,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization:
-          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-      },
-      data: { carteira: parseInt(valor) + parseInt(wallet) },
-    };
-
-    axios
-      .request(options)
-      .then(function (response) {
-        verifica ? setVerificaAposta(true) : setVerificaAposta(false);
-      })
-      .catch(function (error) {
-        //console.error(error);
-      });
-  };
+  //console.warn(aposta);
 
   if (aposta) {
-    console.warn(aposta.id);
+    // console.log(aposta);
     dadosEscolhidos = aposta.map((item) => item.nome);
     resultadoJogo = numeros.map((item) => item.nome);
     valorApostado = aposta.map((item) => item.valor);
@@ -127,16 +86,10 @@ export default function Index({ navigation }) {
     aposta.forEach((element) => {
       aposta_id = element.jogo_id;
     });
-
-    resultado = nome.find(
-      (car) => car.id == aposta_id && car.status == "finalizada"
-    );
-
-    console.warn(resultado);
   }
 
   function selecionar(data) {
-    let dado = select.find((dado) => dado.id === aposta_id);
+    let dado = select.find((dado) => dado.id === data.id);
     //console.log(dado);
     if (!dado) {
       select.push(data);
@@ -155,16 +108,12 @@ export default function Index({ navigation }) {
     }
   }
 
-  async function playSound() {
-    //console.warn("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync(
-      require("../../../assets/som.mp3")
-    );
-
-    setSound(sound);
-
-    //console.warn("Playing Sound");
-    await sound.playAsync();
+  function novaaposta() {
+    setGanhos(0);
+    setIds();
+    setSelect([]);
+    setValor(0);
+    set;
   }
 
   function apostas() {
@@ -199,105 +148,30 @@ export default function Index({ navigation }) {
     apostas();
   }
 
-  function navigateA() {
-    navigation.navigate("Wallet");
-    setIsOpen(false);
-  }
-
   function jogarD() {
-    if (carteira < 2) {
-      setIsOpen(true);
-    } else {
-      if (select.length < 1) {
-        alert("Você precisa selecionar pelo menos um dado");
-      } else {
-        playSound();
+    var totais = array_valor_apostado.reduce(
+      (total, numero) => total + numero,
+      0
+    );
 
-        var totais = array_valor_apostado.reduce(
-          (total, numero) => total + numero,
-          0
-        );
+    let dados = select.map((item) => {
+      let valores = {
+        jogo_id: iniciada.id,
+        nome: item.nome,
+        img: item.img,
+        dados: item.id,
+        valor: totais,
+      };
 
-        let dados = select.map((item) => {
-          let valores = {
-            jogo_id: iniciada.id,
-            nome: item.nome,
-            img: item.img,
-            dados: item.id,
-            valor: totais,
-            resultado: true,
-          };
-
-          return valores;
-        });
-
-        setAposta(dados);
-        postWallet(-totais, carteira, true);
-      }
-    }
-  }
-
-  if (resultado && valor > 0 && aposta_id == resultado.id && verificaAposta) {
-    playSound();
-
-    postWallet(valor, carteira);
-    setTimeout(() => {
-      setAposta(null);
-      setSelect([]);
-      setVerificaAposta(true);
-    }, 10000);
-  }
-
-  if (resultado && valor == 0 && aposta_id == resultado.id && verificaAposta) {
-    let valorApostado = "";
-
-    aposta.forEach((element) => {
-      valorApostado = element.valor;
+      return valores;
     });
-    playSound();
 
-    postWallet(-valorApostado, carteira);
-    setTimeout(() => {
-      setAposta(null);
-      setSelect([]);
-      setVerificaAposta(true);
-    }, 10000);
+    setAposta(dados);
+    // console.log(aposta);
   }
 
   return (
     <View backgroundColor="#0c0c0e" flex>
-      <Center>
-        <AlertDialog
-          leastDestructiveRef={cancelRef}
-          isOpen={isOpen}
-          onClose={onClose}
-        >
-          <AlertDialog.Content>
-            <AlertDialog.CloseButton />
-            <AlertDialog.Header>Adicionar créditos</AlertDialog.Header>
-            <AlertDialog.Body>
-              Você precisa adicionar créditos a sua carteira para fazer uma
-              aposta
-            </AlertDialog.Body>
-            <AlertDialog.Footer>
-              <Button.Group space={2}>
-                <Button
-                  variant="unstyled"
-                  colorScheme="coolGray"
-                  onPress={onClose}
-                  ref={cancelRef}
-                >
-                  Cancelar
-                </Button>
-                <Button colorScheme="danger" onPress={navigateA}>
-                  Adicionar
-                </Button>
-              </Button.Group>
-            </AlertDialog.Footer>
-          </AlertDialog.Content>
-        </AlertDialog>
-      </Center>
-
       <View
         style={{
           flexDirection: "row",
@@ -328,7 +202,7 @@ export default function Index({ navigation }) {
               color: "#a2d5ab",
             }}
           >
-            R$ {carteira ? parseInt(carteira).toFixed(2) : <></>}
+            R$ {token ? parseInt(token.carteira).toFixed(2) : <></>}
           </Text>
         </View>
 
@@ -421,25 +295,12 @@ export default function Index({ navigation }) {
           <View
             style={{
               height: 500,
-              backgroundColor: "#000",
+              backgroundColor: "#131313",
             }}
           >
-            <YoutubePlayer
-              height={aposta ? 300 : 150}
-              play={true}
-              videoId={"AccCr6dU44s"}
-            />
-            {aposta ? (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Spinner color="emerald.500" />
-                <Text style={styles.title}>Aguardado resultado ...</Text>
-              </View>
-            ) : (
-              <></>
-            )}
-
             <Center>
-              {iniciada && !aposta ? (
+              <Text style={styles.title}>Aguardado inicio de nova partida</Text>
+              {iniciada ? (
                 <ScrollView key={dados.key} horizontal>
                   <FlatGrid
                     verti
@@ -457,7 +318,7 @@ export default function Index({ navigation }) {
                               (car) => car.id === item.id
                             )
                               ? "#fee672"
-                              : "#000",
+                              : item.color,
                           },
                         ]}
                       >
@@ -500,12 +361,6 @@ export default function Index({ navigation }) {
                               {
                                 label: "Cancelar Aposta",
                                 iconSource: iconCancel,
-                                onPress: () => setSelect([]),
-                              },
-
-                              {
-                                label: "Cancelar Dado",
-
                                 onPress: () => cancel({ id: item.id }),
                               },
                               {
@@ -559,25 +414,16 @@ export default function Index({ navigation }) {
                 <></>
               )}
             </Center>
-            {iniciada && !aposta ? (
-              <View style={styles.button}>
-                <Button
-                  size="lg"
-                  onPress={jogarD}
-                  backgroundColor={"#a2d5ab"}
-                  style={{ width: "90%", borderRadius: 7 }}
-                  variant={"solid"}
-                  _text={{
-                    color: "#1F2937",
-                  }}
-                  px="3"
-                >
-                  Apostar
-                </Button>
-              </View>
-            ) : (
-              <></>
-            )}
+
+            <View style={styles.button}>
+              <Button
+                onPress={jogarD}
+                color="#000"
+                backgroundColor="#40e796"
+                style={{ marginBottom: 10, width: "90%", borderRadius: 7 }}
+                label="Apostar"
+              ></Button>
+            </View>
           </View>
         ) : (
           <></>
@@ -585,142 +431,114 @@ export default function Index({ navigation }) {
       </View>
 
       {!iniciada ? (
-        <View
-          style={{
-            height: 500,
-            backgroundColor: "#131313",
-            alignItems: "center",
-            marginTop: 10,
-            marginBottom: 30,
-          }}
-        >
-          <Image
-            style={{ width: "30%", height: 130, margin: 3 }}
-            source={carregamento}
-          />
-          <Text style={styles.title}>Aguardando nova rodada...</Text>
+        <ScrollView key={dados.key} horizontal>
+          <FlatGrid
+            verti
+            listKey="4"
+            itemDimension={50}
+            data={dados}
+            style={styles.gridView}
+            spacing={10}
+            renderItem={({ item }) => (
+              <View
+                key={item.id}
+                style={[
+                  styles.itemContainer,
+                  {
+                    backgroundColor: select.find((car) => car.id === item.id)
+                      ? "#fee672"
+                      : item.color,
+                  },
+                ]}
+              >
+                <TouchableOpacity onPress={() => dado({ id: item.id })}>
+                  <Image
+                    key={item.key}
+                    style={{ width: 55, height: 55, marginLeft: 5 }}
+                    source={item.imagem}
+                  />
 
-          {resultado && aposta_id == resultado.id ? (
-            <></>
-          ) : (
-            <Center>
-              <ScrollView key={dados.key} horizontal>
-                <FlatGrid
-                  verti
-                  itemDimension={50}
-                  data={dados}
-                  style={styles.gridView}
-                  spacing={10}
-                  renderItem={({ item }) => (
-                    <View
-                      key={item.id}
-                      style={[
-                        styles.itemContainer,
-                        {
-                          backgroundColor: select.find(
-                            (car) => car.id === item.id
-                          )
-                            ? "#fee672"
-                            : "#131313",
-                        },
-                      ]}
-                    >
-                      <TouchableOpacity onPress={() => dado({ id: item.id })}>
-                        <Image
-                          key={item.key}
-                          style={{ width: 55, height: 55, marginLeft: 5 }}
-                          source={item.imagem}
-                        />
-
-                        {select.map((jogo) =>
-                          jogo.id == item.id ? (
-                            <View
-                              style={{
-                                position: "absolute",
-                                backgroundColor: "#fee672",
-                                width: 28,
-                                height: 25,
-                                borderRadius: 7,
-                                marginTop: 2,
-                                top: -15,
-                                alignContent: "space-between",
-                                alignItems: "center",
-                                alignSelf: "center",
-                              }}
-                            >
-                              <Text>${jogo.valor}</Text>
-                            </View>
-                          ) : (
-                            <></>
-                          )
-                        )}
-                      </TouchableOpacity>
-                      {item.id == ids ? (
-                        <ActionSheet
-                          title={"Escolha o valor"}
-                          message={"teste"}
-                          useNativeIOS={false}
-                          options={[
-                            {
-                              label: "Cancelar Aposta",
-                              iconSource: iconCancel,
-                              onPress: () => setSelect([]),
-                            },
-
-                            {
-                              label: "Cancelar Dado",
-                              onPress: () => cancel({ id: item.id }),
-                            },
-                            {
-                              label: "R$ " + sala.valor1.toFixed(2),
-                              onPress: () =>
-                                selecionar({
-                                  id: item.id,
-                                  valor: sala.valor1,
-                                  mult: item.mult,
-                                  key: item.key,
-                                  nome: item.nome,
-                                  img: item.imagem2,
-                                }),
-                            },
-                            {
-                              label: "R$ " + sala.valor2.toFixed(2),
-                              onPress: () =>
-                                selecionar({
-                                  id: item.id,
-                                  valor: sala.valor2,
-                                  mult: item.mult,
-                                  key: item.key,
-                                  nome: item.nome,
-                                  img: item.imagem2,
-                                }),
-                            },
-                            {
-                              label: "R$ " + sala.valor3.toFixed(2),
-                              onPress: () =>
-                                selecionar({
-                                  id: item.id,
-                                  valor: sala.valor3,
-                                  mult: item.mult,
-                                  key: item.key,
-                                  nome: item.nome,
-                                  img: item.imagem2,
-                                }),
-                            },
-                          ]}
-                          visible={visible}
-                          onDismiss={() => setVisible(false)}
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </View>
+                  {select.map((jogo) =>
+                    jogo.id == item.id ? (
+                      <View
+                        style={{
+                          position: "absolute",
+                          backgroundColor: "#fee672",
+                          width: 28,
+                          height: 25,
+                          borderRadius: 7,
+                          marginTop: 2,
+                          top: -15,
+                          alignContent: "space-between",
+                          alignItems: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        <Text>${jogo.valor}</Text>
+                      </View>
+                    ) : (
+                      <></>
+                    )
                   )}
-                />
-              </ScrollView>
-            </Center>
-          )}
-        </View>
+                </TouchableOpacity>
+                {item.id == ids ? (
+                  <ActionSheet
+                    title={"Escolha o valor"}
+                    message={"teste"}
+                    useNativeIOS={false}
+                    options={[
+                      {
+                        label: "Cancelar Aposta",
+                        iconSource: iconCancel,
+                        onPress: () => cancel({ id: item.id }),
+                      },
+                      {
+                        label: "R$ " + sala.valor1.toFixed(2),
+                        onPress: () =>
+                          selecionar({
+                            id: item.id,
+                            valor: sala.valor1,
+                            mult: item.mult,
+                            key: item.key,
+                            nome: item.nome,
+                            img: item.imagem2,
+                          }),
+                      },
+                      {
+                        label: "R$ " + sala.valor2.toFixed(2),
+                        onPress: () =>
+                          selecionar({
+                            id: item.id,
+                            valor: sala.valor2,
+                            mult: item.mult,
+                            key: item.key,
+                            nome: item.nome,
+                            img: item.imagem2,
+                          }),
+                      },
+                      {
+                        label: "R$ " + sala.valor3.toFixed(2),
+                        onPress: () =>
+                          selecionar({
+                            id: item.id,
+                            valor: sala.valor3,
+                            mult: item.mult,
+                            key: item.key,
+                            nome: item.nome,
+                            img: item.imagem2,
+                          }),
+                      },
+                    ]}
+                    visible={visible}
+                    onDismiss={() => setVisible(false)}
+                  />
+                ) : (
+                  <></>
+                )}
+              </View>
+            )}
+          />
+        </ScrollView>
       ) : (
         <></>
       )}
@@ -735,6 +553,7 @@ const styles = StyleSheet.create({
   },
   gridView: {
     width: 400,
+    height: 900,
 
     display: "flex",
   },
@@ -743,7 +562,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     borderRadius: 0,
-    paddingRight: 10,
+    padding: 0,
     height: 70,
     width: 70,
   },
@@ -761,8 +580,8 @@ const styles = StyleSheet.create({
     color: "gray",
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 20,
   },
   title1: {
     marginTop: 35,
