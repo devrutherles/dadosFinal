@@ -263,6 +263,15 @@ export default function Login({ route }) {
         >
           <Text style={styles.RegisterText}> Criar conta grátis </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Recuperar")}
+          style={styles.btnRegister}
+        >
+          <Text style={{ color: "#fff", marginTop: 30 }}>
+            Esqueceu sua senha?
+          </Text>
+        </TouchableOpacity>
       </Animated.View>
     </KeyboardAvoidingView>
   );

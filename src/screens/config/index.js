@@ -8,6 +8,7 @@ import {
   FontAwesome5,
   Foundation,
   Ionicons,
+  FontAwesome,
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -40,6 +41,18 @@ export default function Config() {
         >
           <FontAwesome5 style={styles.icon} name="user-circle" />
           <Text style={styles.textContent}>Informações pessoais</Text>
+        </TouchableOpacity>
+        <AntDesign style={styles.iconRight} name="right" />
+      </View>
+      <Divider style={styles.divider} />
+
+      <View style={styles.rigth}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Saques")}
+          style={styles.content}
+        >
+          <FontAwesome style={styles.icon} name="money" />
+          <Text style={styles.textContent}>Meus saques</Text>
         </TouchableOpacity>
         <AntDesign style={styles.iconRight} name="right" />
       </View>

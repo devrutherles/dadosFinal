@@ -4,7 +4,8 @@ import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LoginApi } from "../src/screens/hooks/LoginApi";
-import { HStack, Spinner } from "native-base";
+import { HStack, Spinner, Text } from "native-base";
+import { View } from "react-native";
 
 import WalletScreen from "../src/screens/Wallet";
 
@@ -30,11 +31,14 @@ import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
 import Som from "./screens/Jogo/components/som";
 import Retirada from "./screens/Wallet/components/retirada";
+import Saques from "./screens/saques/Saques";
+import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
+import Chat from "./screens/chat/Chat";
 
 const icons = {
   Home: {
     lib: MaterialIcons,
-    name: "attach-money",
+    name: "chat-bubble-outline",
   },
   Wallet: {
     lib: Ionicons,
@@ -82,7 +86,7 @@ export function Tabs() {
     >
       <Tab.Screen
         name="Home"
-        component={Retirada}
+        component={Chat}
         options={{
           title: "",
           headerTransparent: "true",
@@ -125,71 +129,112 @@ export function Tabs() {
 }
 export default function App() {
   const { token, loading } = LoginApi();
-  console.log(token);
-  console.log(loading);
+  console.warn(token);
+  console.warn(loading);
 
   return (
     <NativeBaseProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={!token ? "Pay" : "Login"}>
-          <Stack.Screen
-            name="tab"
-            component={Tabs}
-            options={{
-              headerShown: false,
-              title: "Perfil",
-            }}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              headerShown: false,
-              title: "Perfil",
-            }}
-          />
-          <Stack.Screen
-            name="Detalhes"
-            component={Detalhes}
-            options={{
-              headerShown: false,
-              title: "detalhes",
-            }}
-          />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              headerShown: false,
-              title: "Perfil",
-            }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{
-              headerShown: false,
-              title: "detalhes",
-            }}
-          />
-          <Stack.Screen
-            name="Pix"
-            component={Pix}
-            options={{
-              headerShown: false,
-              title: "detalhes",
-            }}
-          />
-          <Stack.Screen
-            name="Deposito"
-            component={Deposito}
-            options={{
-              headerShown: false,
-              title: "detalhes",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      {loading ? (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={token ? "Pay" : "Login"}>
+            <Stack.Screen
+              name="tab"
+              component={Tabs}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+
+            <Stack.Screen
+              name="Recuperar"
+              component={Recuperar}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Codigo"
+              component={Codigo}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Senha"
+              component={Senha}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Saques"
+              component={Saques}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Detalhes"
+              component={Detalhes}
+              options={{
+                headerShown: false,
+                title: "detalhes",
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{
+                headerShown: false,
+                title: "detalhes",
+              }}
+            />
+            <Stack.Screen
+              name="Pix"
+              component={Pix}
+              options={{
+                headerShown: false,
+                title: "detalhes",
+              }}
+            />
+            <Stack.Screen
+              name="Deposito"
+              component={Deposito}
+              options={{
+                headerShown: false,
+                title: "detalhes",
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      ) : (
+        <NavigationContainer>
+          <HStack space={8} justifyContent="center" alignItems="center">
+            <Spinner size="lg" />
+          </HStack>
+        </NavigationContainer>
+      )}
     </NativeBaseProvider>
   );
 }
