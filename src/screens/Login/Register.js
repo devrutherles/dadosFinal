@@ -14,7 +14,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
-
+import br from "date-fns/locale/pt-BR";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DateTimePicker } from "react-native-ui-lib/src/components/dateTimePicker";
 export default function Register() {
@@ -231,6 +231,7 @@ export default function Register() {
         <Text style={styles.subTitles}>Data de nascimento</Text>
 
         <DateTimePicker
+          locale="pt"
           style={styles.input}
           date={date} //initial date from state
           mode="date" //The enum of date, datetime and time
