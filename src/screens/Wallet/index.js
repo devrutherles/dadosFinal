@@ -5,7 +5,7 @@ import {
   FontAwesome,
   AntDesign,
 } from "@expo/vector-icons";
-
+import { Alertadeposito } from "./components/Alertadeposito";
 import {
   Wrapper,
   Header,
@@ -43,7 +43,8 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { useAposta } from "../hooks/useAposta";
+import { putUser } from "../hooks/PostFunctions";
 export default function Wallet({ route, navigation }) {
   const [isVisible, setIsVisible] = useState(true);
   const [useBalance, setUseBalance] = useState(true);
@@ -58,14 +59,18 @@ export default function Wallet({ route, navigation }) {
 
   const [user, setUser] = React.useState(false);
   const [loader, setloader] = React.useState(false);
-  const [carteira, setCarteira] = React.useState();
   const [jogos, setJogos] = React.useState();
   const [lop, setLop] = React.useState(true);
-
+  const {carteira} = useAposta()
   const [deposito, setDeposito] = React.useState([]);
-  const { bilhetes, cart } = route.params ? route.params : false;
+
+
+
+
+  const { bilhetes, cart ,valor_deposito } = route.params ? route.params : false;
 
   let users = "";
+  let alerta = "";
 
   useEffect(() => {
     const getData = async () => {
@@ -82,6 +87,9 @@ export default function Wallet({ route, navigation }) {
     };
 
     getData();
+
+
+    
   }, []);
 
   if (user && lop) {
@@ -100,7 +108,7 @@ export default function Wallet({ route, navigation }) {
     axios
       .request(options)
       .then(function (response) {
-        setCarteira(response.data[0].carteira);
+       // setCarteira(response.data[0].carteira);
         console.log(response);
       })
       .catch(function (error) {
@@ -134,8 +142,12 @@ export default function Wallet({ route, navigation }) {
     console.log(users.nome);
   }
 
+
+
+
+
   if (deposito) {
-    return (
+    return (   
       <Wrapper>
         <Header
           colors={useBalance ? ["#52E78C", "#1AB563"] : ["#D3D3D3", "#868686"]}
@@ -146,7 +158,7 @@ export default function Wallet({ route, navigation }) {
             <BalanceContainer>
               <Value>
                 R$ &nbsp;
-                <Bold>{isVisible ? (bilhetes ? cart : carteira) : "----"}</Bold>
+                <Bold>{carteira ? ( carteira) : "----"}</Bold>
               </Value>
 
               <EyeButton onPress={handleToggleVisibility}>
@@ -192,6 +204,15 @@ export default function Wallet({ route, navigation }) {
               </CardDetails>
 
               <Img source={creditCard} resizeMode="contain" />
+
+
+              { alerta ?    
+<Alertadeposito/>
+
+: <></>
+
+}
+
             </CardBody>
 
             <AddButton onPress={() => navigation.navigate("Pix")}>
@@ -212,6 +233,7 @@ export default function Wallet({ route, navigation }) {
           </UseTicketContainer>
         </PaymentMethods>
       </Wrapper>
+
     );
   }
 }

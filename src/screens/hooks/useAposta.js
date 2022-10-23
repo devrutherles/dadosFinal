@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useProfile } from "./useProfile";
 
+import { useNavigation } from "@react-navigation/native";
+import { putUser } from "./PostFunctions";
+
+
+
 export function useAposta(cart) {
   const [numeros, setNumeros] = useState();
   const [nome, setNome] = useState([]);
@@ -11,6 +16,16 @@ export function useAposta(cart) {
   const [loading, setLoading] = useState(true);
   const [carteira, setCarteira] = useState();
   const [saldoadm, setSaldoAdm] = useState();
+  const [deposito_idget, setDeposito_idget] = useState();
+  const [depositoStatus, setDepositoStatus] = useState();
+  const [valor_deposito, setValor_deposito] = useState();
+  const [aprovado, setAprovado] = useState();
+
+
+
+  const navigation = useNavigation;
+
+
   let numeroPartida = 9;
   const { token, loading2 } = useProfile();
   let status = 9;
@@ -48,9 +63,12 @@ export function useAposta(cart) {
       axios
         .request(options2)
         .then(function (response) {
-          let carteira = response.data;
-          carteira.forEach((element) => {
+          let user = response.data;
+          user.forEach((element) => {
             setCarteira(element.carteira);
+            setDeposito_idget(element.deposito_id)
+            setValor_deposito(element.valor_deposito)
+            setDepositoStatus(element.deposito)
           });
         })
         .catch(function (error) {
@@ -59,7 +77,7 @@ export function useAposta(cart) {
 
       const options3 = {
         method: "GET",
-        url: "https://rutherles.site/api/putAdm/1",
+        url: "https://rutherles.site/api/adm",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -72,7 +90,7 @@ export function useAposta(cart) {
         .request(options3)
         .then(function (response) {
           let carteira = response.data;
-          carteira.forEach((element) => {
+            carteira.forEach((element) => {
             setSaldoAdm(element.banca);
             setSGanhos(element.ganhos);
             setSPerdas(element.perdas);
@@ -80,8 +98,47 @@ export function useAposta(cart) {
           });
         })
         .catch(function (error) {
-          console.error(error);
+          //console.error(error);
         });
+
+
+
+
+        const options4 = {
+          method: "GET",
+          url: "https://api.mercadopago.com/v1/payments/search",
+          params: {
+            sort: "date_created",
+            criteria: "desc",
+            external_reference: deposito_idget,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer APP_USR-6354125960495975-102119-985a677c3232949c7cff973002cec4fb-720572053",
+          },
+        };
+  
+        axios.request(options4).then(function (response) {
+          setAprovado(response.data.results[0].status)
+
+      });
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+        
     }, 2000);
 
     return () => {
@@ -101,5 +158,7 @@ export function useAposta(cart) {
     nome,
     numeroPartida,
     carteira,
+    depositoStatus,
+    aprovado
   };
 }

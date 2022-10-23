@@ -13,15 +13,21 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB } from "react-native-paper";
+import { putUser,PutAdm } from "../hooks/PostFunctions";
+
+import { useAposta , } from "../hooks/useAposta";
 
 export default function Deposito({ route, navigation }) {
   const [token, setToken] = useState();
-  const [carteira, setCarteira] = useState();
   const [visible, setVisible] = useState(false);
   const [deposito, setDeposito] = useState();
 
+  const [time, setTime] = useState();
+
+  const { depositoStatus, deposito_idget , aprovado ,saldoadm, carteira } = useAposta();
+
   const {
-    deposito_id,
+   
     valor,
     user_id,
     status,
@@ -33,31 +39,40 @@ export default function Deposito({ route, navigation }) {
     estado,
     cpf,
     email,
+    deposito_id
   } = route.params;
 
-  useEffect(() => {
-    const options2 = {
-      method: "POST",
-      url: "https://rutherles.site/api/deposito",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization:
-          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-      },
-      data: { user_id: user_id },
-    };
 
-    axios
-      .request(options2)
-      .then(function (response) {
-        console.log(response);
-        setDeposito(response.data.deposito);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  }, []);
+
+
+  useEffect(() => {
+    
+    putUser(user_id,deposito_id,parseInt(carteira) + parseInt(valor),valor,"pendente" )
+
+
+    console.warn(carteira)
+    //console.warn(depositoStatus)
+
+
+
+        if (
+          aprovado == "approved" &&
+          depositoStatus == "pendente"
+        ) {
+          putUser(user_id,deposito_id, parseInt(carteira) + parseInt(valor) ,parseInt(valor),"aprovado" )
+          PutAdm(parseInt(saldoadm) + parseInt(valor))
+          navigation.navigate("Wallet")}
+
+    
+
+
+  
+  }, [aprovado]);
+
+
+  
+
+
 
   function saldo() {
     const options = {
@@ -73,15 +88,15 @@ export default function Deposito({ route, navigation }) {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        //console.log(response.data);
         navigation.navigate("Wallet", {
           bilhetes: deposito,
           cart: response.data[0].carteira,
         });
-        console.log(response);
+        //console.log(response);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   }
 

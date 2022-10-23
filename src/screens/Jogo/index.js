@@ -9,18 +9,14 @@ import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
 import {ApostarApi} from "../hooks/Aposta";
+import { PostJogada ,PutAdm} from "../hooks/PostFunctions";
 
-//===*//====
-//>>>>>>> Stashed changes
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 import { Audio } from "expo-av";
 
-//<<<<<<< Updated upstream
 
-//=======
-//>>>>>>> Stashed changes
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
@@ -60,8 +56,9 @@ export default function Index({ navigation }) {
   const [aposta, setAposta] = useState(null);
   const [array_valor_apostado, setArray_valor_apostado] = useState();
   const iconCancel = require("../../../assets/icons/no.png");
-  const { loading, nome, status, numeroPartida, carteira } = useAposta();
+  const { loading, nome, status, numeroPartida, carteira, perdas,ganhos,apostasadm, saldoadm} = useAposta();
   const { token, loading2 } = useProfile();
+  
   let dadosEscolhidos = "";
   let valorApostado = "";
   let resultadoJogo = "";
@@ -94,40 +91,7 @@ export default function Index({ navigation }) {
 
   //console.warn(token)
 
-  function ApostarApi(valorapostadoT,nome,email,jogada,id) {
-
-    var data = JSON.stringify({
-        "usuario": nome,
-        "user_id":id,
-        "dado1": jogada,
-        "valor":valorapostadoT,
-        "jogada" : jogada,
-        "email" : email
-
-
-                             
-      
-      });
-      
-      var config = {
-        method: 'post',
-        url: 'https://rutherles.site/api/jogada',
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
-      
-      axios(config)
-      .then(function (response) {
-        console.warn(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      
-  
-}
+ 
 
 
 
@@ -304,17 +268,31 @@ export default function Index({ navigation }) {
   }
 
   function jogarD() {
+    let totais = array_valor_apostado.reduce(
+      (total, numero) => total + numero,
+      
+    );
+
+    console.warn(totais)
+
+
     if (carteira < 2) {
       setIsOpen(true);
     } else {
       if (select.length < 1) {
         alert("Você precisa selecionar pelo menos um dado");
-      } else {
+      } else if (carteira < totais){
         
-        let totais = array_valor_apostado.reduce(
-          (total, numero) => total + numero,
-          
-        );
+        alert("Saldo insuficiente para essa aposta");
+
+
+      }
+      
+      
+      
+      else {
+        
+       
         
         let dadosApostados =  select.map(item => item.id)
         
@@ -350,29 +328,22 @@ export default function Index({ navigation }) {
 
           
 
-console.warn(totais)
+//console.warn(totais)
 
   let email = token.email
 let valorapostadoT = totais
        setAposta(dados);
        postWallet(-totais, carteira, true);
-       ApostarApi(valorapostadoT,token.nome,email,dadosE,token.id)
 
-        //console.warn(dados)
+       PostJogada(token.nome,token.id,dadosE,email,valorapostadoT)
+
+        //console.warn(token.nome)
       }
     }
   }
 
 
-  if(resultado){
 
-       // console.info(resultado.id)
-
-       //console.warn(aposta_id)
-    //console.warn()
-
-
-  }
  
 
 
@@ -382,7 +353,11 @@ let valorapostadoT = totais
    
     
 
+
+
     postWallet(valor, carteira);
+    PutAdm(parseInt(saldoadm) - parseInt(valor) , parseInt(ganhos)  , parseInt(perdas) + parseInt(valor)  , parseInt(apostasadm)  + 1)
+
     setTimeout(() => {
       setAposta(null);
       setSelect([]);
@@ -399,6 +374,8 @@ let valorapostadoT = totais
     //playSound2();
 
     postWallet(-valorApostado, carteira);
+    PutAdm( parseInt(saldoadm) + parseInt(valorApostado) , parseInt(ganhos) + parseInt(valorApostado) , parseInt(perdas) , parseInt(apostasadm)  + 1)
+
     setTimeout(() => {
       setAposta(null);
       setSelect([]);
