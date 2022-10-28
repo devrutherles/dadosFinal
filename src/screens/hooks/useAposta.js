@@ -4,6 +4,8 @@ import { useProfile } from "./useProfile";
 
 import { useNavigation } from "@react-navigation/native";
 import { putUser } from "./PostFunctions";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -20,7 +22,17 @@ export function useAposta(cart) {
   const [depositoStatus, setDepositoStatus] = useState();
   const [valor_deposito, setValor_deposito] = useState();
   const [aprovado, setAprovado] = useState();
+  const [jogadaSelect,setJogadaSelect]= useState([]);
+  const [getselect, setGetselect] = useState([]);
+  const [getaposta, setGetaposta] = useState(null);
+  const [url, setUrl] = useState();
+  const [geturl, seGtUrl] = useState(null);
 
+
+
+
+
+  
 
 
   const navigation = useNavigation;
@@ -32,6 +44,29 @@ export function useAposta(cart) {
   let id = loading2 ? token.id : 1;
 
   useEffect(() => {
+
+
+    const getSelect = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@select')
+        return jsonValue != null ? setGetselect(JSON.parse(jsonValue))  : null;
+      } catch(e) {
+        // error reading value
+      }
+    }
+    
+    const getApostas = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@apostas')
+        return jsonValue != null ? setGetaposta(JSON.parse(jsonValue))  : null;
+      } catch(e) {
+       console.error(e)
+      }
+    }
+
+
+
+
     const timeout = setTimeout(() => {
       const options = {
         method: "GET",
@@ -42,11 +77,9 @@ export function useAposta(cart) {
       axios
         .request(options)
         .then(function (response) {
-          //console.log(response.data);
           setNome(response.data);
         })
         .catch(function (error) {
-          //console.error(error);
         });
 
       const options2 = {
@@ -72,8 +105,27 @@ export function useAposta(cart) {
           });
         })
         .catch(function (error) {
-          console.error(error);
         });
+
+
+      
+
+        const getData = async () => {
+          try {
+            const jsonValue = await AsyncStorage.getItem('@jogadaSelect')
+            return setJogadaSelect(JSON.parse(jsonValue)) ;
+            
+          } catch(e) {
+            // error reading value
+          }
+        }
+
+
+
+        getData();
+
+
+
 
       const options3 = {
         method: "GET",
@@ -98,11 +150,10 @@ export function useAposta(cart) {
           });
         })
         .catch(function (error) {
-          //console.error(error);
         });
 
 
-
+/**
 
         const options4 = {
           method: "GET",
@@ -120,18 +171,43 @@ export function useAposta(cart) {
         };
   
         axios.request(options4).then(function (response) {
-          setAprovado(response.data.results[0].status)
-
-      });
+          setAprovado(response.data.results[0].status) });
 
 
-       
+        */
 
 
+     
+      getApostas()
 
+      getSelect()
 
+      const options5 = {
+        method: "GET",
+        url: "https://rutherles.site/api/url",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization:
+            "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+        },
+      };
+  
+      axios
+        .request(options5)
+        .then(function (response) {
+          setUrl(response.data);
+  
+          response.data.forEach((element) => {
+            setUrl(element.url);
+            if(url =! element.url ){
+              seGtUrl(element.url)
 
-
+            }
+          });
+        })
+        .catch(function (error) {
+        });
 
 
 
@@ -142,7 +218,6 @@ export function useAposta(cart) {
     }, 2000);
 
     return () => {
-      // clears timeout before running the new effect
       clearTimeout(timeout);
     };
   }, [nome]);
@@ -154,11 +229,16 @@ export function useAposta(cart) {
     perdas,
     ganhos,
     apostasadm,
+    jogadaSelect,
     status,
+    url,
     nome,
+    getselect,
+    geturl,
     numeroPartida,
     carteira,
     depositoStatus,
-    aprovado
+    aprovado,
+    getaposta
   };
 }

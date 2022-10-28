@@ -50,8 +50,8 @@ export default function Deposito({ route, navigation }) {
     putUser(user_id,deposito_id,parseInt(carteira) + parseInt(valor),valor,"pendente" )
 
 
-    console.warn(carteira)
-    //console.warn(depositoStatus)
+    //console.warn(carteira)
+    ////console.warn(depositoStatus)
 
 
 

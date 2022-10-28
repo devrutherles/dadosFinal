@@ -71,10 +71,10 @@ export default function Index({ navigation }) {
       ];
     }
 
-    //console.warn(resultado.id);
+    ////console.warn(resultado.id);
   }
 
-  //console.warn(aposta);
+  ////console.warn(aposta);
 
   if (aposta) {
     // console.log(aposta);

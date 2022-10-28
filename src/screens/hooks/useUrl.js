@@ -25,15 +25,12 @@ export function useUrl() {
       .request(options4)
       .then(function (response) {
         setUrl(response.data);
-        //console.warn(response.data);
 
         response.data.forEach((element) => {
-          //console.warn(element.url);
           setUrl(element.url);
         });
       })
       .catch(function (error) {
-        console.error(error);
       });
   }, []);
 

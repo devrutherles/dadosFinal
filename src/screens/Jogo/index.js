@@ -8,21 +8,21 @@ import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
-import {ApostarApi} from "../hooks/Aposta";
-import { PostJogada ,PutAdm} from "../hooks/PostFunctions";
+import { ApostarApi } from "../hooks/Aposta";
+import { PostJogada, PutAdm } from "../hooks/PostFunctions";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUrl } from "../hooks/useUrl";
 
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 import { Audio } from "expo-av";
 
-
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
 import Playes from "./components/Header1";
 import { useProfile } from "../hooks/useProfile";
-import { useUrl } from "../hooks/useUrl";
 
 export default function Index({ navigation }) {
   const carregamento = require("../../../assets/img/dice.gif");
@@ -34,14 +34,14 @@ export default function Index({ navigation }) {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
-  const { url } = useUrl();
 
-  const [select, setSelect] = useState([]);
+
+
   const [verificaAposta, setVerificaAposta] = useState(true);
   const [ids, setIds] = useState();
 
   const [alertaCreditos, setAlertaCreditos] = useState(null);
-
+  let total = ""
   const [sala, setSala] = useState({
     sala: 1,
     valor1: 2,
@@ -53,12 +53,24 @@ export default function Index({ navigation }) {
   });
 
   let numeros = [];
-  const [aposta, setAposta] = useState(null);
   const [array_valor_apostado, setArray_valor_apostado] = useState();
   const iconCancel = require("../../../assets/icons/no.png");
-  const { loading, nome, status, numeroPartida, carteira, perdas,ganhos,apostasadm, saldoadm} = useAposta();
+  const {
+    loading,
+    nome,
+    status,
+    numeroPartida,
+    carteira,
+    perdas,
+    ganhos,
+    apostasadm,
+    saldoadm,
+    getselect,
+    getaposta,
+    geturl
+  } = useAposta();
   const { token, loading2 } = useProfile();
-  
+
   let dadosEscolhidos = "";
   let valorApostado = "";
   let resultadoJogo = "";
@@ -67,33 +79,44 @@ export default function Index({ navigation }) {
   let finalizada = null;
   let resultado = "";
   let aposta_id = "";
-
   const salas = [
     { sala: 1, valor1: 2, valor2: 5, valor3: 10, avatar: "tg" },
     { sala: 2, valor1: 15, valor2: 20, valor3: 25, avatar: "iuj" },
     { sala: 3, valor1: 30, valor2: 40, valor3: 60, avatar: "oik" },
   ];
+  const { url } = useUrl();
+
+
+    const storeSelect = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@select', jsonValue)
+    } catch (e) {
+      // saving error
+    }
+  }
+
+  const storeAposta = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@apostas', jsonValue)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   function dado(data) {
     setIds(data.id);
     setVisible(true);
   }
 
+  console.log(getselect)
+  console.log(getaposta)
+
+
   if (nome.length > 0) {
     iniciada = nome.find((item) => item.status == "iniciada");
-
-   
-
-   
-
-     
   }
-
-  //console.warn(token)
-
- 
-
-
 
   const postWallet = (valor, wallet, verifica) => {
     let id = token ? token.id : 1;
@@ -115,19 +138,16 @@ export default function Index({ navigation }) {
       .then(function (response) {
         verifica ? setVerificaAposta(true) : setVerificaAposta(false);
       })
-      .catch(function (error) {
-        //console.error(error);
-      });
+      .catch(function (error) {});
   };
 
-  if (aposta) {
-    ///console.warn(aposta.id);
-    dadosEscolhidos = aposta.map((item) => item.nome);
+  if (getaposta) {
+    dadosEscolhidos = getaposta.map((item) => item.nome);
     resultadoJogo = numeros.map((item) => item.nome);
-    valorApostado = aposta.map((item) => item.valor);
-    imagemDaosEscolhidos = aposta.find((item) => item.img);
+    valorApostado = getaposta.map((item) => item.valor);
+    imagemDaosEscolhidos = getaposta.find((item) => item.img);
 
-    aposta.forEach((element) => {
+    getaposta.forEach((element) => {
       aposta_id = element.jogo_id;
     });
 
@@ -142,26 +162,23 @@ export default function Index({ navigation }) {
         { id: resultado.resultd3 },
       ];
     }
-
-    ///console.warn(aposta_id);
   }
 
   function selecionar(data) {
-    let dado = select.find((dado) => dado.id === aposta_id);
-    //console.log(dado);
+    let dado = getselect.find((dado) => dado.id === aposta_id);
     if (!dado) {
-      select.push(data);
+      getselect.push(data);
     }
-    let dadosValor = select.map((item) => item.valor);
+    let dadosValor = getselect.map((item) => item.valor);
     setArray_valor_apostado(dadosValor);
   }
 
   function cancel(data) {
-    for (let index = 0; index < select.length; index++) {
-      const element = select[index].id;
+    for (let index = 0; index < getselect.length; index++) {
+      const element = getselect[index].id;
 
       if (element == data.id) {
-        select.splice(index, 1);
+        getselect.splice(index, 1);
       }
     }
   }
@@ -182,56 +199,51 @@ export default function Index({ navigation }) {
       .request(options4)
       .then(function (response) {
         setUrl(response.data);
-        /////console.warn(response.data);
 
         response.data.forEach((element) => {
-          /////console.warn(element.url);
           setUrl(element.url);
         });
       })
-      .catch(function (error) {
-        console.error(error);
-      });
+      .catch(function (error) {});
   }
 
   async function playSound() {
-    /////console.warn("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(
       require("../../../assets/dado.wav")
     );
 
     setSound(sound);
 
-    /////console.warn("Playing Sound");
+    ///////console.warn("Playing Sound");
     await sound.playAsync();
   }
 
   async function playSound1() {
-    /////console.warn("Loading Sound1");
+    ///////console.warn("Loading Sound1");
     const { sound1 } = await Audio.Sound.createAsync(
       require("../../../assets/win.mp3")
     );
 
     setSound1(sound1);
 
-    /////console.warn("Playing Sound1");
+    ///////console.warn("Playing Sound1");
     await sound1.playAsync();
   }
 
   async function playSound2() {
-    /////console.warn("Loading Sound2");
+    ///////console.warn("Loading Sound2");
     const { sound2 } = await Audio.Sound.createAsync(
       require("../../../assets/lose.wav")
     );
 
     setSound2(sound2);
 
-    /////console.warn("Playing Sound2");
+    ///////console.warn("Playing Sound2");
     await sound2.playAsync();
   }
 
   function apostas() {
-    const obj2 = select;
+    const obj2 = getselect;
     const obj1 = numeros;
     const result = obj2.map((obj) => ({
       ...obj,
@@ -251,14 +263,17 @@ export default function Index({ navigation }) {
 
     var total = selecionados.reduce(getTotal, 0);
     function getTotal(total, item) {
-      return item.valor * item.mult * countObject[item.id] ;
+      console.error(countObject[item.id]);
+      return item.valor * item.mult * countObject[item.id] + total;
     }
 
     valor = total;
-    //console.info(valor);
+    console.error("valorrr");
+
+    console.info(valor);
   }
 
-  if (aposta) {
+  if (getaposta) {
     apostas();
   }
 
@@ -268,51 +283,25 @@ export default function Index({ navigation }) {
   }
 
   function jogarD() {
-    let totais = array_valor_apostado.reduce(
-      (total, numero) => total + numero,
-      
-    );
-
-    console.warn(totais)
-
+    let totais = array_valor_apostado.reduce((total, numero) => total + numero);
 
     if (carteira < 2) {
       setIsOpen(true);
     } else {
-      if (select.length < 1) {
+      if (getselect.length < 1) {
         alert("Você precisa selecionar pelo menos um dado");
-      } else if (carteira < totais){
-        
+      } else if (carteira < totais) {
         alert("Saldo insuficiente para essa aposta");
+      } else {
+        let dadosApostados = getselect.map((item) => item.id);
 
-
-      }
-      
-      
-      
-      else {
-        
-       
-        
-        let dadosApostados =  select.map(item => item.id)
-        
         let da = {
+          jogada: dadosApostados,
+        };
 
-          "jogada" : dadosApostados
+        let dadosE = JSON.stringify(da);
 
-
-        }
-
-
-        let dadosE = JSON.stringify(da)
-        
-        
-
-        
-
-       
-        let dados = select.map((item) => {
-           
+        let dados = getselect.map((item) => {
           let valores = {
             jogo_id: iniciada.id,
             nome: item.nome,
@@ -324,43 +313,42 @@ export default function Index({ navigation }) {
 
           return valores;
         });
+        
+        storeAposta(dados)
 
 
-          
+        let email = token.email;
+        let valorapostadoT = totais;
+        postWallet(-totais, carteira, true);
+        console.error(getaposta)
 
-//console.warn(totais)
 
-  let email = token.email
-let valorapostadoT = totais
-       setAposta(dados);
-       postWallet(-totais, carteira, true);
-
-       PostJogada(token.nome,token.id,dadosE,email,valorapostadoT)
-
-        //console.warn(token.nome)
+        PostJogada(token.nome, token.id,  email, valorapostadoT);
       }
     }
   }
 
-
-
- 
-
-
-
-
   if (resultado && valor > 0 && aposta_id == resultado.id && verificaAposta) {
-   
-    
-
-
-
     postWallet(valor, carteira);
-    PutAdm(parseInt(saldoadm) - parseInt(valor) , parseInt(ganhos)  , parseInt(perdas) + parseInt(valor)  , parseInt(apostasadm)  + 1)
+    PutAdm(
+      parseInt(saldoadm) - parseInt(valor),
+      parseInt(ganhos),
+      parseInt(perdas) + parseInt(valor),
+      parseInt(apostasadm) + 1
+    );
 
     setTimeout(() => {
-      setAposta(null);
-      setSelect([]);
+      storeAposta(null);
+
+
+     
+
+      storeSelect([])
+
+
+
+
+
       setVerificaAposta(true);
     }, 10000);
   }
@@ -368,17 +356,22 @@ let valorapostadoT = totais
   if (resultado && valor == 0 && aposta_id == resultado.id && verificaAposta) {
     let valorApostado = "";
 
-    aposta.forEach((element) => {
+   getaposta.forEach((element) => {
       valorApostado = element.valor;
     });
     //playSound2();
 
     postWallet(-valorApostado, carteira);
-    PutAdm( parseInt(saldoadm) + parseInt(valorApostado) , parseInt(ganhos) + parseInt(valorApostado) , parseInt(perdas) , parseInt(apostasadm)  + 1)
+    PutAdm(
+      parseInt(saldoadm) + parseInt(valorApostado),
+      parseInt(ganhos) + parseInt(valorApostado),
+      parseInt(perdas),
+      parseInt(apostasadm) + 1
+    );
 
     setTimeout(() => {
-      setAposta(null);
-      setSelect([]);
+      storeAposta(null);
+      storeSelect([])
       setVerificaAposta(true);
     }, 10000);
   }
@@ -547,11 +540,11 @@ let valorapostadoT = totais
               }}
             >
               <YoutubePlayer
-                height={aposta ? 300 : 170}
+                height={getaposta ? 300 : 170}
                 play={false}
-                videoId={url ? url : ""}
+                videoId={geturl ? geturl : url}
               />
-              {aposta ? (
+              {getaposta ? (
                 <View
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
@@ -563,7 +556,7 @@ let valorapostadoT = totais
               )}
 
               <Center>
-                {iniciada && !aposta ? (
+                {iniciada && !getaposta ? (
                   <ScrollView key={dados.key} horizontal>
                     <FlatGrid
                       verti
@@ -577,7 +570,7 @@ let valorapostadoT = totais
                           style={[
                             styles.itemContainer,
                             {
-                              backgroundColor: select.find(
+                              backgroundColor: getselect.find(
                                 (car) => car.id === item.id
                               )
                                 ? "#fee672"
@@ -594,7 +587,7 @@ let valorapostadoT = totais
                               source={item.imagem}
                             />
 
-                            {select.map((jogo) =>
+                            {getselect.map((jogo) =>
                               jogo.id == item.id ? (
                                 <View
                                   style={{
@@ -626,7 +619,7 @@ let valorapostadoT = totais
                                 {
                                   label: "Cancelar Aposta",
                                   iconSource: iconCancel,
-                                  onPress: () => setSelect([]),
+                                  onPress: () => storeSelect([]),
                                 },
 
                                 {
@@ -685,11 +678,13 @@ let valorapostadoT = totais
                   <></>
                 )}
               </Center>
-              {iniciada && !aposta ? (
+              {iniciada && !getaposta ? (
                 <View style={styles.button}>
                   <Button
                     size="lg"
                     onPress={jogarD}
+                    // onPress={apostas}
+
                     backgroundColor={"#a2d5ab"}
                     style={{ width: "90%", borderRadius: 7 }}
                     variant={"solid"}
@@ -745,7 +740,7 @@ let valorapostadoT = totais
                         style={[
                           styles.itemContainer,
                           {
-                            backgroundColor: select.find(
+                            backgroundColor: getselect.find(
                               (car) => car.id === item.id
                             )
                               ? "#fee672"
@@ -760,7 +755,7 @@ let valorapostadoT = totais
                             source={item.imagem}
                           />
 
-                          {select.map((jogo) =>
+                          {getselect.map((jogo) =>
                             jogo.id == item.id ? (
                               <View
                                 style={{
@@ -792,7 +787,7 @@ let valorapostadoT = totais
                               {
                                 label: "Cancelar Aposta",
                                 iconSource: iconCancel,
-                                onPress: () => setSelect([]),
+                                onPress: () => storeSelect([]),
                               },
 
                               {

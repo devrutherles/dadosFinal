@@ -2,13 +2,14 @@ import React from "react";
 import axios from "axios";
 
 
-export function PostJogada(usuario, user_id, jogada, email, valor) {
+export function PostJogada(usuario, user_id, jogada, email, valor,select) {
   var data = JSON.stringify({
     usuario: usuario,
     user_id: user_id,
     valor: valor,
     jogada: jogada,
     email: email,
+    select:select
   });
 
 
@@ -24,7 +25,7 @@ export function PostJogada(usuario, user_id, jogada, email, valor) {
 
   axios(config)
     .then(function (response) {
-      console.warn(JSON.stringify(response.data));
+      //console.warn(JSON.stringify(response.data));
     })
     .catch(function (error) {
       console.log(error);

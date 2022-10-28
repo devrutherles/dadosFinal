@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LoginApi } from "../src/screens/hooks/LoginApi";
 import { HStack, Spinner, Text } from "native-base";
 import { View } from "react-native";
+import Saques from "../src/screens/Wallet/components/Saques"
 
 import WalletScreen from "../src/screens/Wallet";
 
@@ -31,7 +32,7 @@ import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
 import Som from "./screens/Jogo/components/som";
 import Retirada from "./screens/Wallet/components/retirada";
-import Saques from "./screens/saques/Saques";
+import SaquesConta from "./screens/saques/Saques";
 import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
 
@@ -129,8 +130,8 @@ export function Tabs() {
 }
 export default function App() {
   const { token, loading } = LoginApi();
-  console.warn(token);
-  console.warn(loading);
+  //console.warn(token);
+  //console.warn(loading);
 
   return (
     <NativeBaseProvider>
@@ -200,6 +201,15 @@ export default function App() {
               options={{
                 headerShown: false,
                 title: "Perfil",
+              }}
+            />
+
+               <Stack.Screen
+              name="Saque"
+              component={SaquesConta}
+              options={{
+                headerShown: false,
+                title: "Saque",
               }}
             />
             <Stack.Screen

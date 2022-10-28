@@ -14,7 +14,7 @@ export default function Alerta(props) {
   let dadosV = "";
   const [imagem, setImagem] = React.useState();
 
-  //console.warn(array.imgd1);
+  ////console.warn(array.imgd1);
 
   let valoS = JSON.stringify(valor);
 
