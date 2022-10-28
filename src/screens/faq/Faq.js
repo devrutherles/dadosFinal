@@ -9,41 +9,20 @@ import {
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
-import { getAbsoluteChildren, HStack, Spinner } from "native-base";
 
-export default function Chat({ navigation }) {
-  const jsCode = `var content = document.querySelector(".cc-15lb")
-    var control = document.querySelector(".component-control")
-
-     function res(){ 
-    
-      
-      content.style.display ='none !important'
-      breadcrumb.style.display ='none'
-
-    
-    
-    
-    
-    }
-     res();
-    
-    
-    `;
-
+export default function Faq({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.title1}>
         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
           <AntDesign style={styles.iconRight} name="left" />
         </TouchableOpacity>
-        <Text style={styles.title2}>Ajuda</Text>
+        <Text style={styles.title2}>Faq</Text>
       </View>
       <WebView
-        style={{ position: getAbsoluteChildren, top: 0 }}
-        injectedJavaScript={jsCode}
+        javaScriptEnabled="true"
         source={{
-          uri: "https://orvalhosj.com/caipira/pages/chat.php",
+          uri: "https://orvalhosj.com/caipira/pages/faq.html",
         }}
       />
     </SafeAreaView>

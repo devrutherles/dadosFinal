@@ -31,15 +31,21 @@ import Pix from "../src/screens/Pix/Pix";
 import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
 import Som from "./screens/Jogo/components/som";
+<<<<<<< Updated upstream
 import Retirada from "./screens/Wallet/components/retirada";
 import SaquesConta from "./screens/saques/Saques";
+=======
+import Retirada from "./screens/Wallet/components/Saque";
+import Saques from "./screens/saques/Saques";
+>>>>>>> Stashed changes
 import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
+import Faq from "./screens/faq/Faq";
 
 const icons = {
   Home: {
     lib: MaterialIcons,
-    name: "chat-bubble-outline",
+    name: "attach-money",
   },
   Wallet: {
     lib: Ionicons,
@@ -87,7 +93,7 @@ export function Tabs() {
     >
       <Tab.Screen
         name="Home"
-        component={Chat}
+        component={Retirada}
         options={{
           title: "",
           headerTransparent: "true",
@@ -141,6 +147,23 @@ export default function App() {
             <Stack.Screen
               name="tab"
               component={Tabs}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+
+            <Stack.Screen
+              name="Chat"
+              component={Chat}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Faq"
+              component={Faq}
               options={{
                 headerShown: false,
                 title: "Perfil",
