@@ -59,10 +59,7 @@ export default function Config() {
       <Divider style={styles.divider} />
 
       <View style={styles.rigth}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Chat")}
-          style={styles.content}
-        >
+        <TouchableOpacity style={styles.content}>
           <Ionicons style={styles.icon} name="md-chatbubble-outline" />
           <Text style={styles.textContent}>Ajuda</Text>
         </TouchableOpacity>
@@ -71,10 +68,7 @@ export default function Config() {
       <Divider style={styles.divider} />
 
       <View style={styles.rigth}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Faq")}
-          style={styles.content}
-        >
+        <TouchableOpacity style={styles.content}>
           <Feather style={styles.icon} name="help-circle" />
           <Text style={styles.textContent}>FAQ</Text>
         </TouchableOpacity>

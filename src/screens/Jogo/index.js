@@ -10,7 +10,7 @@ import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ApostarApi } from "../hooks/Aposta";
 import { PostJogada, PutAdm } from "../hooks/PostFunctions";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUrl } from "../hooks/useUrl";
 
 import axios from "axios";
@@ -24,7 +24,7 @@ import Cab from "./components/Header";
 import Playes from "./components/Header1";
 import { useProfile } from "../hooks/useProfile";
 
-export default function Index({ navigation, route }) {
+export default function Index({ navigation }) {
   const carregamento = require("../../../assets/img/dice.gif");
   let valor = 0;
   const [visible, setVisible] = useState(false);
@@ -35,17 +35,14 @@ export default function Index({ navigation, route }) {
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
 
-<<<<<<< Updated upstream
-=======
 
   const [getselect, setGetselect] = useState([]);
   const [getaposta, setGetaposta] = useState(null);
->>>>>>> Stashed changes
   const [verificaAposta, setVerificaAposta] = useState(true);
   const [ids, setIds] = useState();
 
   const [alertaCreditos, setAlertaCreditos] = useState(null);
-  let total = "";
+  let total = ""
   const [sala, setSala] = useState({
     sala: 1,
     valor1: 2,
@@ -69,13 +66,7 @@ export default function Index({ navigation, route }) {
     ganhos,
     apostasadm,
     saldoadm,
-<<<<<<< Updated upstream
-    getselect,
-    getaposta,
-    geturl,
-=======
     geturl
->>>>>>> Stashed changes
   } = useAposta();
   const { token, loading2 } = useProfile();
 
@@ -94,12 +85,6 @@ export default function Index({ navigation, route }) {
   ];
   const { url } = useUrl();
 
-<<<<<<< Updated upstream
-  const storeSelect = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@select", jsonValue);
-=======
 
   const getSelect = async () => {
     try {
@@ -127,28 +112,19 @@ export default function Index({ navigation, route }) {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('@select', jsonValue)
       getSelect()
->>>>>>> Stashed changes
     } catch (e) {
       // saving error
     }
-  };
+  }
 
   const storeAposta = async (value) => {
     try {
-<<<<<<< Updated upstream
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@apostas", jsonValue);
-=======
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('@apostas', jsonValue)
       getApostas()
->>>>>>> Stashed changes
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
-<<<<<<< Updated upstream
-  };
-=======
   }
   
 
@@ -164,14 +140,9 @@ useEffect(() => {
 
 
 
->>>>>>> Stashed changes
 
   function dado(data) {
 
-<<<<<<< Updated upstream
-  console.log(getselect);
-  console.log(getaposta);
-=======
 
     if(getselect.length > 0){
      
@@ -216,7 +187,6 @@ useEffect(() => {
 
     //console.error(data.id)
    // console.error(ids)
->>>>>>> Stashed changes
 
 
     
@@ -369,20 +339,15 @@ useEffect(() => {
 
           return valores;
         });
+        
+        storeAposta(dados)
 
-        storeAposta(dados);
 
         let email = token.email;
         let valorapostadoT = totais;
         postWallet(-totais, carteira, true);
-<<<<<<< Updated upstream
-        console.error(getaposta);
-
-        PostJogada(token.nome, token.id, email, valorapostadoT);
-=======
         console.error(getaposta)
         PostJogada(token.nome, token.id, dadosE ,email, valorapostadoT);
->>>>>>> Stashed changes
       }
     }
   }
@@ -399,7 +364,14 @@ useEffect(() => {
     setTimeout(() => {
       storeAposta(null);
 
-      storeSelect([]);
+
+     
+
+      storeSelect([])
+
+
+
+
 
       setVerificaAposta(true);
     }, 10000);
@@ -408,7 +380,7 @@ useEffect(() => {
   if (resultado && valor == 0 && aposta_id == resultado.id && verificaAposta) {
     let valorApostado = "";
 
-    getaposta.forEach((element) => {
+   getaposta.forEach((element) => {
       valorApostado = element.valor;
     });
 
@@ -423,7 +395,7 @@ useEffect(() => {
 
     setTimeout(() => {
       storeAposta(null);
-      storeSelect([]);
+      storeSelect([])
       setVerificaAposta(true);
 
     }, 10000);
