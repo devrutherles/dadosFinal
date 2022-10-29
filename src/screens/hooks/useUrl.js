@@ -10,7 +10,7 @@ export function useUrl() {
   let id = loading2 ? token.id : 1;
 
   useEffect(() => {
-    const options4 = {
+    const options5 = {
       method: "GET",
       url: "https://rutherles.site/api/url",
       headers: {
@@ -22,7 +22,7 @@ export function useUrl() {
     };
 
     axios
-      .request(options4)
+      .request(options5)
       .then(function (response) {
         setUrl(response.data);
 

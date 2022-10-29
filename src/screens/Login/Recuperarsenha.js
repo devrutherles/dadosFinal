@@ -21,7 +21,7 @@ export function Recuperar() {
     },
   });
 
-  console.log();
+  ///console.log()();
   return (
     <KeyboardAvoidingView
       style={styles.background}

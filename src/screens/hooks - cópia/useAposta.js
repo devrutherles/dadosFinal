@@ -25,11 +25,11 @@ export function useAposta(cart) {
       axios
         .request(options)
         .then(function (response) {
-          //console.log(response.data);
+          /////console.log()(response.data);
           setNome(response.data);
         })
         .catch(function (error) {
-          //console.error(error);
+          ////console.error(error);
         });
 
       const options2 = {
@@ -52,7 +52,7 @@ export function useAposta(cart) {
           });
         })
         .catch(function (error) {
-          console.error(error);
+          //console.error(error);
         });
 
       const options3 = {
@@ -70,10 +70,10 @@ export function useAposta(cart) {
       axios
         .request(options)
         .then(function (response) {
-          console.log(response.data);
+          ///console.log()(response.data);
         })
         .catch(function (error) {
-          console.error(error);
+          //console.error(error);
         });
     }, 2000);
 

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import {
   Card,
@@ -41,6 +42,38 @@ export default function Saques() {
       status: "Concluído",
     },
   ];
+
+
+function postSaque(){
+var data = JSON.stringify({
+  "usuario": "morenacaipira01@gmail.com",
+  "user_id": "Moren@2022",
+  "cpf": "cpf",
+  "pix": "pix",
+  "banco": "",
+  "op": "op",
+  "conta": "conta",
+  "digito": "digito",
+  "valor": "valor"
+});
+
+var config = {
+  method: 'post',
+  url: 'https://rutherles.site/api/pedido',
+  headers: { 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+  }
 
   return (
     <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>

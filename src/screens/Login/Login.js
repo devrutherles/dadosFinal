@@ -75,7 +75,7 @@ export default function Login({ route }) {
         navigation.navigate("tab");
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
         setErro("Email ou senha incorretos");
       });
   }

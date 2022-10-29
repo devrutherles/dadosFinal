@@ -37,7 +37,7 @@ export default function Pix() {
     let users = "";
     users = JSON.parse(user);
 
-    let deposito_id = Math.floor(Math.random() * 65536);
+    let deposito_id = Math.floor(Math.random() * 65536) + users.id ;
 
     const options = {
       method: "POST",
@@ -59,7 +59,7 @@ export default function Pix() {
       .request(options)
       .then(function (response) {
         setDeposito_id_tabela(response.data.user.id);
-        console.log(response.data);
+        ///console.log()(response.data);
 
         if (!valor && !text) {
           alert("Por favor escolha um valor!");
@@ -80,7 +80,7 @@ export default function Pix() {
         }
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
         setErro("Email ou senha incorretos");
       });
   }

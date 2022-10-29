@@ -77,7 +77,7 @@ export default function Index({ navigation }) {
   ////console.warn(aposta);
 
   if (aposta) {
-    // console.log(aposta);
+    // ///console.log()(aposta);
     dadosEscolhidos = aposta.map((item) => item.nome);
     resultadoJogo = numeros.map((item) => item.nome);
     valorApostado = aposta.map((item) => item.valor);
@@ -90,7 +90,7 @@ export default function Index({ navigation }) {
 
   function selecionar(data) {
     let dado = select.find((dado) => dado.id === data.id);
-    //console.log(dado);
+    /////console.log()(dado);
     if (!dado) {
       select.push(data);
     }
@@ -167,7 +167,7 @@ export default function Index({ navigation }) {
     });
 
     setAposta(dados);
-    // console.log(aposta);
+    // ///console.log()(aposta);
   }
 
   return (

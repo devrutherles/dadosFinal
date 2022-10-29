@@ -13,9 +13,9 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB } from "react-native-paper";
-import { putUser,PutAdm } from "../hooks/PostFunctions";
+import { putUser, PutAdm } from "../hooks/PostFunctions";
 
-import { useAposta , } from "../hooks/useAposta";
+import { useAposta } from "../hooks/useAposta";
 
 export default function Deposito({ route, navigation }) {
   const [token, setToken] = useState();
@@ -24,10 +24,10 @@ export default function Deposito({ route, navigation }) {
 
   const [time, setTime] = useState();
 
-  const { depositoStatus, deposito_idget , aprovado ,saldoadm, carteira } = useAposta();
+  const { depositoStatus, deposito_idget, aprovado, saldoadm, carteira } =
+    useAposta();
 
   const {
-   
     valor,
     user_id,
     status,
@@ -39,40 +39,27 @@ export default function Deposito({ route, navigation }) {
     estado,
     cpf,
     email,
-    deposito_id
+    deposito_id,
   } = route.params;
 
-
-
-
   useEffect(() => {
-    
-    putUser(user_id,deposito_id,parseInt(carteira) + parseInt(valor),valor,"pendente" )
+    putUser(user_id, deposito_id, parseInt(carteira), valor, "pendente");
 
+    console.warn(carteira);
+    //console.warn(depositoStatus)
 
-    //console.warn(carteira)
-    ////console.warn(depositoStatus)
-
-
-
-        if (
-          aprovado == "approved" &&
-          depositoStatus == "pendente"
-        ) {
-          putUser(user_id,deposito_id, parseInt(carteira) + parseInt(valor) ,parseInt(valor),"aprovado" )
-          PutAdm(parseInt(saldoadm) + parseInt(valor))
-          navigation.navigate("Wallet")}
-
-    
-
-
-  
+    if (aprovado == "approved" && depositoStatus == "pendente") {
+      putUser(
+        user_id,
+        deposito_id,
+        parseInt(carteira) + parseInt(valor),
+        parseInt(valor),
+        "aprovado"
+      );
+      PutAdm(parseInt(saldoadm) + parseInt(valor));
+      navigation.navigate("Wallet");
+    }
   }, [aprovado]);
-
-
-  
-
-
 
   function saldo() {
     const options = {
@@ -88,12 +75,12 @@ export default function Deposito({ route, navigation }) {
     axios
       .request(options)
       .then(function (response) {
-        //console.log(response.data);
+        /////console.log()(response.data);
         navigation.navigate("Wallet", {
           bilhetes: deposito,
           cart: response.data[0].carteira,
         });
-        //console.log(response);
+        /////console.log()(response);
       })
       .catch(function (error) {
         //console.error(error);

@@ -1,10 +1,10 @@
 import { Feather, AntDesign, Ionicons } from "@expo/vector-icons";
 import { React, useState, useEffect, useRef } from "react";
-import { StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, ScrollView, TouchableOpacity,Alert } from "react-native";
 import { View, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
 import { FlatGrid } from "react-native-super-grid";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
+import { Center, Spinner, Text, AlertDialog, Button  } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -35,6 +35,12 @@ export default function Index({ navigation, route }) {
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
 
+<<<<<<< Updated upstream
+=======
+
+  const [getselect, setGetselect] = useState([]);
+  const [getaposta, setGetaposta] = useState(null);
+>>>>>>> Stashed changes
   const [verificaAposta, setVerificaAposta] = useState(true);
   const [ids, setIds] = useState();
 
@@ -63,9 +69,13 @@ export default function Index({ navigation, route }) {
     ganhos,
     apostasadm,
     saldoadm,
+<<<<<<< Updated upstream
     getselect,
     getaposta,
     geturl,
+=======
+    geturl
+>>>>>>> Stashed changes
   } = useAposta();
   const { token, loading2 } = useProfile();
 
@@ -84,10 +94,40 @@ export default function Index({ navigation, route }) {
   ];
   const { url } = useUrl();
 
+<<<<<<< Updated upstream
   const storeSelect = async (value) => {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("@select", jsonValue);
+=======
+
+  const getSelect = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@select')
+      return jsonValue != null ? setGetselect(JSON.parse(jsonValue))  : null;
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+
+  
+  const getApostas = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@apostas')
+      return jsonValue != null ? setGetaposta(JSON.parse(jsonValue))  : null;
+    } catch(e) {
+     //console.error(e)
+    }
+  }
+
+
+    const storeSelect = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@select', jsonValue)
+      getSelect()
+>>>>>>> Stashed changes
     } catch (e) {
       // saving error
     }
@@ -95,21 +135,99 @@ export default function Index({ navigation, route }) {
 
   const storeAposta = async (value) => {
     try {
+<<<<<<< Updated upstream
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("@apostas", jsonValue);
+=======
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@apostas', jsonValue)
+      getApostas()
+>>>>>>> Stashed changes
     } catch (e) {
       console.error(e);
     }
+<<<<<<< Updated upstream
   };
+=======
+  }
+  
+
+useEffect(() => {
+  getSelect()
+  getApostas()
+
+  return () => {
+    
+  };
+}, []);
+
+
+
+
+>>>>>>> Stashed changes
 
   function dado(data) {
-    setIds(data.id);
-    setVisible(true);
-  }
 
+<<<<<<< Updated upstream
   console.log(getselect);
   console.log(getaposta);
+=======
 
+    if(getselect.length > 0){
+     
+      if(getselect.find(item => item.id == data.id)){
+
+        let teste = getselect.find(item => item.id == data.id)
+
+        let teste2 = getselect.filter(item => item != teste)
+       storeSelect(teste2)
+
+
+      
+
+
+
+      }else{
+        setIds(data.id);
+        setVisible(true);
+    
+      }
+     
+
+
+    }else{
+      setIds(data.id);
+      setVisible(true);
+  
+  
+    
+
+
+  
+
+
+   
+
+
+    
+
+
+
+
+    //console.error(data.id)
+   // console.error(ids)
+>>>>>>> Stashed changes
+
+
+    
+     
+  
+  }
+
+  //console.error(getselect)
+  //console.error(getaposta)
+
+  }
   if (nome.length > 0) {
     iniciada = nome.find((item) => item.status == "iniciada");
   }
@@ -179,65 +297,7 @@ export default function Index({ navigation, route }) {
     }
   }
 
-  function urls() {
-    const options4 = {
-      method: "GET",
-      url: "https://rutherles.site/api/url",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization:
-          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-      },
-    };
-
-    axios
-      .request(options4)
-      .then(function (response) {
-        setUrl(response.data);
-
-        response.data.forEach((element) => {
-          setUrl(element.url);
-        });
-      })
-      .catch(function (error) {});
-  }
-
-  async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../../../assets/dado.wav")
-    );
-
-    setSound(sound);
-
-    ///////console.warn("Playing Sound");
-    await sound.playAsync();
-  }
-
-  async function playSound1() {
-    ///////console.warn("Loading Sound1");
-    const { sound1 } = await Audio.Sound.createAsync(
-      require("../../../assets/win.mp3")
-    );
-
-    setSound1(sound1);
-
-    ///////console.warn("Playing Sound1");
-    await sound1.playAsync();
-  }
-
-  async function playSound2() {
-    ///////console.warn("Loading Sound2");
-    const { sound2 } = await Audio.Sound.createAsync(
-      require("../../../assets/lose.wav")
-    );
-
-    setSound2(sound2);
-
-    ///////console.warn("Playing Sound2");
-    await sound2.playAsync();
-  }
-
+  
   function apostas() {
     const obj2 = getselect;
     const obj1 = numeros;
@@ -315,9 +375,14 @@ export default function Index({ navigation, route }) {
         let email = token.email;
         let valorapostadoT = totais;
         postWallet(-totais, carteira, true);
+<<<<<<< Updated upstream
         console.error(getaposta);
 
         PostJogada(token.nome, token.id, email, valorapostadoT);
+=======
+        console.error(getaposta)
+        PostJogada(token.nome, token.id, dadosE ,email, valorapostadoT);
+>>>>>>> Stashed changes
       }
     }
   }
@@ -346,9 +411,9 @@ export default function Index({ navigation, route }) {
     getaposta.forEach((element) => {
       valorApostado = element.valor;
     });
-    //playSound2();
 
-    postWallet(-valorApostado, carteira);
+ 
+
     PutAdm(
       parseInt(saldoadm) + parseInt(valorApostado),
       parseInt(ganhos) + parseInt(valorApostado),
@@ -360,6 +425,7 @@ export default function Index({ navigation, route }) {
       storeAposta(null);
       storeSelect([]);
       setVerificaAposta(true);
+
     }, 10000);
   }
 
@@ -427,7 +493,7 @@ export default function Index({ navigation, route }) {
               color: "#a2d5ab",
             }}
           >
-            R$ {carteira ? parseInt(carteira).toFixed(2) : <></>}
+            R$ {carteira ? parseInt(carteira).toFixed(2) : <Spinner color="warning.500" />}
           </Text>
         </View>
 
@@ -528,7 +594,7 @@ export default function Index({ navigation, route }) {
             >
               <YoutubePlayer
                 height={getaposta ? 300 : 170}
-                play={false}
+                play={true}
                 videoId={geturl ? geturl : url}
               />
               {getaposta ? (
@@ -590,6 +656,7 @@ export default function Index({ navigation, route }) {
                                     alignSelf: "center",
                                   }}
                                 >
+                                 
                                   <Text>${jogo.valor}</Text>
                                 </View>
                               ) : (

@@ -2,14 +2,13 @@ import React from "react";
 import axios from "axios";
 
 
-export function PostJogada(usuario, user_id, jogada, email, valor,select) {
+export function PostJogada(usuario, user_id, jogada, email, valor) {
   var data = JSON.stringify({
     usuario: usuario,
     user_id: user_id,
     valor: valor,
     jogada: jogada,
     email: email,
-    select:select
   });
 
 
@@ -28,7 +27,7 @@ export function PostJogada(usuario, user_id, jogada, email, valor,select) {
       //console.warn(JSON.stringify(response.data));
     })
     .catch(function (error) {
-      console.log(error);
+      ///console.log()(error);
     });
 }
 
@@ -56,10 +55,10 @@ export function PutAdm(banca,ganhos,perdas,apostas){
       
       axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        ///console.log()(JSON.stringify(response.data));
       })
       .catch(function (error) {
-        console.log(error);
+        ///console.log()(error);
       });
 
 
@@ -89,10 +88,10 @@ export function putUser (user_id,deposito_id,carteira,valor_deposito,status){
       
       axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        ///console.log()(JSON.stringify(response.data));
       })
       .catch(function (error) {
-        console.log(error);
+        ///console.log()(error);
       });
       
 

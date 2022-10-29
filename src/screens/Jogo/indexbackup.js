@@ -236,12 +236,12 @@ export default function Index({ navigation }) {
 
     var total = selecionados.reduce(getTotal, 0);
     function getTotal(total, item) {
-      console.error(countObject[item.id]);
+      //console.error(countObject[item.id]);
       return item.valor * item.mult * countObject[item.id] + total;
     }
 
     valor = total;
-    console.error("valorrr");
+    //console.error("valorrr");
 
     console.info(valor);
   }

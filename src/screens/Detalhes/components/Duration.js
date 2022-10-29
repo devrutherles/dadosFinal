@@ -10,7 +10,7 @@ import React from "react";
 const Quantity = () => {
   const[valor,setValor] = React.useState()
   global.valor = valor
-  //console.log(global.valor)
+  /////console.log()(global.valor)
 
   return (
     <Center>

@@ -41,12 +41,12 @@ export default function Register() {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        ///console.log()(response.data);
         setEndereco(response.data);
         setLop(false);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   }
 
@@ -77,7 +77,7 @@ export default function Register() {
       }
     };
 
-    console.log(data);
+    ///console.log()(data);
     const options = {
       method: "POST",
       url: "https://rutherles.site/api/cadastro",
@@ -102,7 +102,7 @@ export default function Register() {
     axios
       .request(options)
       .then(function (response) {
-        // console.log(response.data.user)
+        // ///console.log()(response.data.user)
         setToken(response.data.token);
         setUser(response.data.user);
 
@@ -116,7 +116,7 @@ export default function Register() {
         }
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
         setErro("Email já cadastrado");
       });
   }

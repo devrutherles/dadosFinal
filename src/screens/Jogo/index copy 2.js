@@ -228,7 +228,7 @@ export default function Index({ navigation }) {
       let selecionados = result.filter((car) => car.isPresent === true);
       let cal = selecionados.map((item) => item.id == item.id);
       console.info()
-      console.log(cal)
+      ///console.log()(cal)
 
       if (cal) {
         let repetido = cal.valor * cal.mult * 2;

@@ -21,7 +21,7 @@ export default function Config() {
       // remove error
     }
 
-    console.log("Done.");
+    ///console.log()("Done.");
   };
 
   function sair() {

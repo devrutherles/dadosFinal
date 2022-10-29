@@ -28,7 +28,7 @@ export default function Profile() {
       try {
         const value = await AsyncStorage.getItem("@user");
         if (value !== null) {
-          console.log(value);
+          ///console.log()(value);
           setUser(value);
           setloader(true);
         }
@@ -47,7 +47,7 @@ export default function Profile() {
   } = useForm({});
 
   function handleSignin(data) {
-    console.log(data);
+    ///console.log()(data);
   }
   const navigation = useNavigation();
   return (

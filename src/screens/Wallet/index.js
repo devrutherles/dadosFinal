@@ -1,4 +1,4 @@
-import { Switch, TouchableOpacity } from "react-native";
+import { Switch, ActivityIndicator,TouchableOpacity } from "react-native";
 import {
   Feather,
   MaterialCommunityIcons,
@@ -45,9 +45,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAposta } from "../hooks/useAposta";
 import { putUser } from "../hooks/PostFunctions";
+import { Spinner } from "native-base";
 export default function Wallet({ route, navigation }) {
   const [isVisible, setIsVisible] = useState(true);
   const [useBalance, setUseBalance] = useState(true);
+  const {token } = useAposta();
 
   function handleToggleVisibility() {
     setIsVisible((prevState) => !prevState);
@@ -66,13 +68,22 @@ export default function Wallet({ route, navigation }) {
 
 
 
-
-  const { bilhetes, cart ,valor_deposito } = route.params ? route.params : false;
-
+  const {  puser_id, pcarteira, pvalor,pdeposito_id} = route.params ? route.params : false;
   let users = "";
   let alerta = "";
 
   useEffect(() => {
+
+    if (pdeposito_id) {
+      
+      putUser( puser_id,pcarteira,pvalor,pdeposito_id,"aprovado")
+      alert(aprovado)
+
+      
+    }
+
+
+
     const getData = async () => {
       try {
         const value = await AsyncStorage.getItem("@user");
@@ -109,10 +120,10 @@ export default function Wallet({ route, navigation }) {
       .request(options)
       .then(function (response) {
        // setCarteira(response.data[0].carteira);
-        console.log(response);
+        ///console.log()(response);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
 
     const options2 = {
@@ -131,15 +142,15 @@ export default function Wallet({ route, navigation }) {
       .request(options2)
       .then(function (response) {
         setDeposito(response.data.deposito);
-        console.log(response.data.deposito);
+        ///console.log()(response.data.deposito);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
 
     setLop(false);
 
-    console.log(users.nome);
+    ///console.log()(users.nome);
   }
 
 
@@ -158,7 +169,8 @@ export default function Wallet({ route, navigation }) {
             <BalanceContainer>
               <Value>
                 R$ &nbsp;
-                <Bold>{carteira ? ( carteira) : "----"}</Bold>
+                <Bold>{carteira && id != 1 ?  (parseInt(carteira).toFixed(2)) :        <Spinner size="sm" />
+}</Bold>
               </Value>
 
               <EyeButton onPress={handleToggleVisibility}>

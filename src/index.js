@@ -6,8 +6,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LoginApi } from "../src/screens/hooks/LoginApi";
 import { HStack, Spinner, Text } from "native-base";
 import { View } from "react-native";
+<<<<<<< Updated upstream
 import Saques from "../src/screens/Wallet/components/Saques";
 
+=======
+import Saques from "../src/screens/Wallet/components/Saques"
+import { useAposta } from "./screens/hooks/useAposta";
+>>>>>>> Stashed changes
 import WalletScreen from "../src/screens/Wallet";
 
 import Config from "../src/screens/config";
@@ -61,11 +66,16 @@ const icons = {
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+<<<<<<< Updated upstream
 export function Tabs(route, navigation) {
   const { cadastro } = route.params ? route.params : false;
   if (cadastro) {
     alert(cadastro);
   }
+=======
+export function Tabs() {
+  const {token} = useAposta()
+>>>>>>> Stashed changes
   return (
     <Tab.Navigator
       initialRouteName="Pay"

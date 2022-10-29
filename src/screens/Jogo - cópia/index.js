@@ -105,7 +105,7 @@ export default function Index({ navigation }) {
         verifica ? setVerificaAposta(true) : setVerificaAposta(false);
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
   };
 
@@ -129,7 +129,7 @@ export default function Index({ navigation }) {
 
   function selecionar(data) {
     let dado = select.find((dado) => dado.id === aposta_id);
-    //console.log(dado);
+    /////console.log()(dado);
     if (!dado) {
       select.push(data);
     }

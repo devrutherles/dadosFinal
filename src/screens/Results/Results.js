@@ -1,11 +1,11 @@
 import React from "react";
-import { ScrollView, View, Text, StyleSheet, Image } from "react-native";
+import { ScrollView, ActivityIndicator, View, Text, StyleSheet, Image } from "react-native";
 import { useEffect, useState } from "react";
 //import ImagedCardView from "react-native-imaged-card-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-
+import { useAposta } from "../hooks/useAposta";
 import moment from "moment";
 
 import {
@@ -45,72 +45,55 @@ export default function Results({ navigation, route }) {
   const [isStatus, setStatus] = useState(0);
   const [user, setUser] = React.useState();
   const { bilhetes } = route.params ? route.params : [];
+  const{jogada,token} = useAposta();
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@user");
-        if (value !== null) {
-          let users = JSON.parse(value);
-          setUser(users);
-          setloader(true);
-        }
-      } catch (e) {
-        // error reading value
-      }
-    };
+  id = token ? token.id  :  false
+  
+  let jogo = jogada ? jogada.filter(item => item.user_id == id) : []
 
-    getData();
 
-    console.log(user);
-  }, []);
 
-  if (loader) {
-    const options = {
-      method: "POST",
-      url: "https://rutherles.site/api/compras",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization:
-          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-      },
-      data: { user_id: user.id },
-    };
-
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data.compra);
-        setJogos(response.data.compra);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  }
 
   return (
     <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
-      {jogos.map((jogo) => (
+
+
+
+
+  <View
+        style={{ position: "absolute",  marginTop:"50%" , alignContent:"center", alignSelf:"center", justifyContent:"center" }}
+      >
+        {id ? <ActivityIndicator size="large" /> : null}
+      </View>
+
+
+
+
+      {jogo.map((jogo) => (
         <View style={{ backgroundColor: "#000", marginTop: 30 }}>
           <Card style={{ marginBottom: 10 }}>
             <CardBody>
               <CardDetails>
                 <CardTitle>{jogo.nome}</CardTitle>
-                <CardInfo>{"Resultados " + jogo.dezenas}</CardInfo>
+                <CardInfo>{"Apostas"}</CardInfo>
                 <CardInfo>
-                  {"Data " + moment(jogo.data).format("DD/MM/Y")}
+                  {"Data " + moment(jogo.created_at).format("DD/MM/Y")}
                 </CardInfo>
 
-                <CardInfo>{"Premiação  " + jogo.premiacao}</CardInfo>
+                <CardInfo>{"Valor R$  " + parseInt(jogo.valor).toFixed(2)}</CardInfo>
               </CardDetails>
 
               <Img source={require("../../images/dador.png")} />
+                 
+                 
+              
+
+
             </CardBody>
 
             <AddButton>
               <AntDesign name="creditcard" size={30} color="#0DB060" />
-              <AddLabel>{"Rodada " + jogo.concurso}</AddLabel>
+              <AddLabel>{"Rodada " + jogo.id}</AddLabel>
             </AddButton>
           </Card>
 
