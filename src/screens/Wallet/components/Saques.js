@@ -1,5 +1,9 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { Ionicons } from '@expo/vector-icons'; 
+import { axios } from "axios";
+import { useForm, Controller } from "react-hook-form";
+
 import {
   Stack,
   Box,
@@ -8,14 +12,76 @@ import {
   Input,
   Divider,
   WarningOutlineIcon,
+  Button,
 } from "native-base";
 import { useAposta } from "../../hooks/useAposta";
-export default function Retirada() {
+export default function Retirada({navigation}) {
+
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      cpf: "",
+      pix: "",
+      banco: "",
+      op: "",
+      conta: "",
+      digito: "",
+      valor: "",
+
+
+    },
+  });
+
   const [text, onChangeText] = React.useState("");
   const [valor, setValor] = React.useState();
   const { carteira } = useAposta();
   function saque(value) {
     setValor(value);
+  }
+
+
+  function handleSignin(data) {
+
+
+
+
+  }
+
+
+function postRetirada(usuario,user_id,cpf,pix,banco,op,conta,digito,valor){
+
+var data = JSON.stringify({
+  "usuario": usuario,
+  "user_id": user_id,
+  "cpf": cpf,
+  "pix": pix,
+  "banco":banco,
+  "op":op,
+  "conta": conta,
+  "digito": digito,
+  "valor": valor
+});
+
+var config = {
+  method: 'post',
+  url: 'https://rutherles.site/api/pedido',
+  headers: { 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
   }
 
   return (
@@ -33,9 +99,19 @@ export default function Retirada() {
           }}
         >
           <Box>
-            <Text alignSelf={"center"} color={"#fff"} bold fontSize="xl" mb="4">
+            <View  style={{flexDirection:"row",marginLeft:15}}>
+              <TouchableOpacity onPress={()=>navigation.navigate("Wallet")} >
+              <Ionicons name="arrow-back-outline" size={24} color="#fff" />
+
+                
+                </TouchableOpacity> 
+
+             
+             <Text style={{marginLeft:30}} alignSelf={"center"} color={"#fff"} bold fontSize="xl" mb="4">
               Adicionar conta bancária
-            </Text>
+             </Text>
+            </View>
+   
             <Text alignSelf={"flex-start"} color={"#fff"} marginBottom={2}>
               CPF
             </Text>
@@ -106,12 +182,32 @@ export default function Retirada() {
                 justifyContent: "space-between",
               }}
             >
-              <Input
-                keyboardType="numeric"
-                width={"70%"}
-                style={styles.Input1}
-                color={"#fff"}
-              />
+
+<Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="nome"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              onBlur={onBlur} //chamado quando text input é tocado
+              onChangeText={onChange}
+              value={value}
+              placeholder="Seu nome"
+              placeholderTextColor={"#fff"}
+              keyboardType="numeric"
+              width={"70%"}
+              style={styles.Input1}
+              color={"#fff"}
+            />
+         
+          )}
+        />
+        {errors.nome && (
+          <Text style={{ marginLeft: 20, color: "red" }}>Digite seu nome.</Text>
+        )}
+             
               <Input
                 keyboardType="numeric"
                 width={"20%"}

@@ -25,7 +25,6 @@ export function useAposta(cart) {
   const [geturl, seGtUrl] = useState(null);
   const [jogada, setJogada] = useState([]);
 
-  const navigation = useNavigation;
 
   let numeroPartida = 9;
   const { token, loading2 } = useProfile();
@@ -64,7 +63,14 @@ export function useAposta(cart) {
           let user = response.data;
           //console.error(user)
           user.forEach((element) => {
+            if(id == 1){
+
+            setCarteira(parseInt('--'))
+          }else{
+
             setCarteira(element.carteira);
+
+            }
            
             setDeposito_idget(element.deposito_id);
             setValor_deposito(element.valor_deposito);

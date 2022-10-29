@@ -6,6 +6,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LoginApi } from "../src/screens/hooks/LoginApi";
 import { HStack, Spinner, Text } from "native-base";
 import { View } from "react-native";
+
+
 import Saques from "../src/screens/Wallet/components/Saques"
 import { useAposta } from "./screens/hooks/useAposta";
 import WalletScreen from "../src/screens/Wallet";
@@ -31,15 +33,19 @@ import Pix from "../src/screens/Pix/Pix";
 import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
 import Som from "./screens/Jogo/components/som";
+
 import Retirada from "./screens/Wallet/components/retirada";
 import SaquesConta from "./screens/saques/Saques";
+
 import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
+import Faq from "./screens/faq/Faq";
+import Withdrow from "./screens/Wallet/components/Saque";
 
 const icons = {
   Home: {
     lib: MaterialIcons,
-    name: "chat-bubble-outline",
+    name: "attach-money",
   },
   Wallet: {
     lib: Ionicons,
@@ -57,6 +63,9 @@ const icons = {
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+
+
 export function Tabs() {
   const {token} = useAposta()
   return (
@@ -88,7 +97,7 @@ export function Tabs() {
     >
       <Tab.Screen
         name="Home"
-        component={Chat}
+        component={Withdrow}
         options={{
           title: "",
           headerTransparent: "true",
@@ -142,6 +151,23 @@ export default function App() {
             <Stack.Screen
               name="tab"
               component={Tabs}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+
+            <Stack.Screen
+              name="Chat"
+              component={Chat}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Faq"
+              component={Faq}
               options={{
                 headerShown: false,
                 title: "Perfil",
@@ -205,12 +231,13 @@ export default function App() {
               }}
             />
 
-               <Stack.Screen
+            <Stack.Screen
               name="Saque"
               component={SaquesConta}
               options={{
                 headerShown: false,
                 title: "Saque",
+                headerLeft: true
               }}
             />
             <Stack.Screen
