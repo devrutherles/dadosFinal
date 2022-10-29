@@ -10,7 +10,7 @@ import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ApostarApi } from "../hooks/Aposta";
 import { PostJogada, PutAdm } from "../hooks/PostFunctions";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUrl } from "../hooks/useUrl";
 
 import axios from "axios";
@@ -24,7 +24,7 @@ import Cab from "./components/Header";
 import Playes from "./components/Header1";
 import { useProfile } from "../hooks/useProfile";
 
-export default function Index({ navigation }) {
+export default function Index({ navigation, route }) {
   const carregamento = require("../../../assets/img/dice.gif");
   let valor = 0;
   const [visible, setVisible] = useState(false);
@@ -35,13 +35,11 @@ export default function Index({ navigation }) {
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
 
-
-
   const [verificaAposta, setVerificaAposta] = useState(true);
   const [ids, setIds] = useState();
 
   const [alertaCreditos, setAlertaCreditos] = useState(null);
-  let total = ""
+  let total = "";
   const [sala, setSala] = useState({
     sala: 1,
     valor1: 2,
@@ -67,7 +65,7 @@ export default function Index({ navigation }) {
     saldoadm,
     getselect,
     getaposta,
-    geturl
+    geturl,
   } = useAposta();
   const { token, loading2 } = useProfile();
 
@@ -86,33 +84,31 @@ export default function Index({ navigation }) {
   ];
   const { url } = useUrl();
 
-
-    const storeSelect = async (value) => {
+  const storeSelect = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@select', jsonValue)
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@select", jsonValue);
     } catch (e) {
       // saving error
     }
-  }
+  };
 
   const storeAposta = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@apostas', jsonValue)
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@apostas", jsonValue);
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
-  }
+  };
 
   function dado(data) {
     setIds(data.id);
     setVisible(true);
   }
 
-  console.log(getselect)
-  console.log(getaposta)
-
+  console.log(getselect);
+  console.log(getaposta);
 
   if (nome.length > 0) {
     iniciada = nome.find((item) => item.status == "iniciada");
@@ -313,17 +309,15 @@ export default function Index({ navigation }) {
 
           return valores;
         });
-        
-        storeAposta(dados)
 
+        storeAposta(dados);
 
         let email = token.email;
         let valorapostadoT = totais;
         postWallet(-totais, carteira, true);
-        console.error(getaposta)
+        console.error(getaposta);
 
-
-        PostJogada(token.nome, token.id,  email, valorapostadoT);
+        PostJogada(token.nome, token.id, email, valorapostadoT);
       }
     }
   }
@@ -340,14 +334,7 @@ export default function Index({ navigation }) {
     setTimeout(() => {
       storeAposta(null);
 
-
-     
-
-      storeSelect([])
-
-
-
-
+      storeSelect([]);
 
       setVerificaAposta(true);
     }, 10000);
@@ -356,7 +343,7 @@ export default function Index({ navigation }) {
   if (resultado && valor == 0 && aposta_id == resultado.id && verificaAposta) {
     let valorApostado = "";
 
-   getaposta.forEach((element) => {
+    getaposta.forEach((element) => {
       valorApostado = element.valor;
     });
     //playSound2();
@@ -371,7 +358,7 @@ export default function Index({ navigation }) {
 
     setTimeout(() => {
       storeAposta(null);
-      storeSelect([])
+      storeSelect([]);
       setVerificaAposta(true);
     }, 10000);
   }

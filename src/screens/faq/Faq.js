@@ -11,8 +11,30 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
 
 export default function Faq({ navigation }) {
+  const [visible, setVisible] = useState(0);
+  const [load, setLoad] = useState(true);
+
+  function sleep() {
+    setTimeout(
+      () => setVisible(1),
+
+      2000
+    );
+  }
+
+  function sleep2() {
+    setTimeout(
+      () => setLoad(false),
+
+      2000
+    );
+  }
+
+  sleep();
+  sleep2();
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f2f5" }}>
       <View style={styles.title1}>
         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
           <AntDesign style={styles.iconRight} name="left" />
@@ -20,11 +42,18 @@ export default function Faq({ navigation }) {
         <Text style={styles.title2}>Faq</Text>
       </View>
       <WebView
+        onScroll={false}
+        style={{ opacity: visible, height: "100%", backgroundColor: "#f0f2f5" }}
         javaScriptEnabled="true"
         source={{
           uri: "https://orvalhosj.com/caipira/pages/faq.html",
         }}
       />
+      <View style={{ alignItems: "center" }}>
+        {load ? (
+          <ActivityIndicator style={{ marginBottom: "100%" }} size="large" />
+        ) : null}
+      </View>
     </SafeAreaView>
   );
 }

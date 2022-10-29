@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LoginApi } from "../src/screens/hooks/LoginApi";
 import { HStack, Spinner, Text } from "native-base";
 import { View } from "react-native";
-import Saques from "../src/screens/Wallet/components/Saques"
+import Saques from "../src/screens/Wallet/components/Saques";
 
 import WalletScreen from "../src/screens/Wallet";
 
@@ -31,16 +31,14 @@ import Pix from "../src/screens/Pix/Pix";
 import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
 import Som from "./screens/Jogo/components/som";
-<<<<<<< Updated upstream
+
 import Retirada from "./screens/Wallet/components/retirada";
 import SaquesConta from "./screens/saques/Saques";
-=======
-import Retirada from "./screens/Wallet/components/Saque";
-import Saques from "./screens/saques/Saques";
->>>>>>> Stashed changes
+
 import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
 import Faq from "./screens/faq/Faq";
+import Withdrow from "./screens/Wallet/components/Saque";
 
 const icons = {
   Home: {
@@ -63,7 +61,11 @@ const icons = {
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-export function Tabs() {
+export function Tabs(route, navigation) {
+  const { cadastro } = route.params ? route.params : false;
+  if (cadastro) {
+    alert(cadastro);
+  }
   return (
     <Tab.Navigator
       initialRouteName="Pay"
@@ -93,7 +95,7 @@ export function Tabs() {
     >
       <Tab.Screen
         name="Home"
-        component={Retirada}
+        component={Withdrow}
         options={{
           title: "",
           headerTransparent: "true",
@@ -227,7 +229,7 @@ export default function App() {
               }}
             />
 
-               <Stack.Screen
+            <Stack.Screen
               name="Saque"
               component={SaquesConta}
               options={{

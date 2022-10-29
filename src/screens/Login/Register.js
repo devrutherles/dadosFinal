@@ -107,7 +107,8 @@ export default function Register() {
         setUser(response.data.user);
 
         if (cep.length > 7) {
-          navigation.navigate("Home", {
+          alert("Usuário cadastrado com sucesso.");
+          navigation.navigate("tab", {
             cadastro: "Usuário cadastrado com sucesso.",
           });
         } else {

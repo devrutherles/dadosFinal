@@ -10,7 +10,7 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 import { useAposta } from "../../hooks/useAposta";
-export default function Retirada() {
+export default function Withdrow() {
   const [text, onChangeText] = React.useState("");
   const [valor, setValor] = React.useState();
   const { carteira } = useAposta();

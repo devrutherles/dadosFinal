@@ -12,24 +12,46 @@ import { WebView } from "react-native-webview";
 import { getAbsoluteChildren, HStack, Spinner } from "native-base";
 
 export default function Chat({ navigation }) {
-  const jsCode = `var content = document.querySelector(".cc-15lb")
-    var control = document.querySelector(".component-control")
+  const [visible, setVisible] = useState(0);
+  const [load, setLoad] = useState(true);
 
-     function res(){ 
+  const jsCode = `
+  var header = document.getElementById('dpgljceke091667028261925')
+  var breadcrumb = document.querySelector(".tawk-toolbar")
+  
+   function res(){ 
+  
+    header.style.display ='none'
+    breadcrumb.style.display ='none'
     
-      
-      content.style.display ='none !important'
-      breadcrumb.style.display ='none'
+  
+  
+  
+  
+  }
+   res();
+  
+  
+  `;
 
-    
-    
-    
-    
-    }
-     res();
-    
-    
-    `;
+  function sleep() {
+    setTimeout(
+      () => setVisible(1),
+
+      2000
+    );
+  }
+
+  function sleep2() {
+    setTimeout(
+      () => setLoad(false),
+
+      2000
+    );
+  }
+
+  sleep();
+  sleep2();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -40,12 +62,18 @@ export default function Chat({ navigation }) {
         <Text style={styles.title2}>Ajuda</Text>
       </View>
       <WebView
-        style={{ position: getAbsoluteChildren, top: 0 }}
         injectedJavaScript={jsCode}
+        style={{ opacity: visible }}
         source={{
-          uri: "https://orvalhosj.com/caipira/pages/chat.php",
+          uri: "https://tawk.to/chat/635ccccddaff0e1306d4967a/1ggh801m3",
         }}
       />
+
+      <View style={{ alignItems: "center" }}>
+        {load ? (
+          <ActivityIndicator style={{ marginBottom: "100%" }} size="large" />
+        ) : null}
+      </View>
     </SafeAreaView>
   );
 }
@@ -73,5 +101,10 @@ const styles = StyleSheet.create({
     color: "#000",
     justifyContent: "space-around",
     marginRight: "28%",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#ecf0f1",
   },
 });
