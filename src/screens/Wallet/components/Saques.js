@@ -16,7 +16,7 @@ import {
 } from "native-base";
 import { useAposta } from "../../hooks/useAposta";
 export default function Retirada({navigation}) {
-
+const{token} = useAposta()
 
   const {
     control,
@@ -46,43 +46,40 @@ export default function Retirada({navigation}) {
 
   function handleSignin(data) {
 
-
+    var data = JSON.stringify({
+      "usuario": usuario,
+      "user_id": user_id,
+      "cpf": data.cpf,
+      "pix": data.pix,
+      "banco":data.banco,
+      "op":data.op,
+      "conta": data.conta,
+      "digito": data.digito,
+      "valor": data.valor
+    });
+    
+    var config = {
+      method: 'post',
+      url: 'https://rutherles.site/api/pedido',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
 
   }
 
 
-function postRetirada(usuario,user_id,cpf,pix,banco,op,conta,digito,valor){
 
-var data = JSON.stringify({
-  "usuario": usuario,
-  "user_id": user_id,
-  "cpf": cpf,
-  "pix": pix,
-  "banco":banco,
-  "op":op,
-  "conta": conta,
-  "digito": digito,
-  "valor": valor
-});
-
-var config = {
-  method: 'post',
-  url: 'https://rutherles.site/api/pedido',
-  headers: { 
-    'Content-Type': 'application/json'
-  },
-  data : data
-};
-
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data));
-})
-.catch(function (error) {
-  console.log(error);
-});
-  }
 
   return (
     <View style={styles.container}>
@@ -115,6 +112,31 @@ axios(config)
             <Text alignSelf={"flex-start"} color={"#fff"} marginBottom={2}>
               CPF
             </Text>
+
+            <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="cpf"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={onChange}
+              color={"#fff"} keyboardType="numeric" 
+              style={styles.Input}
+              value={value}
+              placeholder="Digite seu CPF"
+              placeholderTextColor={"#fff"}
+            />
+         
+          )}
+        />
+        {errors.nome && (
+          <Text style={{ marginLeft: 20, color: "red" }}>Digite seu CPF.</Text>
+        )}
+
+
             <Input color={"#fff"} keyboardType="numeric" style={styles.Input} />
             <Text
               alignSelf={"flex-start"}
@@ -188,13 +210,13 @@ axios(config)
           rules={{
             required: true,
           }}
-          name="nome"
+          name="conta"
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               onBlur={onBlur} //chamado quando text input é tocado
               onChangeText={onChange}
               value={value}
-              placeholder="Seu nome"
+              placeholder="Digite sua conta"
               placeholderTextColor={"#fff"}
               keyboardType="numeric"
               width={"70%"}
@@ -205,7 +227,7 @@ axios(config)
           )}
         />
         {errors.nome && (
-          <Text style={{ marginLeft: 20, color: "red" }}>Digite seu nome.</Text>
+          <Text style={{ marginLeft: 20, color: "red" }}>Digite sua.</Text>
         )}
              
               <Input
