@@ -5,7 +5,7 @@ import { useProfile } from "./useProfile";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { putUser } from "./PostFunctions";
-export function useAposta(cart) {
+export function useAposta() {
   const [numeros, setNumeros] = useState();
   const [nome, setNome] = useState([]);
   const [perdas, setSPerdas] = useState("");
@@ -19,6 +19,8 @@ export function useAposta(cart) {
   const [valor_deposito, setValor_deposito] = useState();
   const [aprovado, setAprovado] = useState();
   const [jogadaSelect, setJogadaSelect] = useState([]);
+  const [pedido, setPedido] = useState([]);
+
 
 
   const [url, setUrl] = useState();
@@ -129,6 +131,19 @@ export function useAposta(cart) {
         },
       };
 
+      const options6 = {
+        method: 'GET',
+        url: 'https://rutherles.site/api/pedido',
+        headers: {Accept: 'application/json'}
+      };
+      
+      axios.request(options6).then(function (response) {
+        setPedido(response.data)
+      }).catch(function (error) {
+        console.error(error);
+      });
+
+
       axios.request(options4).then(function (response) {
         setAprovado(response.data.results[0].status);
       });
@@ -196,7 +211,7 @@ export function useAposta(cart) {
     carteira,
     depositoStatus,
     aprovado,
-
     token,
+    pedido
   };
 }

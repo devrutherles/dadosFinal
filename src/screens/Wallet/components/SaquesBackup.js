@@ -14,9 +14,7 @@ import {
   WarningOutlineIcon,
   Button,
 } from "native-base";
-import { useAposta } from "../../hooks/useAposta";
 export default function Retirada({navigation}) {
-const{token} = useAposta()
 
   const {
     control,
@@ -38,7 +36,6 @@ const{token} = useAposta()
 
   const [text, onChangeText] = React.useState("");
   const [valor, setValor] = React.useState();
-  const { carteira } = useAposta();
   function saque(value) {
     setValor(value);
   }

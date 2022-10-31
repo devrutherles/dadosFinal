@@ -8,8 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useEffect, useState } from "react";
+import moment from "moment";
+
 import axios from "axios";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { useAposta } from "../hooks/useAposta";
 import {
   Card,
   CardBody,
@@ -21,28 +24,15 @@ import {
   AddLabel,
 } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+
 export default function Saques() {
+  const{token,pedido} = useAposta()
+
   const navigation = useNavigation();
 
-  const items = [
-    {
-      key: "#001",
-      metodo: "PIX",
-      label: "90,00",
-      chave: "000.000.000.00",
-      data: "19/10/2022",
-      status: "Concluído",
-    },
-    {
-      key: "#002",
-      metodo: "TED",
-      label: "158,00",
-      chave: "1234 013 00012357-4",
-      data: "19/10/2022",
-      status: "Concluído",
-    },
-  ];
-
+ let solicitacoes = pedido ? pedido.filter(item => item.user_id == token.id) : []
+  
+console.error(solicitacoes)
 
 function postSaque(){
 var data = JSON.stringify({
@@ -83,8 +73,10 @@ axios(config)
         </TouchableOpacity>
         <Text style={styles.title2}>Meus saque</Text>
       </View>
+      
+
       <View style={{ backgroundColor: "#000", marginTop: 30 }}>
-        {items.map((item) => (
+        {solicitacoes.map((item) => (
           <Card style={{ marginBottom: 10 }}>
             <CardBody>
               <CardDetails>
@@ -95,8 +87,8 @@ axios(config)
                     justifyContent: "space-between",
                   }}
                 >
-                  <CardInfo style={{ fontSize: 15 }}>{item.metodo} </CardInfo>
-                  <CardInfo style={{ fontSize: 15 }}>{item.chave}</CardInfo>
+                  <CardInfo style={{ fontSize: 15 }}>Status {item.status} </CardInfo>
+                  <CardInfo style={{ fontSize: 15 }}>Data { moment(item.created_at).format("DD/MM/Y")}</CardInfo>
                 </View>
                 <View
                   style={{
@@ -112,7 +104,7 @@ axios(config)
 
             <AddButton>
               <AntDesign name="creditcard" size={30} color="#0DB060" />
-              <AddLabel> R$ {item.label}</AddLabel>
+              <AddLabel> Valor R$ {item.valor}</AddLabel>
             </AddButton>
           </Card>
         ))}

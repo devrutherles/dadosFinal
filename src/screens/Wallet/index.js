@@ -189,7 +189,7 @@ export default function Wallet({ route, navigation }) {
                   <ActionLabel>Adicionar</ActionLabel>
                 </Action>
               </TouchableOpacity>
-              <Action onPress={() => navigation.navigate("Saques")}>
+              <Action onPress={() => navigation.navigate("Saque")}>
                 <FontAwesome name="bank" size={20} color="#fff" />
                 <ActionLabel>Retirar</ActionLabel>
               </Action>

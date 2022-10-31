@@ -8,7 +8,7 @@ import { HStack, Spinner, Text } from "native-base";
 import { View } from "react-native";
 
 
-import Saques from "../src/screens/Wallet/components/Saques"
+import Saques from "../src/screens/Wallet/components/Saque"
 import { useAposta } from "./screens/hooks/useAposta";
 import WalletScreen from "../src/screens/Wallet";
 
@@ -207,7 +207,7 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="Saques"
+              name="Saque"
               component={Saques}
               options={{
                 headerShown: false,
@@ -232,7 +232,7 @@ export default function App() {
             />
 
             <Stack.Screen
-              name="Saque"
+              name="Saques"
               component={SaquesConta}
               options={{
                 headerShown: false,
