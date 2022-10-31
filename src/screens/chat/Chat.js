@@ -12,27 +12,8 @@ import { WebView } from "react-native-webview";
 import { getAbsoluteChildren, HStack, Spinner } from "native-base";
 
 export default function Chat({ navigation }) {
-  const [visible, setVisible] = useState(0);
-  const [load, setLoad] = useState(true);
-
-  const jsCode = `
-  var header = document.getElementById('dpgljceke091667028261925')
-  var breadcrumb = document.querySelector(".tawk-toolbar")
-  
-   function res(){ 
-  
-    header.style.display ='none'
-    breadcrumb.style.display ='none'
-    
-  
-  
-  
-  
-  }
-   res();
-  
-  
-  `;
+  const [visible, setVisible] = useState(1);
+  const [load, setLoad] = useState(false);
 
   function sleep() {
     setTimeout(
@@ -46,7 +27,7 @@ export default function Chat({ navigation }) {
     setTimeout(
       () => setLoad(false),
 
-      2000
+      200
     );
   }
 
@@ -62,7 +43,6 @@ export default function Chat({ navigation }) {
         <Text style={styles.title2}>Ajuda</Text>
       </View>
       <WebView
-        injectedJavaScript={jsCode}
         style={{ opacity: visible }}
         source={{
           uri: "https://tawk.to/chat/635ccccddaff0e1306d4967a/1ggh801m3",
@@ -100,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: "#000",
     justifyContent: "space-around",
-    marginRight: "28%",
+    marginRight: "30%",
   },
   container: {
     flex: 1,

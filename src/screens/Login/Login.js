@@ -129,12 +129,12 @@ export default function Login({ route }) {
   function keyboardDidShow() {
     Animated.parallel([
       Animated.timing(logoX, {
-        toValue: 350,
+        toValue: 250,
         duration: 100,
         useNativeDriver: false,
       }),
       Animated.timing(logoY, {
-        toValue: 100,
+        toValue: 70,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -288,6 +288,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 50,
   },
   container: {
     marginTop: -40,

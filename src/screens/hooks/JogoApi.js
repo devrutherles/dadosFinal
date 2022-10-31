@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { LogBox } from "react-native";
 
+LogBox.ignoreLogs(["Warning: ..."]);
 export function JogosApi(url) {
   const [jogos, setJogos] = useState({});
   const [loading, setLoading] = useState(true);
@@ -25,8 +27,7 @@ export function JogosApi(url) {
         setLoading(false);
       })
 
-      .catch(function (error) {
-      });
+      .catch(function (error) {});
   }, []);
 
   return { jogos, loading };
