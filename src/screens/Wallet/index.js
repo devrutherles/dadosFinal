@@ -1,4 +1,4 @@
-import { Switch, ActivityIndicator,TouchableOpacity } from "react-native";
+import { Switch, ActivityIndicator, TouchableOpacity } from "react-native";
 import {
   Feather,
   MaterialCommunityIcons,
@@ -49,7 +49,7 @@ import { Spinner } from "native-base";
 export default function Wallet({ route, navigation }) {
   const [isVisible, setIsVisible] = useState(true);
   const [useBalance, setUseBalance] = useState(true);
-  const {token } = useAposta();
+  const { token } = useAposta();
 
   function handleToggleVisibility() {
     setIsVisible((prevState) => !prevState);
@@ -63,26 +63,20 @@ export default function Wallet({ route, navigation }) {
   const [loader, setloader] = React.useState(false);
   const [jogos, setJogos] = React.useState();
   const [lop, setLop] = React.useState(true);
-  const {carteira} = useAposta()
+  const { carteira } = useAposta();
   const [deposito, setDeposito] = React.useState([]);
 
-
-
-  const {  puser_id, pcarteira, pvalor,pdeposito_id} = route.params ? route.params : false;
+  const { puser_id, pcarteira, pvalor, pdeposito_id } = route.params
+    ? route.params
+    : false;
   let users = "";
   let alerta = "";
 
   useEffect(() => {
-
     if (pdeposito_id) {
-      
-      putUser( puser_id,pcarteira,pvalor,pdeposito_id,"aprovado")
-      alert(aprovado)
-
-      
+      putUser(puser_id, pcarteira, pvalor, pdeposito_id, "aprovado");
+      alert(aprovado);
     }
-
-
 
     const getData = async () => {
       try {
@@ -98,9 +92,6 @@ export default function Wallet({ route, navigation }) {
     };
 
     getData();
-
-
-    
   }, []);
 
   if (user && lop) {
@@ -119,7 +110,7 @@ export default function Wallet({ route, navigation }) {
     axios
       .request(options)
       .then(function (response) {
-       // setCarteira(response.data[0].carteira);
+        // setCarteira(response.data[0].carteira);
         ///console.log()(response);
       })
       .catch(function (error) {
@@ -153,12 +144,8 @@ export default function Wallet({ route, navigation }) {
     ///console.log()(users.nome);
   }
 
-
-
-
-
   if (deposito) {
-    return (   
+    return (
       <Wrapper>
         <Header
           colors={useBalance ? ["#52E78C", "#1AB563"] : ["#D3D3D3", "#868686"]}
@@ -168,9 +155,14 @@ export default function Wallet({ route, navigation }) {
 
             <BalanceContainer>
               <Value>
-                R$ &nbsp;
-                <Bold>{carteira && id != 1 ?  (parseInt(carteira).toFixed(2)) :        <Spinner size="sm" />
-}</Bold>
+                R$
+                <Bold>
+                  {!carteira ? (
+                    parseInt(carteira).toFixed(2)
+                  ) : (
+                    <Spinner color="warning.500" />
+                  )}
+                </Bold>
               </Value>
 
               <EyeButton onPress={handleToggleVisibility}>
@@ -189,7 +181,7 @@ export default function Wallet({ route, navigation }) {
                   <ActionLabel>Adicionar</ActionLabel>
                 </Action>
               </TouchableOpacity>
-              <Action onPress={() => navigation.navigate("Saque")}>
+              <Action onPress={() => navigation.navigate("Home")}>
                 <FontAwesome name="bank" size={20} color="#fff" />
                 <ActionLabel>Retirar</ActionLabel>
               </Action>
@@ -217,14 +209,7 @@ export default function Wallet({ route, navigation }) {
 
               <Img source={creditCard} resizeMode="contain" />
 
-
-              { alerta ?    
-<Alertadeposito/>
-
-: <></>
-
-}
-
+              {alerta ? <Alertadeposito /> : <></>}
             </CardBody>
 
             <AddButton onPress={() => navigation.navigate("Pix")}>
@@ -245,7 +230,6 @@ export default function Wallet({ route, navigation }) {
           </UseTicketContainer>
         </PaymentMethods>
       </Wrapper>
-
     );
   }
 }

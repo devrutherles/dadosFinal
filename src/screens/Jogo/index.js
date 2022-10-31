@@ -1,10 +1,16 @@
 import { Feather, AntDesign, Ionicons } from "@expo/vector-icons";
 import { React, useState, useEffect, useRef } from "react";
-import { StyleSheet, Image, ScrollView, TouchableOpacity,Alert } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { View, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
 import { FlatGrid } from "react-native-super-grid";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { Center, Spinner, Text, AlertDialog, Button  } from "native-base";
+import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
 import Alerta from "./components/Alert";
 import Alerta2 from "./components/Alert2";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -23,7 +29,9 @@ import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
 import Playes from "./components/Header1";
 import { useProfile } from "../hooks/useProfile";
+import { LogBox } from "react-native";
 
+LogBox.ignoreLogs(["Warning: ..."]);
 export default function Index({ navigation, route }) {
   const carregamento = require("../../../assets/img/dice.gif");
   let valor = 0;
@@ -34,8 +42,6 @@ export default function Index({ navigation, route }) {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
-
-
 
   const [getselect, setGetselect] = useState([]);
   const [getaposta, setGetaposta] = useState(null);
@@ -68,7 +74,6 @@ export default function Index({ navigation, route }) {
     apostasadm,
     saldoadm,
     geturl,
-
   } = useAposta();
   const { token, loading2 } = useProfile();
 
@@ -87,36 +92,29 @@ export default function Index({ navigation, route }) {
   ];
   const { url } = useUrl();
 
-  
-
-
-
-
   const getSelect = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('@select')
-      return jsonValue != null ? setGetselect(JSON.parse(jsonValue))  : null;
-    } catch(e) {
-     //console.error(e)
+      const jsonValue = await AsyncStorage.getItem("@select");
+      return jsonValue != null ? setGetselect(JSON.parse(jsonValue)) : null;
+    } catch (e) {
+      //console.error(e)
     }
-  }
+  };
 
-  
   const getApostas = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('@apostas')
-      return jsonValue != null ? setGetaposta(JSON.parse(jsonValue))  : null;
-    } catch(e) {
-     //console.error(e)
+      const jsonValue = await AsyncStorage.getItem("@apostas");
+      return jsonValue != null ? setGetaposta(JSON.parse(jsonValue)) : null;
+    } catch (e) {
+      //console.error(e)
     }
-  }
+  };
 
-
-    const storeSelect = async (value) => {
+  const storeSelect = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@select', jsonValue)
-      getSelect()
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@select", jsonValue);
+      getSelect();
     } catch (e) {
       // saving error
     }
@@ -124,67 +122,39 @@ export default function Index({ navigation, route }) {
 
   const storeAposta = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@apostas', jsonValue)
-      getApostas()
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@apostas", jsonValue);
+      getApostas();
     } catch (e) {
       // saving error
     }
   };
 
-  
-  
+  useEffect(() => {
+    getSelect();
+    getApostas();
 
-useEffect(() => {
-  getSelect()
-  getApostas()
+    return () => {};
+  }, []);
 
-  return () => {
-    
-  };
-}, []);
+  function dado(data) {
+    if (getselect.length > 0) {
+      if (getselect.find((item) => item.id == data.id)) {
+        let teste = getselect.find((item) => item.id == data.id);
 
+        let teste2 = getselect.filter((item) => item != teste);
 
+        console.error(teste2);
 
-
-function dado(data) {
-
-
-
-    if(getselect.length > 0){
-
-     
-      if(getselect.find(item => item.id == data.id)){
-
-
-        let teste = getselect.find(item => item.id == data.id)
-
-        let teste2 = getselect.filter(item => item != teste)
-
-        console.error(teste2)
-        
-        storeSelect(teste2)
-
-
-      
-
-
-
-      }else{
+        storeSelect(teste2);
+      } else {
         setIds(data.id);
         setVisible(true);
-    
       }
-     
-
-
-    }else{
+    } else {
       setIds(data.id);
       setVisible(true);
-  
-  
     }
-
   }
   if (nome.length > 0) {
     iniciada = nome.find((item) => item.status == "iniciada");
@@ -255,7 +225,6 @@ function dado(data) {
     }
   }
 
-  
   function apostas() {
     const obj2 = getselect;
     const obj1 = numeros;
@@ -334,8 +303,7 @@ function dado(data) {
         let valorapostadoT = totais;
         postWallet(-totais, carteira, true);
 
-
-        PostJogada(token.nome, token.id, dadosE ,email, valorapostadoT);
+        PostJogada(token.nome, token.id, dadosE, email, valorapostadoT);
       }
     }
   }
@@ -365,8 +333,6 @@ function dado(data) {
       valorApostado = element.valor;
     });
 
- 
-
     PutAdm(
       parseInt(saldoadm) + parseInt(valorApostado),
       parseInt(ganhos) + parseInt(valorApostado),
@@ -378,7 +344,6 @@ function dado(data) {
       storeAposta(null);
       storeSelect([]);
       setVerificaAposta(true);
-
     }, 10000);
   }
 
@@ -446,7 +411,12 @@ function dado(data) {
               color: "#a2d5ab",
             }}
           >
-            R$ {carteira ? parseInt(carteira).toFixed(2) : <Spinner color="warning.500" />}
+            R${" "}
+            {carteira ? (
+              parseInt(carteira).toFixed(2)
+            ) : (
+              <Spinner color="warning.500" />
+            )}
           </Text>
         </View>
 
@@ -609,7 +579,6 @@ function dado(data) {
                                     alignSelf: "center",
                                   }}
                                 >
-                                 
                                   <Text>${jogo.valor}</Text>
                                 </View>
                               ) : (

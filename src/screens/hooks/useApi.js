@@ -1,19 +1,16 @@
-import  {useEffect,useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { LogBox } from "react-native";
 
-export function useApi (url){
-const [data,setData] = useState(null);
+LogBox.ignoreLogs(["Warning: ..."]);
+export function useApi(url) {
+  const [data, setData] = useState(null);
 
-useEffect(() => {
-    axios.get(url)
-    .then((res) => {
-    setData(res.data)
+  useEffect(() => {
+    axios.get(url).then((res) => {
+      setData(res.data);
     });
+  }, []);
 
-}, []);
-
-return {data}
-
+  return { data };
 }
-
-

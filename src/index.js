@@ -7,8 +7,7 @@ import { LoginApi } from "../src/screens/hooks/LoginApi";
 import { HStack, Spinner, Text } from "native-base";
 import { View } from "react-native";
 
-
-import Saques from "../src/screens/Wallet/components/Saque"
+import Saques from "../src/screens/Wallet/components/Saque";
 import { useAposta } from "./screens/hooks/useAposta";
 import WalletScreen from "../src/screens/Wallet";
 
@@ -41,6 +40,9 @@ import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
 import Faq from "./screens/faq/Faq";
 import Withdrow from "./screens/Wallet/components/Saque";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["Warning: ..."]);
 
 const icons = {
   Home: {
@@ -64,10 +66,8 @@ const icons = {
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-
 export function Tabs() {
-  const {token} = useAposta()
+  const { token } = useAposta();
   return (
     <Tab.Navigator
       initialRouteName="Pay"
@@ -237,7 +237,7 @@ export default function App() {
               options={{
                 headerShown: false,
                 title: "Saque",
-                headerLeft: true
+                headerLeft: true,
               }}
             />
             <Stack.Screen
