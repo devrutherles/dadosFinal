@@ -68,6 +68,7 @@ export default function Withdrow() {
       status: "pendente",
       conta: data.conta,
       digito: data.digito,
+      status: "pendente",
       valor: data.valor ? data.valor : valor,
     });
 

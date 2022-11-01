@@ -24,8 +24,19 @@ export default function Config() {
     ///console.log()("Done.");
   };
 
+  const removeUser = async () => {
+    try {
+      await AsyncStorage.removeItem("@user");
+    } catch (e) {
+      // remove error
+    }
+
+    ///console.log()("Done.");
+  };
+
   function sair() {
     removeValue();
+    removeUser();
     navigation.navigate("Login");
   }
 

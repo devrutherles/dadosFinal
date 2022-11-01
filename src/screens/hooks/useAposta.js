@@ -31,159 +31,173 @@ export function useAposta() {
   let status = 9;
   let id = loading2 ? token.id : 1;
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const options = {
-        method: "GET",
-        url: "https://rutherles.site/api/rodada",
-        headers: { Accept: "application/json" },
-      };
 
-      axios
-        .request(options)
-        .then(function (response) {
-          setNome(response.data);
-        })
-        .catch(function (error) {});
+  function load(){
+    const options = {
+      method: "GET",
+      url: "https://rutherles.site/api/rodada",
+      headers: { Accept: "application/json" },
+    };
 
-      const options2 = {
-        method: "GET",
-        url: "https://rutherles.site/api/usuario/" + id,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization:
-            "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-        },
-      };
+    axios
+      .request(options)
+      .then(function (response) {
+        setNome(response.data);
+      })
+      .catch(function (error) {});
 
-      axios
-        .request(options2)
-        .then(function (response) {
-          let user = response.data;
-          //console.error(user)
-          user.forEach((element) => {
-            if (id == 1) {
-              setCarteira(parseInt("--"));
-            } else {
-              setCarteira(element.carteira);
-            }
+    const options2 = {
+      method: "GET",
+      url: "https://rutherles.site/api/usuario/" + id,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization:
+          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+      },
+    };
 
-            setDeposito_idget(element.deposito_id);
-            setValor_deposito(element.valor_deposito);
-            setDepositoStatus(element.deposito);
-          });
-        })
-        .catch(function (error) {});
+    axios
+      .request(options2)
+      .then(function (response) {
+        let user = response.data;
+        //console.error(user)
+        user.forEach((element) => {
+          if (id == 1) {
+            setCarteira(parseInt("--"));
+          } else {
+            setCarteira(element.carteira);
+          }
 
-      const getData = async () => {
-        try {
-          const jsonValue = await AsyncStorage.getItem("@jogadaSelect");
-          return setJogadaSelect(JSON.parse(jsonValue));
-        } catch (e) {
-          // error reading value
-        }
-      };
-
-      getData();
-
-      const options3 = {
-        method: "GET",
-        url: "https://rutherles.site/api/adm",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization:
-            "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-        },
-      };
-
-      axios
-        .request(options3)
-        .then(function (response) {
-          let carteira = response.data;
-          carteira.forEach((element) => {
-            setSaldoAdm(element.banca);
-            setSGanhos(element.ganhos);
-            setSPerdas(element.pedas);
-            setApostasadm(element.apostas);
-          });
-        })
-        .catch(function (error) {});
-
-      const options4 = {
-        method: "GET",
-        url: "https://api.mercadopago.com/v1/payments/search",
-        params: {
-          sort: "date_created",
-          criteria: "desc",
-          external_reference: deposito_idget,
-        },
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer APP_USR-6354125960495975-102119-985a677c3232949c7cff973002cec4fb-720572053",
-        },
-      };
-
-      const options6 = {
-        method: "GET",
-        url: "https://rutherles.site/api/pedido",
-        headers: { Accept: "application/json" },
-      };
-
-      axios
-        .request(options6)
-        .then(function (response) {
-          setPedido(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
+          setDeposito_idget(element.deposito_id);
+          setValor_deposito(element.valor_deposito);
+          setDepositoStatus(element.deposito);
         });
+      })
+      .catch(function (error) {});
 
-      axios.request(options4).then(function (response) {
-        setAprovado(response.data.results[0].status);
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("@jogadaSelect");
+        return setJogadaSelect(JSON.parse(jsonValue));
+      } catch (e) {
+        // error reading value
+      }
+    };
+
+    getData();
+
+    const options3 = {
+      method: "GET",
+      url: "https://rutherles.site/api/adm",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization:
+          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+      },
+    };
+
+    axios
+      .request(options3)
+      .then(function (response) {
+        let carteira = response.data;
+        carteira.forEach((element) => {
+          setSaldoAdm(element.banca);
+          setSGanhos(element.ganhos);
+          setSPerdas(element.pedas);
+          setApostasadm(element.apostas);
+        });
+      })
+      .catch(function (error) {});
+
+    const options4 = {
+      method: "GET",
+      url: "https://api.mercadopago.com/v1/payments/search",
+      params: {
+        sort: "date_created",
+        criteria: "desc",
+        external_reference: deposito_idget,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer APP_USR-6354125960495975-102119-985a677c3232949c7cff973002cec4fb-720572053",
+      },
+    };
+
+    const options6 = {
+      method: "GET",
+      url: "https://rutherles.site/api/pedido",
+      headers: { Accept: "application/json" },
+    };
+
+    axios
+      .request(options6)
+      .then(function (response) {
+        setPedido(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
       });
 
-      const options5 = {
-        method: "GET",
-        url: "https://rutherles.site/api/url",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization:
-            "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-        },
-      };
+    axios.request(options4).then(function (response) {
+      setAprovado(response.data.results[0].status);
+    });
 
-      axios
-        .request(options5)
-        .then(function (response) {
-          setUrl(response.data);
+    const options5 = {
+      method: "GET",
+      url: "https://rutherles.site/api/url",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization:
+          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+      },
+    };
 
-          response.data.forEach((element) => {
-            setUrl(element.url);
-            if ((url = !element.url)) {
-              seGtUrl(element.url);
-            }
-          });
-        })
-        .catch(function (error) {});
+    axios
+      .request(options5)
+      .then(function (response) {
+        setUrl(response.data);
 
-      var config = {
-        method: "get",
-        url: "https://rutherles.site/api/jogada",
-        headers: {},
-      };
-
-      axios(config)
-        .then(function (response) {
-          ///console.log()(JSON.stringify(response.data));
-          setJogada(response.data);
-        })
-        .catch(function (error) {
-          ///console.log()(error);
+        response.data.forEach((element) => {
+          setUrl(element.url);
+          if ((url = !element.url)) {
+            seGtUrl(element.url);
+          }
         });
+      })
+      .catch(function (error) {});
+
+    var config = {
+      method: "get",
+      url: "https://rutherles.site/api/jogada",
+      headers: {},
+    };
+
+    axios(config)
+      .then(function (response) {
+        ///console.log()(JSON.stringify(response.data));
+        setJogada(response.data);
+      })
+      .catch(function (error) {
+        ///console.log()(error);
+      });
+  } 
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  
+
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+
+      load();
+     
     }, 2000);
 
     return () => {

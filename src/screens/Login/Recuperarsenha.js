@@ -248,7 +248,7 @@ if (dados.senha1 == dados.senha2) {
   .then(function (response) {
     console.error(JSON.stringify(response.data));
     alert("senha alterada com sucesso")
-    navigation.navigate('Login')
+    //navigation.navigate('Login')
 
   })
   .catch(function (error) {

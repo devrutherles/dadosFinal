@@ -42,6 +42,8 @@ export default function Login({ route }) {
   });
 
   function handleSignin(data) {
+    
+    
     const storeUser = async (value) => {
       try {
         const jsonValue = JSON.stringify(value);
@@ -61,46 +63,26 @@ export default function Login({ route }) {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "token" + token,
+        
       },
-      data: { email: data.email.toLowerCase, password: data.password.toLowerCase },
+      data: { email: data.email, password: data.password },
     };
 
     axios
       .request(options)
       .then(function (response) {
-        storeUser(response.data.user);
-        global.id = response.data.user.id;
+        storeUser(response.data.user[0]);
         setToken(response.data.authorisation.token);
         navigation.navigate("tab");
       })
       .catch(function (error) {
-        //console.error(error);
+        console.error(error);
         setErro("Email ou senha incorretos");
       });
   }
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@token");
-        if (value !== null) {
-          setToken(value);
-          storeUser();
-        }
-      } catch (e) {
-        // error reading value
-      }
-    };
-
-    const storeStart = async (value) => {
-      try {
-        await AsyncStorage.setItem("@start", "true");
-      } catch (e) {}
-    };
-
-    getData();
-    storeStart();
+   
 
     keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -129,12 +111,12 @@ export default function Login({ route }) {
   function keyboardDidShow() {
     Animated.parallel([
       Animated.timing(logoX, {
-        toValue: 250,
+        toValue: 350,
         duration: 100,
         useNativeDriver: false,
       }),
       Animated.timing(logoY, {
-        toValue: 70,
+        toValue: 100,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -288,7 +270,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 50,
   },
   container: {
     marginTop: -40,
