@@ -23,16 +23,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+
 export default function Withdrow() {
   const [bank, setBank] = useState({});
   const [text, onChangeText] = React.useState("");
   const [valor, setValor] = React.useState();
   const { carteira, token } = useAposta();
-
-  const getBank = async () => {
-    const result = await axios.get("https://viacep.com.br/ws/01001000/json/");
-    console.log(result);
-  };
 
   function saque(value) {
     setValor(value);
@@ -49,11 +45,12 @@ export default function Withdrow() {
     defaultValues: {
       pix: "",
       email: "",
-      operacao: "",
+      op: "",
       conta: "",
       digito: "",
       banco: "",
       valor: "",
+      ag: "",
     },
   });
 
@@ -66,6 +63,9 @@ export default function Withdrow() {
       pix: data.pix,
       banco: data.banco,
       op: data.op,
+      ag: data.ag,
+      email: token.email,
+      status: "pendente",
       conta: data.conta,
       digito: data.digito,
       valor: data.valor ? data.valor : valor,
@@ -197,6 +197,9 @@ export default function Withdrow() {
               <Text alignSelf={"flex-start"} color={"#fff"} marginTop={3}>
                 Banco
               </Text>
+              <Text color={"#fff"} marginTop={3}>
+                Agência
+              </Text>
               <Text marginRight={"1"} color={"#fff"} marginTop={3}>
                 Operação
               </Text>
@@ -211,6 +214,9 @@ export default function Withdrow() {
               >
                 {errors.banco && (
                   <Text style={{ color: "red" }}>Digite seu banco.</Text>
+                )}
+                {errors.ag && (
+                  <Text style={{ color: "red" }}>Digite sua agência.</Text>
                 )}
                 {errors.operacao && (
                   <Text style={{ color: "red" }}>Digite sua operacao.</Text>
@@ -232,7 +238,7 @@ export default function Withdrow() {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Input
                       keyboardType="text"
-                      width={"70%"}
+                      width={"30%"}
                       style={styles.Input1}
                       color={"#fff"}
                       onBlur={onBlur}
@@ -243,17 +249,37 @@ export default function Withdrow() {
                     />
                   )}
                 />
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  name="ag"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input
+                      keyboardType="text"
+                      width={"30%"}
+                      style={styles.Input1}
+                      color={"#fff"}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Agência"
+                      placeholderTextColor={"#fff"}
+                    />
+                  )}
+                />
 
                 <Controller
                   control={control}
                   rules={{
                     required: true,
                   }}
-                  name="operacao"
+                  name="op"
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Input
                       keyboardType="numeric"
-                      width={"20%"}
+                      width={"30%"}
                       style={styles.Input2}
                       color={"#fff"}
                       onBlur={onBlur}
