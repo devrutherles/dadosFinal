@@ -67,17 +67,8 @@ export default function Register() {
   });
 
   function handleSignin(data) {
-    const setUser = async (value) => {
-      try {
-        const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem("@user", jsonValue);
-        global.id = jsonValue.id;
-      } catch (e) {
-        // saving error
-      }
-    };
+  
 
-    ///console.log()(data);
     const options = {
       method: "POST",
       url: "https://rutherles.site/api/cadastro",
@@ -102,13 +93,11 @@ export default function Register() {
     axios
       .request(options)
       .then(function (response) {
-        // ///console.log()(response.data.user)
-        setToken(response.data.token);
-        setUser(response.data.user);
+     
 
         if (cep.length > 7) {
           alert("Usuário cadastrado com sucesso.");
-          navigation.navigate("tab", {
+          navigation.navigate("Login", {
             cadastro: "Usuário cadastrado com sucesso.",
           });
         } else {
@@ -116,8 +105,7 @@ export default function Register() {
         }
       })
       .catch(function (error) {
-        //console.error(error);
-        setErro("Email já cadastrado");
+        setErro("Dados já cadastrados");
       });
   }
   return (

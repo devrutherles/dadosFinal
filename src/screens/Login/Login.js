@@ -72,8 +72,9 @@ export default function Login({ route }) {
       .request(options)
       .then(function (response) {
         storeUser(response.data.user[0]);
+        global.idL = response.data.user[0].id
         setToken(response.data.authorisation.token);
-        navigation.navigate("tab");
+        navigation.navigate("Pay");
       })
       .catch(function (error) {
         console.error(error);
@@ -151,9 +152,7 @@ export default function Login({ route }) {
           source={require("../../images/logo.png")}
         />
 
-        <Text style={{ color: "#0ed830", fontWeight: "bold" }}>
-          {cadastro ? cadastro : null}
-        </Text>
+     
       </View>
 
       <Animated.View

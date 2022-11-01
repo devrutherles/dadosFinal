@@ -47,9 +47,9 @@ export default function Results({ navigation, route }) {
   const { bilhetes } = route.params ? route.params : [];
   const{jogada,token} = useAposta();
 
-  id = token ? token.id  :  false
   
-  let jogo = jogada ? jogada.filter(item => item.user_id == id) : []
+  
+  let jogo = token ? global.jogadas.filter(item => item.user_id == ids)  : []
 
 
 
@@ -63,7 +63,7 @@ export default function Results({ navigation, route }) {
   <View
         style={{ position: "absolute",  marginTop:"50%" , alignContent:"center", alignSelf:"center", justifyContent:"center" }}
       >
-        {id ? <ActivityIndicator size="large" /> : null}
+        { !token ? <ActivityIndicator size="large" /> : null}
       </View>
 
 

@@ -6,7 +6,7 @@ export function useProfile() {
   const [loading2, setLoading2] = useState(false);
 
   useEffect(() => {
-    const getData = async () => {
+    const getToken = async () => {
       try {
         const value = await AsyncStorage.getItem("@user");
         if (value !== null) {
@@ -18,7 +18,7 @@ export function useProfile() {
       }
     };
 
-    getData();
+    getToken();
   }, []);
 
   return { token, loading2 };

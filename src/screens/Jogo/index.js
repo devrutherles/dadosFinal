@@ -74,8 +74,9 @@ export default function Index({ navigation, route }) {
     apostasadm,
     saldoadm,
     geturl,
+    token,
+    loading2
   } = useAposta();
-  const { token, loading2 } = useProfile();
 
   let dadosEscolhidos = "";
   let valorApostado = "";
@@ -399,7 +400,7 @@ export default function Index({ navigation, route }) {
               color: "gray",
             }}
           >
-            {token ? token.nome : <></>}
+            {token ? token.nome.split(' ')[0] : <></>}
           </Text>
         </View>
 

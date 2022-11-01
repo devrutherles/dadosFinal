@@ -25,11 +25,19 @@ export function useAposta() {
   const [url, setUrl] = useState();
   const [geturl, seGtUrl] = useState(null);
   const [jogada, setJogada] = useState([]);
+  const [token, setToken] = useState();
+  const [loading2, setLoading2] = useState();
+
+
+
+
+
 
   let numeroPartida = 9;
-  const { token, loading2 } = useProfile();
   let status = 9;
   let id = loading2 ? token.id : 1;
+
+  global.ids = id
 
 
   function load(){
@@ -63,11 +71,11 @@ export function useAposta() {
         let user = response.data;
         //console.error(user)
         user.forEach((element) => {
-          if (id == 1) {
-            setCarteira(parseInt("--"));
-          } else {
+
+          
             setCarteira(element.carteira);
-          }
+         
+            global.cart = element.carteira
 
           setDeposito_idget(element.deposito_id);
           setValor_deposito(element.valor_deposito);
@@ -136,6 +144,7 @@ export function useAposta() {
       .request(options6)
       .then(function (response) {
         setPedido(response.data);
+        global.pedidos = response.data;
       })
       .catch(function (error) {
         console.error(error);
@@ -180,10 +189,33 @@ export function useAposta() {
       .then(function (response) {
         ///console.log()(JSON.stringify(response.data));
         setJogada(response.data);
+        global.jogadas = response.data
       })
       .catch(function (error) {
         ///console.log()(error);
       });
+
+
+
+
+      const getToken = async () => {
+        try {
+          const value = await AsyncStorage.getItem("@user");
+          if (value !== null) {
+            setToken(JSON.parse(value));
+            setLoading2(true);
+          }
+        } catch (e) {
+          // error reading value
+        }
+      };
+  
+      getToken();
+
+
+
+
+
   } 
 
   useEffect(() => {
@@ -224,5 +256,6 @@ export function useAposta() {
     aprovado,
     token,
     pedido,
+    loading2
   };
 }

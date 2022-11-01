@@ -45,7 +45,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAposta } from "../hooks/useAposta";
 import { putUser } from "../hooks/PostFunctions";
-import { Spinner } from "native-base";
+import { Spinner,HStack,Heading } from "native-base";
 export default function Wallet({ route, navigation }) {
   const [isVisible, setIsVisible] = useState(true);
   const [useBalance, setUseBalance] = useState(true);
@@ -155,13 +155,11 @@ export default function Wallet({ route, navigation }) {
 
             <BalanceContainer>
               <Value>
-                R$
+                R$  
                 <Bold>
-                  {!carteira ? (
-                    parseInt(carteira).toFixed(2)
-                  ) : (
-                    <Spinner color="warning.500" />
-                  )}
+                  
+                    { " " + parseInt(global.cart).toFixed(2)}
+                 
                 </Bold>
               </Value>
 

@@ -52,7 +52,24 @@ export default function Profile() {
   const navigation = useNavigation();
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+
+
+
+      
       <View style={{ marginTop: 30 }}>
+
+
+      
+      
+      <View style={styles.title1}>
+        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+          <AntDesign style={styles.iconRight} name="left" color={"#ffff"} />
+        </TouchableOpacity>
+        <Text style={styles.subTitles}>Perfil</Text>
+      </View>
+
+
+
         <View>
           <Text style={styles.subTitles}>Nome</Text>
 
