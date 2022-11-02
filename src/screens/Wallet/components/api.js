@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 
 const Cep = axios.create({
-  baseURL:
-    "https ://olinda.bcb.gov.br/olinda/servico/CCR/versao/v1/odata/InstituicoesFinanceirasAutorizadas?$format=json/",
+  baseURL: "viacep.com.br/ws/01001000/json/",
 });
 export default Cep;

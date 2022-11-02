@@ -12,13 +12,12 @@ import {
   SnapshotViewIOS,
   TextInput,
 } from "react-native";
-import { Button } from "native-base";
+
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
-import { set } from "react-native-reanimated";
 
 export default function Login({ route }) {
   const { cadastro } = route.params ? route.params : "";
@@ -30,7 +29,7 @@ export default function Login({ route }) {
   const [logoY] = useState(new Animated.Value(100));
   const [token, setToken] = useState();
   const [erro, setErro] = useState();
-  const [load, setLoad] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -43,8 +42,8 @@ export default function Login({ route }) {
   });
 
   function handleSignin(data) {
-    setLoad(true);
-
+    
+    
     const storeUser = async (value) => {
       try {
         const jsonValue = JSON.stringify(value);
@@ -64,6 +63,7 @@ export default function Login({ route }) {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        
       },
       data: { email: data.email, password: data.password },
     };
@@ -72,19 +72,19 @@ export default function Login({ route }) {
       .request(options)
       .then(function (response) {
         storeUser(response.data.user[0]);
-        global.idL = response.data.user[0].id;
+        global.idL = response.data.user[0].id
         setToken(response.data.authorisation.token);
-        setLoad(false);
         navigation.navigate("Pay");
       })
       .catch(function (error) {
-        setLoad(false);
         console.error(error);
         setErro("Email ou senha incorretos");
       });
   }
 
   useEffect(() => {
+   
+
     keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       keyboardDidShow
@@ -112,12 +112,12 @@ export default function Login({ route }) {
   function keyboardDidShow() {
     Animated.parallel([
       Animated.timing(logoX, {
-        toValue: 300,
+        toValue: 350,
         duration: 100,
         useNativeDriver: false,
       }),
       Animated.timing(logoY, {
-        toValue: 80,
+        toValue: 100,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -126,12 +126,12 @@ export default function Login({ route }) {
   function keyboardDidHide() {
     Animated.parallel([
       Animated.timing(logoX, {
-        toValue: 300,
+        toValue: 350,
         duration: 100,
         useNativeDriver: false,
       }),
       Animated.timing(logoY, {
-        toValue: 80,
+        toValue: 100,
         duration: 100,
         useNativeDriver: false,
       }),
@@ -151,6 +151,8 @@ export default function Login({ route }) {
           }}
           source={require("../../images/logo.png")}
         />
+
+     
       </View>
 
       <Animated.View
@@ -162,7 +164,13 @@ export default function Login({ route }) {
           },
         ]}
       >
-        <View style={styles.key}>
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Controller
             control={control}
             rules={{
@@ -204,7 +212,6 @@ export default function Login({ route }) {
             name="password"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                autoCapitalize="none"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -224,20 +231,13 @@ export default function Login({ route }) {
           <Text style={{ color: "red", marginBottom: 10 }}>{erro} </Text>
         </View>
 
-        {load ? (
-          <Button
-            style={styles.btnSubmit}
-            isLoading
-            isLoadingText="Acessando"
-          ></Button>
-        ) : (
-          <TouchableOpacity
-            style={styles.btnSubmit}
-            onPress={handleSubmit(handleSignin)}
-          >
-            <Text style={styles.btnSubmitText}> Acessar </Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.btnSubmit}
+          onPress={handleSubmit(handleSignin)}
+        >
+          <Text style={styles.btnSubmitText}> Acessar </Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => navigation.navigate("Register")}
           style={styles.btnRegister}
@@ -259,19 +259,6 @@ export default function Login({ route }) {
 }
 
 const styles = StyleSheet.create({
-  marginp: Platform.OS === "ios" ? 200 : 100,
-  key: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-
-    ...Platform.select({
-      ios: {},
-      android: {
-        marginTop: 100,
-      },
-    }),
-  },
   background: {
     flex: 1,
     alignItems: "center",
