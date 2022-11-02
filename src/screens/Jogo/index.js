@@ -52,9 +52,9 @@ export default function Index({ navigation, route }) {
   let total = "";
   const [sala, setSala] = useState({
     sala: 1,
-    valor1: 2,
-    valor2: 5,
-    valor3: 10,
+    valor1: 1,
+    valor2: 2,
+    valor3: 4,
     cor: "#a2d5ab",
     avatar: 4,
     avatar: "jgf",
@@ -75,7 +75,7 @@ export default function Index({ navigation, route }) {
     saldoadm,
     geturl,
     token,
-    loading2
+    loading2,
   } = useAposta();
 
   let dadosEscolhidos = "";
@@ -87,9 +87,9 @@ export default function Index({ navigation, route }) {
   let resultado = "";
   let aposta_id = "";
   const salas = [
-    { sala: 1, valor1: 2, valor2: 5, valor3: 10, avatar: "tg" },
-    { sala: 2, valor1: 15, valor2: 20, valor3: 25, avatar: "iuj" },
-    { sala: 3, valor1: 30, valor2: 40, valor3: 60, avatar: "oik" },
+    { sala: 1, valor1: 1, valor2: 2, valor3: 4, avatar: "tg" },
+    { sala: 2, valor1: 4, valor2: 10, valor3: 20, avatar: "iuj" },
+    { sala: 3, valor1: 20, valor2: 50, valor3: 100, avatar: "oik" },
   ];
   const { url } = useUrl();
 
@@ -400,7 +400,7 @@ export default function Index({ navigation, route }) {
               color: "gray",
             }}
           >
-            {token ? token.nome.split(' ')[0] : <></>}
+            {token ? token.nome.split(" ")[0] : <></>}
           </Text>
         </View>
 

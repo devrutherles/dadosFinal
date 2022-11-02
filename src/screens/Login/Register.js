@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   TextInput,
 } from "react-native";
+import { Button } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -29,7 +30,7 @@ export default function Register() {
   const [cep, setCep] = React.useState("");
   const [lop, setLop] = React.useState(true);
   const [erro, setErro] = React.useState();
-
+  const [load, setLoad] = useState(false);
   const [endereco, setEndereco] = React.useState("");
 
   if (cep.length == 8 && lop) {
@@ -67,8 +68,7 @@ export default function Register() {
   });
 
   function handleSignin(data) {
-  
-
+    setLoad(true);
     const options = {
       method: "POST",
       url: "https://rutherles.site/api/cadastro",
@@ -93,8 +93,6 @@ export default function Register() {
     axios
       .request(options)
       .then(function (response) {
-     
-
         if (cep.length > 7) {
           alert("Usuário cadastrado com sucesso.");
           navigation.navigate("Login", {
@@ -321,12 +319,20 @@ export default function Register() {
       </View>
 
       <View style={styles.btn}>
-        <TouchableOpacity
-          style={styles.btnSubmit}
-          onPress={handleSubmit(handleSignin)}
-        >
-          <Text style={styles.btnSubmitText}> Cadastre-se </Text>
-        </TouchableOpacity>
+        {load ? (
+          <Button
+            style={styles.btnSubmit}
+            isLoading
+            isLoadingText="Registrando"
+          ></Button>
+        ) : (
+          <TouchableOpacity
+            style={styles.btnSubmit}
+            onPress={handleSubmit(handleSignin)}
+          >
+            <Text style={styles.btnSubmitText}> Cadastre-se </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );

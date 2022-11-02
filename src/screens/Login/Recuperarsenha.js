@@ -6,19 +6,20 @@ import {
   Center,
   VStack,
   Heading,
+  Button,
 } from "native-base";
-import React  from "react";
-import { View, StyleSheet, TouchableOpacity, Image,Alert } from "react-native";
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import email from 'react-native-email'
-import { Linking } from 'react-native';
+import email from "react-native-email";
+import { Linking } from "react-native";
 import { useState } from "react";
 import { useAposta } from "../hooks/useAposta";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 export function Recuperar() {
-  const [status, setStatus] = useState(null)
-const {token} = useAposta()
+  const [status, setStatus] = useState(null);
+  const { token } = useAposta();
   const {
     control,
     handleSubmit,
@@ -29,33 +30,33 @@ const {token} = useAposta()
     },
   });
 
+  const navigation = useNavigation();
+  const [load, setLoad] = useState(false);
 
+  let codigo = Math.floor(Math.random() * 20000);
 
-const navigation = useNavigation();
-
-
-let codigo = Math.floor(Math.random() * 20000)
-  
-  
-  function sendEmail(data)  { 
+  function sendEmail(data) {
+    setLoad(true);
     var config = {
-      method: 'get',
-      url: 'https://orvalhosj.com/envioemail.php?email='+data.email+'&codigo='+ codigo,
-      headers: { }
+      method: "get",
+      url:
+        "https://orvalhosj.com/envioemail.php?email=" +
+        data.email +
+        "&codigo=" +
+        codigo,
+      headers: {},
     };
-    
-    axios(config)
-    .then(function (response) {
-      //console.error(JSON.stringify(response.data));
-      navigation.navigate('Codigo',{
-        'email' : data.email
-      })
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
 
-    
+    axios(config)
+      .then(function (response) {
+        //console.error(JSON.stringify(response.data));
+        navigation.navigate("Codigo", {
+          email: data.email,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
@@ -90,13 +91,24 @@ let codigo = Math.floor(Math.random() * 20000)
                 placeholder=""
                 onChangeText={onChange}
                 value={value}
+                autoCapitalize="none"
               />
             )}
           />
-
-          <TouchableOpacity onPress={handleSubmit(sendEmail) } style={styles.btnSubmit}>
-            <Text style={styles.btnSubmitText}> Confirmar </Text>
-          </TouchableOpacity>
+          {load ? (
+            <Button
+              style={styles.btnSubmit}
+              isLoading
+              isLoadingText="Enviando"
+            ></Button>
+          ) : (
+            <TouchableOpacity
+              onPress={handleSubmit(sendEmail)}
+              style={styles.btnSubmit}
+            >
+              <Text style={styles.btnSubmitText}> Confirmar </Text>
+            </TouchableOpacity>
+          )}
         </VStack>
       </Center>
     </KeyboardAvoidingView>
@@ -122,10 +134,9 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-export function Codigo({params,navigation,route}) {
-  const {email} = route.params;
+export function Codigo({ params, navigation, route }) {
+  const [load, setLoad] = useState(false);
+  const { email } = route.params;
   const {
     control,
     handleSubmit,
@@ -136,18 +147,12 @@ export function Codigo({params,navigation,route}) {
     },
   });
 
-
-  function sendSenha(){
-
-   navigation.navigate('Senha',{
-     "email":email
-   })
+  function sendSenha() {
+    setLoad(true);
+    navigation.navigate("Senha", {
+      email: email,
+    });
   }
-
-
-
- 
-
 
   return (
     <KeyboardAvoidingView
@@ -179,22 +184,28 @@ export function Codigo({params,navigation,route}) {
               />
             )}
           />
-
-          <TouchableOpacity style={styles.btnSubmit}
-          onPress={sendSenha}
-          >
-            <Text style={styles.btnSubmitText}> Confirmar </Text>
-          </TouchableOpacity>
+          {load ? (
+            <Button
+              style={styles.btnSubmit}
+              isLoading
+              isLoadingText="Confirmando"
+            ></Button>
+          ) : (
+            <TouchableOpacity style={styles.btnSubmit} onPress={sendSenha}>
+              <Text style={styles.btnSubmitText}> Confirmar </Text>
+            </TouchableOpacity>
+          )}
         </VStack>
       </Center>
     </KeyboardAvoidingView>
   );
 }
 
-export function Senha({route}) {
-  let id = ""
+export function Senha({ route }) {
+  let id = "";
   const navigation = useNavigation();
-  const{email} = route.params
+  const { email } = route.params;
+  const [load, setLoad] = useState(false);
   const {
     control,
     handleSubmit,
@@ -206,77 +217,58 @@ export function Senha({route}) {
     },
   });
 
-
-  function senhas (dados){
-
-
-
+  function senhas(dados) {
+    setLoad(true);
     const options2 = {
-      method: 'GET',
-      url: 'https://rutherles.site/api/usuarios',
+      method: "GET",
+      url: "https://rutherles.site/api/usuarios",
       headers: {
-        Accept: 'application/json',
-        Authorization: 'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1dGhlcmxlcy5zaXRlL2FwaS9sb2dpbiIsImlhdCI6MTY2NzIwNjc2OCwiZXhwIjoyMjY2NTM3NDc5OTg4LCJuYmYiOjE2NjcyMDY3NjgsImp0aSI6IjQ0Q2szeWVzWXpFdzNkbUciLCJzdWIiOiI4MSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZfDOFYHldK62hgJwUBmxtAvk1WzYtvJAcTnoI1xGs9Y'
-      }
+        Accept: "application/json",
+        Authorization:
+          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1dGhlcmxlcy5zaXRlL2FwaS9sb2dpbiIsImlhdCI6MTY2NzIwNjc2OCwiZXhwIjoyMjY2NTM3NDc5OTg4LCJuYmYiOjE2NjcyMDY3NjgsImp0aSI6IjQ0Q2szeWVzWXpFdzNkbUciLCJzdWIiOiI4MSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZfDOFYHldK62hgJwUBmxtAvk1WzYtvJAcTnoI1xGs9Y",
+      },
     };
-    
-    axios.request(options2).then(function (response) {
-     let usuarios = response.data
-     let user = usuarios.find(item => item.email == email)
-    id = user.id
 
+    axios
+      .request(options2)
+      .then(function (response) {
+        let usuarios = response.data;
+        let user = usuarios.find((item) => item.email == email);
+        id = user.id;
 
+        if (dados.senha1 == dados.senha2) {
+          navigation.navigate("Login");
+          var data = JSON.stringify({
+            password: dados.senha1,
+          });
 
-if (dados.senha1 == dados.senha2) {
+          var config = {
+            method: "put",
+            url: "http://rutherles.site/api/usuario/" + id,
+            headers: {
+              Authorization:
+                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1dGhlcmxlcy5zaXRlL2FwaS9sb2dpbiIsImlhdCI6MTY2NzIwNjc2OCwiZXhwIjoyMjY2NTM3NDc5OTg4LCJuYmYiOjE2NjcyMDY3NjgsImp0aSI6IjQ0Q2szeWVzWXpFdzNkbUciLCJzdWIiOiI4MSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZfDOFYHldK62hgJwUBmxtAvk1WzYtvJAcTnoI1xGs9Y",
+              "Content-Type": "application/json",
+            },
+            data: data,
+          };
 
-  var data = JSON.stringify({
-    "password": dados.senha1 ,
-    
-  });
-  
-  var config = {
-    method: 'put',
-    url: 'http://rutherles.site/api/usuario/'+id,
-    headers: { 
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1dGhlcmxlcy5zaXRlL2FwaS9sb2dpbiIsImlhdCI6MTY2NzIwNjc2OCwiZXhwIjoyMjY2NTM3NDc5OTg4LCJuYmYiOjE2NjcyMDY3NjgsImp0aSI6IjQ0Q2szeWVzWXpFdzNkbUciLCJzdWIiOiI4MSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZfDOFYHldK62hgJwUBmxtAvk1WzYtvJAcTnoI1xGs9Y', 
-      'Content-Type': 'application/json'
-    },
-    data : data
-  };
-  
-  axios(config)
-  .then(function (response) {
-    console.error(JSON.stringify(response.data));
-    alert("senha alterada com sucesso")
-    //navigation.navigate('Login')
-
-  })
-  .catch(function (error) {
-    console.error(error);
-  });
-  
-  
-} else{alert("as senhas não sao iguais!")}
-
-
-
-      
-      
-    }).catch(function (error) {
-      console.error(error);
-    });
-
-
- 
-
-
-
-
-
+          axios(config)
+            .then(function (response) {
+              console.error(JSON.stringify(response.data));
+              alert("senha alterada com sucesso");
+            })
+            .catch(function (error) {
+              console.error(error);
+            });
+        } else {
+          alert("as senhas não sao iguais!");
+        }
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   }
-
-
-
 
   return (
     <KeyboardAvoidingView
@@ -307,6 +299,8 @@ if (dados.senha1 == dados.senha2) {
                 placeholder=""
                 onChangeText={onChange}
                 value={value}
+                autoCapitalize="none"
+                keyboardType="numeric"
               />
             )}
           />
@@ -327,13 +321,24 @@ if (dados.senha1 == dados.senha2) {
                 placeholder=""
                 onChangeText={onChange}
                 value={value}
+                autoCapitalize="none"
               />
             )}
           />
-
-          <TouchableOpacity onPress={handleSubmit(senhas)} style={styles.btnSubmit}>
-            <Text style={styles.btnSubmitText}> Confirmar </Text>
-          </TouchableOpacity>
+          {load ? (
+            <Button
+              style={styles.btnSubmit}
+              isLoading
+              isLoadingText="Acessando"
+            ></Button>
+          ) : (
+            <TouchableOpacity
+              onPress={handleSubmit(senhas)}
+              style={styles.btnSubmit}
+            >
+              <Text style={styles.btnSubmitText}> Confirmar </Text>
+            </TouchableOpacity>
+          )}
         </VStack>
       </Center>
     </KeyboardAvoidingView>
