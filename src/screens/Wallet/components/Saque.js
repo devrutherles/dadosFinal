@@ -478,6 +478,7 @@ export default function Withdrow() {
               >
                 R$ { parseInt(global.cart).toFixed(2) }
               </Text>
+              
             </View>
             <View style={{}}>
               <Text
