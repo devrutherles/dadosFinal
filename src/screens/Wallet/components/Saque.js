@@ -23,11 +23,16 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { set } from "react-native-reanimated";
 
 export default function Withdrow() {
   const [bank, setBank] = useState({});
   const [text, onChangeText] = React.useState("");
   const [valor, setValor] = React.useState();
+  const [pix, setPix] = React.useState(true);
+  const [conta, setConta] = React.useState(false);
+  let metodo = "pix";
+
   const { carteira, token } = useAposta();
 
   function saque(value) {
@@ -54,6 +59,18 @@ export default function Withdrow() {
     },
   });
 
+  function Fpix() {
+    setPix(true);
+    setConta(false);
+    metodo = "pix";
+  }
+
+  function Fconta() {
+    setPix(false);
+    setConta(true);
+    metodo = "conta";
+  }
+
   function handlesolicitar(data) {
     setLoad(true);
     var datas = JSON.stringify({
@@ -68,7 +85,7 @@ export default function Withdrow() {
       status: "pendente",
       conta: data.conta,
       digito: data.digito,
-      status: "pendente",
+      metodo: metodo,
       valor: data.valor ? data.valor : valor,
     });
 
@@ -125,9 +142,57 @@ export default function Withdrow() {
         >
           <Box>
             <Text alignSelf={"center"} color={"#fff"} bold fontSize="xl" mb="4">
-              Adicionar conta bancária
+              Escolha a forma de transferência
             </Text>
-            <Text alignSelf={"flex-start"} color={"#fff"} marginBottom={2}>
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignContent: "space-between",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+            >
+              <TouchableOpacity
+              onPress={Fpix}
+                style={{
+                  width: "50%",
+                  height: 40,
+                  alignSelf: "center",
+                  alignItems: "center",
+                  alignContent: "center",
+                  borderBottomColor: pix ? "#1AB563" : "#404040",
+                  borderWidth: 1,
+                }}
+              >
+                <Text style={{ color: "#fff", textAlign: "center" }}>Pix</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+              onPress={Fconta}
+                style={{
+                  width: "50%",
+                  height: 40,
+                  alignSelf: "center",
+                  alignItems: "center",
+                  alignContent: "center",
+                  borderBottomColor: conta ? "#1AB563" : "#404040",
+                  borderWidth: 1,
+                }}
+              >
+                <Text style={{ color: "#fff", textAlign: "center" }}>
+                  Conta
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text
+              alignSelf={"flex-start"}
+              color={"#fff"}
+              marginTop={10}
+              marginBottom={2}
+            >
               CPF
             </Text>
             <View>
@@ -155,58 +220,67 @@ export default function Withdrow() {
               />
             </View>
 
-            <View>
-              <Text
-                alignSelf={"flex-start"}
-                color={"#fff"}
-                marginTop={3}
-                marginBottom={2}
-              >
-                Chave PIX
-              </Text>
-              {errors.pix && (
-                <Text style={{ color: "red" }}>Digite sua chave pix.</Text>
-              )}
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                name="pix"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    color={"#fff"}
-                    keyboardType="numeric"
-                    style={styles.Input}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder="Chave PIX"
-                    placeholderTextColor={"#fff"}
-                  />
+            {pix ? (
+              <View>
+                <Text
+                  alignSelf={"flex-start"}
+                  color={"#fff"}
+                  marginTop={3}
+                  marginBottom={2}
+                >
+                  Chave PIX
+                </Text>
+                {errors.pix && (
+                  <Text style={{ color: "red" }}>Digite sua chave pix.</Text>
                 )}
-              />
-            </View>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  name="pix"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input
+                      color={"#fff"}
+                      keyboardType="numeric"
+                      style={styles.Input}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Chave PIX"
+                      placeholderTextColor={"#fff"}
+                    />
+                  )}
+                />
+              </View>
+            ) : (
+              <></>
+            )}
 
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 10,
-                justifyContent: "space-between",
-              }}
-            >
-              <Text alignSelf={"flex-start"} color={"#fff"} marginTop={3}>
-                Banco
-              </Text>
-              <Text color={"#fff"} marginTop={3}>
-                Agência
-              </Text>
-              <Text marginRight={"1"} color={"#fff"} marginTop={3}>
-                Operação
-              </Text>
-            </View>
+            {conta ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 10,
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text alignSelf={"flex-start"} color={"#fff"} marginTop={3}>
+                  Banco
+                </Text>
+                <Text color={"#fff"} marginTop={3}>
+                  Agência
+                </Text>
+                <Text marginRight={"1"} color={"#fff"} marginTop={3}>
+                  Operação
+                </Text>
+              </View>
+            ) : (
+              <></>
+            )}
 
-            <View>
+
+            {conta ? <View>
               <View
                 style={{
                   flexDirection: "row",
@@ -292,9 +366,11 @@ export default function Withdrow() {
                   )}
                 />
               </View>
-            </View>
+            </View> : <></> }
 
-            <View>
+            
+
+            {conta ?  <View>
               <View
                 style={{
                   flexDirection: "row",
@@ -371,7 +447,10 @@ export default function Withdrow() {
                   )}
                 />
               </View>
-            </View>
+            </View> : <></> }
+
+           
+
             <Divider style={{ marginTop: 20 }} />
           </Box>
 
@@ -397,8 +476,9 @@ export default function Withdrow() {
                 color={"#1ab563"}
                 alignSelf={"flex-start"}
               >
-                R$ {carteira ? parseInt(carteira).toFixed(2) : 0.0}
+                R$ { parseInt(global.cart).toFixed(2) }
               </Text>
+              
             </View>
             <View style={{}}>
               <Text
