@@ -1,36 +1,26 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ActivityIndicator,
-  TouchableOpacity,
   SafeAreaView,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
-import { FAB } from "react-native-paper";
-import { putUser, PutAdm } from "../hooks/PostFunctions";
+import { AuthContext } from "../hooks/auth";
 
-import { useAposta } from "../hooks/useAposta";
+import { putUser } from "../hooks/PostFunctions";
 
 export default function Deposito({ route, navigation }) {
-  const [token, setToken] = useState();
   const [visible, setVisible] = useState(false);
   const [deposito, setDeposito] = useState();
-
-  const [time, setTime] = useState();
-
-  const { depositoStatus, deposito_idget, aprovado, saldoadm, carteira } =
-    useAposta();
+  const { user, handleUser, handlePutuser, atualizarUser } =
+    useContext(AuthContext);
 
   const {
     valor,
     user_id,
-    status,
     nome,
     deposito_id_tabela,
     cep,
@@ -43,49 +33,48 @@ export default function Deposito({ route, navigation }) {
   } = route.params;
 
   useEffect(() => {
-    putUser(user_id, deposito_id, parseInt(carteira), valor, "pendente");
+    const timeout = setTimeout(() => {
+      const options = {
+        method: "GET",
+        url: "https://api.mercadopago.com/v1/payments/search",
+        params: {
+          sort: "date_created",
+          criteria: "desc",
+          external_reference: deposito_id,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer APP_USR-6354125960495975-102119-985a677c3232949c7cff973002cec4fb-720572053",
+        },
+      };
 
-    console.warn(carteira);
-    //console.warn(depositoStatus)
+      axios
+        .request(options)
+        .then(function (response) {
+          setDeposito(response.data);
+          if (response.data.results[0].status == "pending") {
+            putUser(
+              user_id,
+              deposito_id,
+              parseInt(user.carteira) + parseInt(valor),
+              valor,
+              "pago"
+            );
 
-    if (aprovado == "approved" && depositoStatus == "pendente") {
-      putUser(
-        user_id,
-        deposito_id,
-        parseInt(carteira) + parseInt(valor),
-        parseInt(valor),
-        "aprovado"
-      );
-      PutAdm(parseInt(saldoadm) + parseInt(valor));
-      navigation.navigate("Wallet");
-    }
-  }, [aprovado]);
-
-  function saldo() {
-    const options = {
-      method: "GET",
-      url: "https://rutherles.site/api/usuario/" + user_id,
-      headers: {
-        Accept: "application/json",
-        Authorization:
-          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
-      },
-    };
-
-    axios
-      .request(options)
-      .then(function (response) {
-        /////console.log()(response.data);
-        navigation.navigate("Wallet", {
-          bilhetes: deposito,
-          cart: response.data[0].carteira,
+            navigation.navigate("Wallet", { pagamento: true });
+            clearTimeout(timeout);
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
         });
-        /////console.log()(response);
-      })
-      .catch(function (error) {
-        //console.error(error);
-      });
-  }
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [deposito]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -120,12 +109,7 @@ export default function Deposito({ route, navigation }) {
         onLoadStart={() => setVisible(true)}
         onLoad={() => setVisible(false)}
       />
-      <FAB
-        icon="wallet"
-        color="#FFF"
-        style={styles.fab}
-        onPress={() => saldo()}
-      />
+
       <View
         style={{ position: "absolute", left: "50%", backgroundColor: "#fff" }}
       >

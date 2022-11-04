@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import moment from "moment";
-
+import { AuthContext } from "../hooks/auth";
 import axios from "axios";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useAposta } from "../hooks/useAposta";
@@ -27,18 +27,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function Saques() {
-  const { token, pedido } = useAposta();
+  const { pedido } = useContext(AuthContext);
+  //console.error(pedido);
 
   const navigation = useNavigation();
 
-  let solicitacoes = token
-    ? global.pedidos.filter((item) => item.user_id == global.ids)
-    : [];
-
-  let pedidos = global.pedidos.length;
-  console.error(pedidos);
-
-  if (pedidos < 0) {
+  if (pedido < 0) {
     return (
       <View
         style={{
@@ -83,9 +77,7 @@ export default function Saques() {
             alignSelf: "center",
             justifyContent: "center",
           }}
-        >
-          {!token ? <ActivityIndicator size="large" /> : null}
-        </View>
+        ></View>
 
         <View style={styles.title1}>
           <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
@@ -95,7 +87,7 @@ export default function Saques() {
         </View>
 
         <View style={{ backgroundColor: "#000", marginTop: 30 }}>
-          {solicitacoes.map((item) => (
+          {pedido.map((item) => (
             <Card style={{ marginBottom: 10 }}>
               <CardBody>
                 <CardDetails>

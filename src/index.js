@@ -1,16 +1,13 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LoginApi } from "../src/screens/hooks/LoginApi";
 import { HStack, Spinner, Text } from "native-base";
-import { View } from "react-native";
-
+import { AuthContext } from "./screens/hooks/auth";
 import Saques from "../src/screens/Wallet/components/Saque";
-import { useAposta } from "./screens/hooks/useAposta";
 import WalletScreen from "../src/screens/Wallet";
-
 import Config from "../src/screens/config";
 import Profile from "../src/screens/profile";
 import { NativeBaseProvider } from "native-base";
@@ -18,11 +15,9 @@ import {
   AntDesign,
   Ionicons,
   Foundation,
-  Feather,
   MaterialIcons,
 } from "@expo/vector-icons";
 import PayButton from "./components/PayButton";
-import Pay from "../src/screens/Pay";
 
 import Results from "../src/screens/Results/Results";
 import Detalhes from "../src/screens/Detalhes/Detalhes";
@@ -31,9 +26,7 @@ import Register from "../src/screens/Login/Register";
 import Pix from "../src/screens/Pix/Pix";
 import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
-import Som from "./screens/Jogo/components/som";
 
-import Retirada from "./screens/Wallet/components/retirada";
 import SaquesConta from "./screens/saques/Saques";
 
 import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
@@ -67,7 +60,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export function Tabs() {
-  const { token } = useAposta();
   return (
     <Tab.Navigator
       initialRouteName="Pay"
@@ -140,8 +132,14 @@ export function Tabs() {
 }
 export default function App() {
   const { token, loading } = LoginApi();
-  //console.warn(token);
-  //console.warn(loading);
+
+  const { user, handleUser } = useContext(AuthContext);
+  const [load4, setLoad] = useState(true);
+
+  if (token && load4) {
+    handleUser(token);
+    setLoad(false);
+  }
 
   return (
     <NativeBaseProvider>

@@ -1,10 +1,14 @@
 import "react-native-gesture-handler";
 import React from "react";
-
+import AuthProvider from "./src/screens/hooks/auth";
 import App from "./src";
-import { LogBox } from "react-native";
 
-LogBox.ignoreAllLogs();
 export default function Main() {
-  return <App />;
+  return (
+    <AuthProvider>
+    <App/>
+    </AuthProvider>
+
+  )
+ 
 }

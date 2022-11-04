@@ -6,29 +6,19 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Animated,
-  Keyboard,
   Platform,
-  SnapshotViewIOS,
   TextInput,
 } from "react-native";
 import { Button } from "native-base";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useContext} from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
-import { set } from "react-native-reanimated";
+import { AuthContext } from "../hooks/auth";
 
 export default function Login({ route }) {
-  const { cadastro } = route.params ? route.params : "";
   const navigation = useNavigation();
-  const [offsetX] = useState(new Animated.Value(0));
-  const [offsetY] = useState(new Animated.Value(95));
-  const [opacity] = useState(new Animated.Value(0));
-  const [logoX] = useState(new Animated.Value(350));
-  const [logoY] = useState(new Animated.Value(100));
-  const [token, setToken] = useState();
   const [erro, setErro] = useState();
   const [load, setLoad] = useState(false);
   const {
@@ -41,6 +31,8 @@ export default function Login({ route }) {
       password: "",
     },
   });
+
+  const {handleUser} = useContext(AuthContext);
 
   function handleSignin(data) {
     setLoad(true);
@@ -72,10 +64,10 @@ export default function Login({ route }) {
       .request(options)
       .then(function (response) {
         storeUser(response.data.user[0]);
-        global.idL = response.data.user[0].id;
         setToken(response.data.authorisation.token);
+        handleUser(response.data.user[0])
         setLoad(false);
-        navigation.navigate("Pay");
+        navigation.navigate("tab");
       })
       .catch(function (error) {
         setLoad(false);
@@ -84,84 +76,25 @@ export default function Login({ route }) {
       });
   }
 
-  useEffect(() => {
-    keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      keyboardDidShow
-    );
-    keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      keyboardDidHide
-    );
 
-    Animated.parallel([
-      Animated.spring(offsetY, {
-        toValue: 0,
-        speed: 4,
-        useNativeDriver: true,
-        bounciness: 20,
-      }),
-      Animated.timing(opacity, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
-
-  function keyboardDidShow() {
-    Animated.parallel([
-      Animated.timing(logoX, {
-        toValue: 300,
-        duration: 100,
-        useNativeDriver: false,
-      }),
-      Animated.timing(logoY, {
-        toValue: 80,
-        duration: 100,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  }
-  function keyboardDidHide() {
-    Animated.parallel([
-      Animated.timing(logoX, {
-        toValue: 300,
-        duration: 100,
-        useNativeDriver: false,
-      }),
-      Animated.timing(logoY, {
-        toValue: 80,
-        duration: 100,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  }
 
   return (
     <KeyboardAvoidingView
       style={styles.background}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={styles.containerLogo}>
-        <Animated.Image
+      <View style={{marginBottom:70,alignContent:"center",alignItems:"center"}}>
+        <Image
           style={{
-            width: logoX,
-            height: logoY,
+           width:120,height:120,
+           borderRadius:7
           }}
-          source={require("../../images/logo.png")}
+          source={require("../../images/caipira.png")}
         />
+        <Text style={{color:"#fff",marginTop:25,fontSize:20}}>Morena Caipira</Text>
       </View>
 
-      <Animated.View
-        style={[
-          styles.container,
-          {
-            opacity: opacity,
-            transform: [{ translateY: offsetY }],
-          },
-        ]}
-      >
+      
         <View style={styles.key}>
           <Controller
             control={control}
@@ -253,13 +186,12 @@ export default function Login({ route }) {
             Esqueceu sua senha?
           </Text>
         </TouchableOpacity>
-      </Animated.View>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  marginp: Platform.OS === "ios" ? 200 : 100,
+  marginp: Platform.OS === "ios" ? 90 : 90,
   key: {
     width: "100%",
     alignItems: "center",
@@ -268,7 +200,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {},
       android: {
-        marginTop: 100,
+        marginTop: 20,
       },
     }),
   },
@@ -279,13 +211,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   containerLogo: {
-    flex: 1,
+    
     justifyContent: "center",
     alignItems: "center",
   },
   container: {
-    marginTop: -40,
-    flex: 1,
+    marginTop: 10,
+    
     alignItems: "center",
     justifyContent: "center",
     width: "100%",

@@ -8,10 +8,10 @@ export function LoginApi() {
   useEffect(() => {
     const getToken = async () => {
       try {
-        const value = await AsyncStorage.getItem("@token");
+        const value = await AsyncStorage.getItem("@user");
         if (value !== null) {
           
-          setToken(value);
+          setToken(JSON.parse(value));
           setLoading(true)
           
         } else{

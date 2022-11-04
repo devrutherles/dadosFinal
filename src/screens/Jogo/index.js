@@ -1,44 +1,29 @@
 import { Feather, AntDesign, Ionicons } from "@expo/vector-icons";
-import { React, useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { React, useState, useEffect, useRef, useContext } from "react";
+import { StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import { View, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
 import { FlatGrid } from "react-native-super-grid";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
 import Alerta from "./components/Alert";
-import Alerta2 from "./components/Alert2";
-import { MaterialIcons } from "@expo/vector-icons";
-import { ApostarApi } from "../hooks/Aposta";
+
 import { PostJogada, PutAdm } from "../hooks/PostFunctions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUrl } from "../hooks/useUrl";
-
+import { AuthContext } from "../hooks/auth";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
-
-import { Audio } from "expo-av";
 
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
 import Playes from "./components/Header1";
-import { useProfile } from "../hooks/useProfile";
-import { LogBox } from "react-native";
 
-LogBox.ignoreLogs(["Warning: ..."]);
 export default function Index({ navigation, route }) {
+  const { user, handleUser, getPedido, getJogada } = useContext(AuthContext);
+  let carteira = user.carteira;
   const carregamento = require("../../../assets/img/dice.gif");
   let valor = 0;
   const [visible, setVisible] = useState(false);
-  const [sound, setSound] = useState();
-  const [sound1, setSound1] = useState();
-  const [sound2, setSound2] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
@@ -48,8 +33,6 @@ export default function Index({ navigation, route }) {
   const [verificaAposta, setVerificaAposta] = useState(true);
   const [ids, setIds] = useState();
 
-  const [alertaCreditos, setAlertaCreditos] = useState(null);
-  let total = "";
   const [sala, setSala] = useState({
     sala: 1,
     valor1: 1,
@@ -62,28 +45,13 @@ export default function Index({ navigation, route }) {
 
   let numeros = [];
   const [array_valor_apostado, setArray_valor_apostado] = useState();
-  const iconCancel = require("../../../assets/icons/no.png");
-  const {
-    loading,
-    nome,
-    status,
-    numeroPartida,
-    carteira,
-    perdas,
-    ganhos,
-    apostasadm,
-    saldoadm,
-    geturl,
-    token,
-    loading2,
-  } = useAposta();
+  const { nome, geturl } = useAposta();
 
   let dadosEscolhidos = "";
   let valorApostado = "";
   let resultadoJogo = "";
   let imagemDaosEscolhidos = [];
   let iniciada = null;
-  let finalizada = null;
   let resultado = "";
   let aposta_id = "";
   const salas = [
@@ -134,8 +102,8 @@ export default function Index({ navigation, route }) {
   useEffect(() => {
     getSelect();
     getApostas();
-
-    return () => {};
+    getPedido();
+    getJogada();
   }, []);
 
   function dado(data) {
@@ -144,9 +112,6 @@ export default function Index({ navigation, route }) {
         let teste = getselect.find((item) => item.id == data.id);
 
         let teste2 = getselect.filter((item) => item != teste);
-
-        console.error(teste2);
-
         storeSelect(teste2);
       } else {
         setIds(data.id);
@@ -162,7 +127,7 @@ export default function Index({ navigation, route }) {
   }
 
   const postWallet = (valor, wallet, verifica) => {
-    let id = token ? token.id : 1;
+    let id = user.id ;
 
     const options = {
       method: "PUT",
@@ -247,14 +212,10 @@ export default function Index({ navigation, route }) {
 
     var total = selecionados.reduce(getTotal, 0);
     function getTotal(total, item) {
-      //console.error(countObject[item.id]);
       return item.valor * item.mult * countObject[item.id] + total;
     }
 
     valor = total;
-    //console.error("valorrr");
-
-    console.info(valor);
   }
 
   if (getaposta) {
@@ -311,12 +272,8 @@ export default function Index({ navigation, route }) {
 
   if (resultado && valor > 0 && aposta_id == resultado.id && verificaAposta) {
     postWallet(valor, carteira);
-    PutAdm(
-      parseInt(saldoadm) - parseInt(valor),
-      parseInt(ganhos),
-      parseInt(perdas) + parseInt(valor),
-      parseInt(apostasadm) + 1
-    );
+    handleUser();
+    getJogada();
 
     setTimeout(() => {
       storeAposta(null);
@@ -334,12 +291,8 @@ export default function Index({ navigation, route }) {
       valorApostado = element.valor;
     });
 
-    PutAdm(
-      parseInt(saldoadm) + parseInt(valorApostado),
-      parseInt(ganhos) + parseInt(valorApostado),
-      parseInt(perdas),
-      parseInt(apostasadm) + 1
-    );
+    handleUser();
+    getJogada();
 
     setTimeout(() => {
       storeAposta(null);
@@ -400,7 +353,7 @@ export default function Index({ navigation, route }) {
               color: "gray",
             }}
           >
-            {token ? token.nome.split(" ")[0] : <></>}
+            {user.nome ? user.nome.split(" ")[0] : "usuario"}
           </Text>
         </View>
 
@@ -412,12 +365,7 @@ export default function Index({ navigation, route }) {
               color: "#a2d5ab",
             }}
           >
-            R${" "}
-            {carteira ? (
-              parseInt(carteira).toFixed(2)
-            ) : (
-              <Spinner color="warning.500" />
-            )}
+            {user ? "R$ " + parseInt(user.carteira).toFixed(2) : 0.0}
           </Text>
         </View>
 
@@ -594,17 +542,6 @@ export default function Index({ navigation, route }) {
                               useNativeIOS={false}
                               options={[
                                 {
-                                  label: "Cancelar Aposta",
-                                  iconSource: iconCancel,
-                                  onPress: () => storeSelect([]),
-                                },
-
-                                {
-                                  label: "Cancelar Dado",
-
-                                  onPress: () => cancel({ id: item.id }),
-                                },
-                                {
                                   label: "R$ " + sala.valor1.toFixed(2),
                                   onPress: () =>
                                     selecionar({
@@ -763,7 +700,7 @@ export default function Index({ navigation, route }) {
                             options={[
                               {
                                 label: "Cancelar Aposta",
-                                iconSource: iconCancel,
+
                                 onPress: () => storeSelect([]),
                               },
 

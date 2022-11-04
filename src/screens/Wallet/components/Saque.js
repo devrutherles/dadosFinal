@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useAposta } from "../../hooks/useAposta";
 import {
   View,
@@ -7,23 +7,11 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import {
-  Stack,
-  Box,
-  Text,
-  FormControl,
-  Input,
-  Divider,
-  WarningOutlineIcon,
-  Button,
-  Select,
-  Center,
-  CheckIcon,
-} from "native-base";
+import { Stack, Box, Text, Input, Divider, Button } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
-import { set } from "react-native-reanimated";
+import { AuthContext } from "../../hooks/auth";
 
 export default function Withdrow() {
   const [bank, setBank] = useState({});
@@ -33,7 +21,7 @@ export default function Withdrow() {
   const [conta, setConta] = React.useState(false);
   let metodo = "pix";
 
-  const { carteira, token } = useAposta();
+  const { user, getPedido } = useContext(AuthContext);
 
   function saque(value) {
     setValor(value);
@@ -102,6 +90,7 @@ export default function Withdrow() {
       .then(function (response) {
         console.error(JSON.stringify(response.data));
         setLoad(false);
+        getPedido();
         Alert.alert(
           "Pedido enviado",
           "Ja estamos com seu pedido de saque, voce tem 48h para receber",
@@ -156,7 +145,7 @@ export default function Withdrow() {
               }}
             >
               <TouchableOpacity
-              onPress={Fpix}
+                onPress={Fpix}
                 style={{
                   width: "50%",
                   height: 40,
@@ -170,7 +159,7 @@ export default function Withdrow() {
                 <Text style={{ color: "#fff", textAlign: "center" }}>Pix</Text>
               </TouchableOpacity>
               <TouchableOpacity
-              onPress={Fconta}
+                onPress={Fconta}
                 style={{
                   width: "50%",
                   height: 40,
@@ -279,179 +268,180 @@ export default function Withdrow() {
               <></>
             )}
 
-
-
-
-            {conta ? <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                {errors.banco && (
-                  <Text style={{ color: "red" }}>Digite seu banco.</Text>
-                )}
-                {errors.ag && (
-                  <Text style={{ color: "red" }}>Digite sua agência.</Text>
-                )}
-                {errors.operacao && (
-                  <Text style={{ color: "red" }}>Digite sua operacao.</Text>
-                )}
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 10,
-                  justifyContent: "space-between",
-                }}
-              >
-                <Controller
-                  control={control}
-                  rules={{
-                    required: true,
+            {conta ? (
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
-                  name="banco"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <Input
-                      keyboardType="text"
-                      width={"30%"}
-                      style={styles.Input1}
-                      color={"#fff"}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      placeholder="Banco"
-                      placeholderTextColor={"#fff"}
-                    />
+                >
+                  {errors.banco && (
+                    <Text style={{ color: "red" }}>Digite seu banco.</Text>
                   )}
-                />
-                <Controller
-                  control={control}
-                  rules={{
-                    required: true,
+                  {errors.ag && (
+                    <Text style={{ color: "red" }}>Digite sua agência.</Text>
+                  )}
+                  {errors.operacao && (
+                    <Text style={{ color: "red" }}>Digite sua operacao.</Text>
+                  )}
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 10,
+                    justifyContent: "space-between",
                   }}
-                  name="ag"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <Input
-                      keyboardType="text"
-                      width={"30%"}
-                      style={styles.Input1}
-                      color={"#fff"}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      placeholder="Agência"
-                      placeholderTextColor={"#fff"}
-                    />
-                  )}
-                />
+                >
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    name="banco"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        keyboardType="text"
+                        width={"30%"}
+                        style={styles.Input1}
+                        color={"#fff"}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        placeholder="Banco"
+                        placeholderTextColor={"#fff"}
+                      />
+                    )}
+                  />
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    name="ag"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        keyboardType="text"
+                        width={"30%"}
+                        style={styles.Input1}
+                        color={"#fff"}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        placeholder="Agência"
+                        placeholderTextColor={"#fff"}
+                      />
+                    )}
+                  />
 
-                <Controller
-                  control={control}
-                  rules={{
-                    required: true,
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    name="op"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        keyboardType="numeric"
+                        width={"30%"}
+                        style={styles.Input2}
+                        color={"#fff"}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        placeholder="Operação"
+                        placeholderTextColor={"#fff"}
+                      />
+                    )}
+                  />
+                </View>
+              </View>
+            ) : (
+              <></>
+            )}
+
+            {conta ? (
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 10,
+                    justifyContent: "space-between",
                   }}
-                  name="op"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <Input
-                      keyboardType="numeric"
-                      width={"30%"}
-                      style={styles.Input2}
-                      color={"#fff"}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      placeholder="Operação"
-                      placeholderTextColor={"#fff"}
-                    />
-                  )}
-                />
-              </View>
-            </View> : <></> }
-
-            
-
-            {conta ?  <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 10,
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text alignSelf={"flex-start"} color={"#fff"} marginTop={3}>
-                  Conta
-                </Text>
-                <Text marginRight={"7"} color={"#fff"} marginTop={3}>
-                  Dígito
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                {errors.digito && (
-                  <Text style={{ color: "red" }}>Digite seu digito.</Text>
-                )}
-                {errors.conta && (
-                  <Text style={{ color: "red" }}>Digite sua conta.</Text>
-                )}
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 10,
-                  justifyContent: "space-between",
-                }}
-              >
-                <Controller
-                  control={control}
-                  rules={{
-                    required: true,
+                >
+                  <Text alignSelf={"flex-start"} color={"#fff"} marginTop={3}>
+                    Conta
+                  </Text>
+                  <Text marginRight={"7"} color={"#fff"} marginTop={3}>
+                    Dígito
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
-                  name="conta"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <Input
-                      keyboardType="numeric"
-                      width={"70%"}
-                      style={styles.Input1}
-                      color={"#fff"}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      placeholder="Conta"
-                      placeholderTextColor={"#fff"}
-                    />
+                >
+                  {errors.digito && (
+                    <Text style={{ color: "red" }}>Digite seu digito.</Text>
                   )}
-                />
-
-                <Controller
-                  control={control}
-                  rules={{
-                    required: true,
+                  {errors.conta && (
+                    <Text style={{ color: "red" }}>Digite sua conta.</Text>
+                  )}
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 10,
+                    justifyContent: "space-between",
                   }}
-                  name="digito"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <Input
-                      keyboardType="numeric"
-                      width={"20%"}
-                      style={styles.Input2}
-                      color={"#fff"}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      placeholder="Dígito"
-                      placeholderTextColor={"#fff"}
-                    />
-                  )}
-                />
-              </View>
-            </View> : <></> }
+                >
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    name="conta"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        keyboardType="numeric"
+                        width={"70%"}
+                        style={styles.Input1}
+                        color={"#fff"}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        placeholder="Conta"
+                        placeholderTextColor={"#fff"}
+                      />
+                    )}
+                  />
 
-           
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    name="digito"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        keyboardType="numeric"
+                        width={"20%"}
+                        style={styles.Input2}
+                        color={"#fff"}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        placeholder="Dígito"
+                        placeholderTextColor={"#fff"}
+                      />
+                    )}
+                  />
+                </View>
+              </View>
+            ) : (
+              <></>
+            )}
 
             <Divider style={{ marginTop: 20 }} />
           </Box>
@@ -478,9 +468,8 @@ export default function Withdrow() {
                 color={"#1ab563"}
                 alignSelf={"flex-start"}
               >
-                R$ { parseInt(global.cart).toFixed(2) }
+                R$ {user ? parseInt(user.carteira).toFixed(2) : 0.0}
               </Text>
-              
             </View>
             <View style={{}}>
               <Text

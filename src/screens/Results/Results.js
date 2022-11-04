@@ -8,31 +8,14 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 //import ImagedCardView from "react-native-imaged-card-view";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { AuthContext } from "../hooks/auth";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useAposta } from "../hooks/useAposta";
 import moment from "moment";
 
 import {
-  Wrapper,
-  Header,
-  HeaderContainer,
-  Title,
-  BalanceContainer,
-  Value,
-  Bold,
-  EyeButton,
-  Info,
-  Actions,
-  Action,
-  ActionLabel,
-  UseBalance,
-  UseBalanceTitle,
-  PaymentMethods,
-  PaymentMethodsTitle,
   Card,
   CardBody,
   CardDetails,
@@ -41,25 +24,12 @@ import {
   Img,
   AddButton,
   AddLabel,
-  UseTicketContainer,
-  UseTicketButton,
-  UseTicketLabel,
 } from "./styles";
 
 export default function Results({ navigation, route }) {
-  const [jogos, setJogos] = React.useState([]);
-  const [loader, setloader] = React.useState();
-  const [api, setApi] = React.useState(true);
-  const [isStatus, setStatus] = useState(0);
-  const [user, setUser] = React.useState();
-  const { bilhetes } = route.params ? route.params : [];
-  const { jogada, token } = useAposta();
+  const { jogada } = useContext(AuthContext);
 
-  let jogo = token ? global.jogadas.filter((item) => item.user_id == ids) : [];
-  let pedidos = global.jogadas.length;
-  console.error(pedidos);
-
-  if (pedidos < 0) {
+  if (jogada < 0) {
     return (
       <View
         style={{
@@ -98,11 +68,9 @@ export default function Results({ navigation, route }) {
             alignSelf: "center",
             justifyContent: "center",
           }}
-        >
-          {!token ? <ActivityIndicator size="large" /> : null}
-        </View>
+        ></View>
 
-        {jogo.map((jogo) => (
+        {jogada.map((jogo) => (
           <View style={{ backgroundColor: "#000", marginTop: 30 }}>
             <Card style={{ marginBottom: 10 }}>
               <CardBody>
