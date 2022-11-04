@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useAposta } from "../../hooks/useAposta";
 import {
   View,
   StyleSheet,
@@ -88,7 +87,7 @@ export default function Withdrow() {
 
     axios(config)
       .then(function (response) {
-        console.error(JSON.stringify(response.data));
+        //console.error(JSON.stringify(response.data));
         setLoad(false);
         getPedido();
         Alert.alert(
@@ -111,7 +110,7 @@ export default function Withdrow() {
         );
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   }
 

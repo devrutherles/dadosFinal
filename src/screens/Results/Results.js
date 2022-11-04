@@ -12,7 +12,6 @@ import { useEffect, useState, useContext } from "react";
 //import ImagedCardView from "react-native-imaged-card-view";
 import { AuthContext } from "../hooks/auth";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { useAposta } from "../hooks/useAposta";
 import moment from "moment";
 
 import {
@@ -27,7 +26,11 @@ import {
 } from "./styles";
 
 export default function Results({ navigation, route }) {
-  const { jogada } = useContext(AuthContext);
+  const { jogada, getJogada } = useContext(AuthContext);
+
+  useEffect(() => {
+    getJogada();
+  }, [jogada]);
 
   if (jogada < 0) {
     return (

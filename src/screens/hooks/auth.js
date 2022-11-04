@@ -11,27 +11,7 @@ export default function AuthProvider({ children }) {
   function handleUser(data) {
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/usuario/" + data.id,
-      headers: { Accept: "application/json" },
-    };
-
-    axios
-      .request(options)
-      .then(function (response) {
-        // console.error(response.data);
-        setUser(response.data[0]);
-        getPedido();
-        getJogada();
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  }
-
-  function atualizarUser() {
-    const options = {
-      method: "GET",
-      url: "https://rutherles.site/api/usuario/" + user.id,
+      url: "https://rutherles.site/api/usuario/" + data,
       headers: { Accept: "application/json" },
     };
 
@@ -42,9 +22,7 @@ export default function AuthProvider({ children }) {
         getPedido();
         getJogada();
       })
-      .catch(function (error) {
-        console.error(error);
-      });
+      .catch(function (error) {});
   }
 
   function handlePutuser(carteira, status, id) {
@@ -59,10 +37,10 @@ export default function AuthProvider({ children }) {
       .request(options)
       .then(function (response) {
         setUser(response.data[0]);
-        console.error(response.data);
+        //console.error(response.data);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   }
 
@@ -80,7 +58,7 @@ export default function AuthProvider({ children }) {
         setPedido(pedidos);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   }
 
@@ -95,12 +73,12 @@ export default function AuthProvider({ children }) {
       .request(options)
       .then(function (response) {
         let jogadas = response.data.filter((item) => item.user_id == user.id);
-        console.error(jogadas);
+        //console.error(jogadas);
 
         setJogada(jogadas);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   }
 
@@ -114,7 +92,6 @@ export default function AuthProvider({ children }) {
         pedido,
         getJogada,
         jogada,
-        atualizarUser,
       }}
     >
       {children}

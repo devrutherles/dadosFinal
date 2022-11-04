@@ -137,7 +137,7 @@ export default function App() {
   const [load4, setLoad] = useState(true);
 
   if (token && load4) {
-    handleUser(token);
+    handleUser(token.id);
     setLoad(false);
   }
 

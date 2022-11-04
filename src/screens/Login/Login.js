@@ -65,13 +65,13 @@ export default function Login({ route }) {
       .then(function (response) {
         storeUser(response.data.user[0]);
         setToken(response.data.authorisation.token);
-        handleUser(response.data.user[0])
+        handleUser(response.data.user[0].id);
         setLoad(false);
         navigation.navigate("tab");
       })
       .catch(function (error) {
         setLoad(false);
-        console.error(error);
+        //console.error(error);
         setErro("Email ou senha incorretos");
       });
   }

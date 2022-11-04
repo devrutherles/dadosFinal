@@ -97,7 +97,7 @@ export default function Detalhes({ route }) {
         ///console.log()(carteira);
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
   }
   const navigation = useNavigation();

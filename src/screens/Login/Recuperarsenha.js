@@ -14,12 +14,10 @@ import { useForm, Controller } from "react-hook-form";
 import email from "react-native-email";
 import { Linking } from "react-native";
 import { useState } from "react";
-import { useAposta } from "../hooks/useAposta";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 export function Recuperar() {
   const [status, setStatus] = useState(null);
-  const { token } = useAposta();
   const {
     control,
     handleSubmit,
@@ -49,7 +47,7 @@ export function Recuperar() {
 
     axios(config)
       .then(function (response) {
-        //console.error(JSON.stringify(response.data));
+        ////console.error(JSON.stringify(response.data));
         navigation.navigate("Codigo", {
           email: data.email,
         });
@@ -255,18 +253,18 @@ export function Senha({ route }) {
 
           axios(config)
             .then(function (response) {
-              console.error(JSON.stringify(response.data));
+              //console.error(JSON.stringify(response.data));
               alert("senha alterada com sucesso");
             })
             .catch(function (error) {
-              console.error(error);
+              //console.error(error);
             });
         } else {
           alert("as senhas não sao iguais!");
         }
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   }
 

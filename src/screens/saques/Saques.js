@@ -13,7 +13,6 @@ import moment from "moment";
 import { AuthContext } from "../hooks/auth";
 import axios from "axios";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { useAposta } from "../hooks/useAposta";
 import {
   Card,
   CardBody,
@@ -27,10 +26,14 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function Saques() {
-  const { pedido } = useContext(AuthContext);
-  //console.error(pedido);
+  const { pedido, getPedido } = useContext(AuthContext);
+  ////console.error(pedido);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    getPedido();
+  }, [pedido]);
 
   if (pedido < 0) {
     return (

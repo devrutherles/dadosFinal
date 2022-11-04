@@ -51,7 +51,7 @@ const Compra = (props) => {
         /////console.log()(response)
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
 
     users = JSON.parse(user);
@@ -78,7 +78,7 @@ const Compra = (props) => {
         ///console.log()(response);
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
 
     const options3 = {
@@ -108,7 +108,7 @@ const Compra = (props) => {
         ///console.log()(response.data);
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
 
     const storeData = async (value) => {
@@ -138,7 +138,7 @@ const Compra = (props) => {
         storeData(response.data);
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
 
     const options6 = {
@@ -159,7 +159,7 @@ const Compra = (props) => {
         ///console.log()(response.data);
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
 
     const options5 = {
@@ -184,7 +184,7 @@ const Compra = (props) => {
         });
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
   }
 

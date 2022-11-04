@@ -47,7 +47,7 @@ export default function Register() {
         setLop(false);
       })
       .catch(function (error) {
-        //console.error(error);
+        ////console.error(error);
       });
   }
 

@@ -15,8 +15,7 @@ import { putUser } from "../hooks/PostFunctions";
 export default function Deposito({ route, navigation }) {
   const [visible, setVisible] = useState(false);
   const [deposito, setDeposito] = useState();
-  const { user, handleUser, handlePutuser, atualizarUser } =
-    useContext(AuthContext);
+  const { user, handleUser, handlePutuser } = useContext(AuthContext);
 
   const {
     valor,
@@ -67,7 +66,7 @@ export default function Deposito({ route, navigation }) {
           }
         })
         .catch(function (error) {
-          console.error(error);
+          //console.error(error);
         });
     }, 3000);
 

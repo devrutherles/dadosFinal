@@ -43,7 +43,7 @@ import { AuthContext } from "../hooks/auth";
 export default function Wallet({ route, navigation }) {
   const [isVisible, setIsVisible] = useState(true);
   const [useBalance, setUseBalance] = useState(true);
-  const { user, atualizarUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   function handleToggleVisibility() {
     setIsVisible((prevState) => !prevState);
   }
@@ -57,7 +57,7 @@ export default function Wallet({ route, navigation }) {
 
   if (pagamento && load) {
     alert("Depositado com sucesso!");
-    atualizarUser();
+    handleUser(user.id);
     setLoad(false);
   }
 
