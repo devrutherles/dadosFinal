@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -21,7 +21,30 @@ export default function Withdrow() {
   let metodo = "pix";
 
   const { user, getPedido } = useContext(AuthContext);
+  const [user1, setUser1] = React.useState();
+  const [loader, setloader] = React.useState(false);
+  let users = "";
 
+  if (loader) {
+    users = JSON.parse(user);
+  }
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("@user");
+        if (value !== null) {
+          ///console.log()(value);
+          setUser1(value);
+          setloader(true);
+        }
+      } catch (e) {
+        // error reading value
+      }
+    };
+
+    getData();
+  }, []);
   function saque(value) {
     setValor(value);
   }
@@ -61,14 +84,14 @@ export default function Withdrow() {
   function handlesolicitar(data) {
     setLoad(true);
     var datas = JSON.stringify({
-      usuario: token.nome,
-      user_id: token.id,
-      cpf: token.cpf,
+      usuario: users.nome,
+      user_id: users.id,
+      cpf: data.cpf,
       pix: data.pix,
       banco: data.banco,
       op: data.op,
       ag: data.ag,
-      email: token.email,
+      email: users.email,
       status: "pendente",
       conta: data.conta,
       digito: data.digito,
@@ -89,7 +112,7 @@ export default function Withdrow() {
       .then(function (response) {
         console.error(JSON.stringify(response.data));
         setLoad(false);
-        
+
         Alert.alert(
           "Pedido enviado",
           "Ja estamos com seu pedido de saque, voce tem 48h para receber",
@@ -109,11 +132,14 @@ export default function Withdrow() {
           }
         );
       })
-      .catch(function (error) {
-        console.error(error);
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error.message);
       });
   }
-
+  function handleSignin(data) {
+    ///console.log()(data);
+  }
   return (
     <View style={styles.container}>
       <ScrollView w="100%">
