@@ -104,10 +104,12 @@ export const Card = styled.View`
   elevation: 1;
   width: 90%;
   align-self: center;
+  height: 130px;
 `;
 
 export const CardBody = styled.View`
   flex-direction: row;
+  margin-top: -10px;
 `;
 
 export const CardDetails = styled.View`
@@ -122,9 +124,10 @@ export const CardTitle = styled.Text`
 `;
 
 export const CardInfo = styled.Text`
-  font-size: 10px;
+  font-size: 15px;
   color: #fff;
   margin-top: 15px;
+  font-weight: 600;
 `;
 
 export const Img = styled.Image`
@@ -136,7 +139,7 @@ export const Img = styled.Image`
 export const AddButton = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  margin-top: 25px;
+  margin-top: -23px;
 `;
 
 export const AddLabel = styled.Text`

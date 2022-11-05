@@ -32,8 +32,6 @@ export default function Saques() {
   let pedidos = pedido.filter((item) => item.user_id == user.id);
   const navigation = useNavigation();
 
-
-
   if (pedido < 0) {
     return (
       <View
@@ -43,12 +41,6 @@ export default function Saques() {
           justifyContent: "center",
         }}
       >
-        <View style={styles.title1}>
-          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-            <AntDesign style={styles.iconRight} name="left" />
-          </TouchableOpacity>
-          <Text style={styles.title2}>Meus saque</Text>
-        </View>
         <View
           style={{
             flex: 1,
@@ -80,13 +72,6 @@ export default function Saques() {
             justifyContent: "center",
           }}
         ></View>
-
-        <View style={styles.title1}>
-          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-            <AntDesign style={styles.iconRight} name="left" />
-          </TouchableOpacity>
-          <Text style={styles.title2}>Meus saque</Text>
-        </View>
 
         <View style={{ backgroundColor: "#000", marginTop: 30 }}>
           {pedidos.map((item) => (

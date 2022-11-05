@@ -118,6 +118,7 @@ export default function Login({ route }) {
               autoCorrect={false}
               keyboardType="email-address"
               placeholderTextColor="#fff"
+              autoCapitalize="none"
             />
           )}
         />
@@ -217,13 +218,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   containerLogo: {
-    
     justifyContent: "center",
     alignItems: "center",
   },
   container: {
     marginTop: 10,
-    
+
     alignItems: "center",
     justifyContent: "center",
     width: "100%",

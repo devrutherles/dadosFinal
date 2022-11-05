@@ -36,12 +36,6 @@ export default function Chat({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.title1}>
-        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-          <AntDesign style={styles.iconRight} name="left" />
-        </TouchableOpacity>
-        <Text style={styles.title2}>Ajuda</Text>
-      </View>
       <WebView
         style={{ opacity: visible }}
         source={{

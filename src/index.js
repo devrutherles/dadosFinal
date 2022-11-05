@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -33,6 +33,9 @@ import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
 import Faq from "./screens/faq/Faq";
 import Withdrow from "./screens/Wallet/components/Saque";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["Warning: ..."]);
 
 const icons = {
   Home: {
@@ -129,13 +132,14 @@ export function Tabs() {
 }
 export default function App() {
   const { token, loading } = LoginApi();
-  const { getUser, getPedido, getJogada } = useContext(AuthContext);
 
-  useEffect(() => {
-    getUser(token.id);
-    getPedido(token.id);
-    getJogada(token.id);
-  }, [token]);
+  const { user, handleUser } = useContext(AuthContext);
+  const [load4, setLoad] = useState(true);
+
+  if (token && load4) {
+    handleUser(token);
+    setLoad(false);
+  }
 
   return (
     <NativeBaseProvider>
@@ -155,16 +159,36 @@ export default function App() {
               name="Chat"
               component={Chat}
               options={{
-                headerShown: false,
-                title: "Perfil",
+                title: "Ajuda",
+                headerStyle: {
+                  backgroundColor: "#fff",
+                },
+
+                headerShown: true,
+                headerTintColor: "#121212",
+                headerBackTitleVisible: false,
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  fontSize: 20,
+                },
               }}
             />
             <Stack.Screen
               name="Faq"
               component={Faq}
               options={{
-                headerShown: false,
-                title: "Perfil",
+                title: "Perguntas Frequentes",
+                headerStyle: {
+                  backgroundColor: "#000",
+                },
+
+                headerShown: true,
+                headerTintColor: "#fff",
+                headerBackTitleVisible: false,
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  fontSize: 20,
+                },
               }}
             />
 
@@ -196,26 +220,36 @@ export default function App() {
               name="Profile"
               component={Profile}
               options={{
-                headerShown: false,
-                title: "Perfil",
+                title: "Informações pessoais",
+                headerStyle: {
+                  backgroundColor: "#000",
+                },
+
+                headerShown: true,
+                headerTintColor: "#fff",
+                headerBackTitleVisible: false,
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  fontSize: 20,
+                },
               }}
             />
             <Stack.Screen
               name="Saque"
               component={Saques}
               options={{
-                headerShown: false,
-                title: "Perfil",
+                title: "Meus saques",
+                headerStyle: {
+                  backgroundColor: "#000",
+                },
+                headerShown: true,
+                headerTintColor: "#fff",
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                },
               }}
             />
-            <Stack.Screen
-              name="Detalhes"
-              component={Detalhes}
-              options={{
-                headerShown: false,
-                title: "detalhes",
-              }}
-            />
+
             <Stack.Screen
               name="Login"
               component={Login}
@@ -229,9 +263,18 @@ export default function App() {
               name="Saques"
               component={SaquesConta}
               options={{
-                headerShown: false,
-                title: "Saque",
-                headerLeft: true,
+                title: "Meus saques",
+                headerStyle: {
+                  backgroundColor: "#000",
+                },
+
+                headerShown: true,
+                headerTintColor: "#fff",
+                headerBackTitleVisible: false,
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  fontSize: 20,
+                },
               }}
             />
             <Stack.Screen

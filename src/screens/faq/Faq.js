@@ -35,12 +35,6 @@ export default function Faq({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f2f5" }}>
-      <View style={styles.title1}>
-        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-          <AntDesign style={styles.iconRight} name="left" />
-        </TouchableOpacity>
-        <Text style={styles.title2}>Faq</Text>
-      </View>
       <WebView
         onScroll={false}
         style={{ opacity: visible, height: "100%", backgroundColor: "#f0f2f5" }}

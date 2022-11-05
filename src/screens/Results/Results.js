@@ -62,6 +62,9 @@ export default function Results({ navigation, route }) {
   } else {
     return (
       <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
+        <View style={{ marginTop: 25 }}>
+          <Text style={styles.title2}>Minhas Apostas</Text>
+        </View>
         <View
           style={{
             position: "absolute",
@@ -73,12 +76,10 @@ export default function Results({ navigation, route }) {
         ></View>
 
         {jogadas.map((jogo) => (
-          <View style={{ backgroundColor: "#000", marginTop: 30 }}>
-            <Card style={{ marginBottom: 10 }}>
+          <View style={{ backgroundColor: "#000", marginTop: 20 }}>
+            <Card>
               <CardBody>
                 <CardDetails>
-                  <CardTitle> Aposta&nbsp; #{jogo.id}</CardTitle>
-
                   <CardInfo>
                     {"Data " + moment(jogo.created_at).format("DD/MM/Y")}
                   </CardInfo>
