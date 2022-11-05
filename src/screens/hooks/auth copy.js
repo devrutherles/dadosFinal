@@ -1,8 +1,10 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
+import { LoginApi } from "./LoginApi";
 export const AuthContext = createContext({});
 
 export default function AuthProvider({ children }) {
+  const { token, loading } = LoginApi();
   const [user, setUser] = useState(false);
   const [pedido, setPedido] = useState([]);
   const [jogada, setJogada] = useState([]);
@@ -24,10 +26,10 @@ export default function AuthProvider({ children }) {
       .catch(function (error) {});
   }
 
-  function getUser(data) {
+  function getUser() {
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/usuario/" + data,
+      url: "https://rutherles.site/api/usuario/" + token.id,
       headers: { Accept: "application/json" },
     };
 
@@ -36,7 +38,7 @@ export default function AuthProvider({ children }) {
       .request(options)
       .then(function (response) {
         setUser(response.data[0]);
-        //console.error(response.data);
+        console.error(response.data);
       })
       .catch(function (error) {});
   }
@@ -52,14 +54,17 @@ export default function AuthProvider({ children }) {
     axios
       .request(options)
       .then(function (response) {
-        //console.error(response.data);
+        console.error(response.data);
 
         setUser(response.data[0]);
+        //console.error(response.data);
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        //console.error(error);
+      });
   }
 
-  function getPedido(id) {
+  function getPedido() {
     const options = {
       method: "GET",
       url: "https://rutherles.site/api/pedido",
@@ -69,13 +74,14 @@ export default function AuthProvider({ children }) {
     axios
       .request(options)
       .then(function (response) {
-        //console.error(response.data);
+        console.error(response.data);
 
-        let pedidos = response.data.filter((item) => item.user_id == id);
-        //console.error(pedidos);
-        setPedido(response.data);
+        let pedidos = response.data.filter((item) => item.user_id == user.id);
+        setPedido(pedidos);
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        //console.error(error);
+      });
   }
 
   function getJogada() {
@@ -89,9 +95,16 @@ export default function AuthProvider({ children }) {
       .request(options)
 
       .then(function (response) {
-        setJogada(response.data);
+        console.error(response.data);
+
+        let jogadas = response.data.filter((item) => item.user_id == user.id);
+        //console.error(jogadas);
+
+        setJogada(jogadas);
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        //console.error(error);
+      });
   }
 
   return (

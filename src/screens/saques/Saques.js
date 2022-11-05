@@ -26,14 +26,13 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function Saques() {
-  const { pedido, getPedido } = useContext(AuthContext);
+  const { pedido, user } = useContext(AuthContext);
   ////console.error(pedido);
 
+  let pedidos = pedido.filter((item) => item.user_id == user.id);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    getPedido();
-  }, [pedido]);
+
 
   if (pedido < 0) {
     return (
@@ -90,7 +89,7 @@ export default function Saques() {
         </View>
 
         <View style={{ backgroundColor: "#000", marginTop: 30 }}>
-          {pedido.map((item) => (
+          {pedidos.map((item) => (
             <Card style={{ marginBottom: 10 }}>
               <CardBody>
                 <CardDetails>

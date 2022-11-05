@@ -1,108 +1,98 @@
 import { Feather, AntDesign, Ionicons } from "@expo/vector-icons";
-import { React, useState, useEffect, useRef, useContext } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import { View, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
 import { FlatGrid } from "react-native-super-grid";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
 import Alerta from "./components/Alert";
-import { useAposta } from "../hooks/useAposta";
+import Alerta2 from "./components/Alert2";
+import { MaterialIcons } from "@expo/vector-icons";
+import { ApostarApi } from "../hooks/Aposta";
 import { PostJogada, PutAdm } from "../hooks/PostFunctions";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useUrl } from "../hooks/useUrl";
-import { AuthContext } from "../hooks/auth";
-import axios from "axios";
 
-import { LoginApi } from "../hooks/LoginApi";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+
+import { Audio } from "expo-av";
 
 import { dados, optionsLab, jogadores } from "./components/variaveis";
+import { useAposta } from "../hooks/useAposta";
 import Cab from "./components/Header";
 import Playes from "./components/Header1";
+import { useProfile } from "../hooks/useProfile";
+import { useUrl } from "../hooks/useUrl";
 
-export default function Index({ navigation, route }) {
+export default function Index({ navigation }) {
   const carregamento = require("../../../assets/img/dice.gif");
-  let valor = "false";
-
-  const [res, setRes] = useState();
-
+  let valor = 0;
   const [visible, setVisible] = useState(false);
+  const [sound, setSound] = useState();
+  const [sound1, setSound1] = useState();
+  const [sound2, setSound2] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef(null);
+  const { url } = useUrl();
+
   const [select, setSelect] = useState([]);
-  const [getaposta, setGetaposta] = useState(null);
   const [verificaAposta, setVerificaAposta] = useState(true);
   const [ids, setIds] = useState();
+
+  const [alertaCreditos, setAlertaCreditos] = useState(null);
+  let total = ""
   const [sala, setSala] = useState({
     sala: 1,
-    valor1: 1,
-    valor2: 2,
-    valor3: 4,
+    valor1: 2,
+    valor2: 5,
+    valor3: 10,
     cor: "#a2d5ab",
     avatar: 4,
     avatar: "jgf",
   });
-  let banner = true;
-  let numeros = [];
-  const [array_valor_apostado, setArray_valor_apostado] = useState();
-  const { nome } = useAposta();
 
-  const { user, getUser } = useContext(AuthContext);
+  let numeros = [];
+  const [aposta, setAposta] = useState(null);
+  const [array_valor_apostado, setArray_valor_apostado] = useState();
+  const iconCancel = require("../../../assets/icons/no.png");
+  const {
+    loading,
+    nome,
+    status,
+    numeroPartida,
+    carteira,
+    perdas,
+    ganhos,
+    apostasadm,
+    saldoadm,
+  } = useAposta();
+  const { token, loading2 } = useProfile();
+
   let dadosEscolhidos = "";
   let valorApostado = "";
   let resultadoJogo = "";
   let imagemDaosEscolhidos = [];
   let iniciada = null;
+  let finalizada = null;
   let resultado = "";
   let aposta_id = "";
   const salas = [
-    { sala: 1, valor1: 1, valor2: 2, valor3: 4, avatar: "tg" },
-    { sala: 2, valor1: 4, valor2: 10, valor3: 20, avatar: "iuj" },
-    { sala: 3, valor1: 20, valor2: 50, valor3: 100, avatar: "oik" },
+    { sala: 1, valor1: 2, valor2: 5, valor3: 10, avatar: "tg" },
+    { sala: 2, valor1: 15, valor2: 20, valor3: 25, avatar: "iuj" },
+    { sala: 3, valor1: 30, valor2: 40, valor3: 60, avatar: "oik" },
   ];
-  const carteira = user.carteira;
-
-  const { url } = useUrl();
-
-  const getApostas = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem("@apostas");
-      return jsonValue != null ? setGetaposta(JSON.parse(jsonValue)) : null;
-    } catch (e) {}
-  };
-
-  const storeAposta = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@apostas", jsonValue);
-    } catch (e) {}
-  };
-
-  useEffect(() => {
-    getApostas();
-  }, []);
 
   function dado(data) {
-    if (select.length > 0) {
-      if (select.find((item) => item.id == data.id)) {
-        let teste = select.find((item) => item.id == data.id);
-
-        let teste2 = select.filter((item) => item != teste);
-        setSelect(teste2);
-      } else {
-        setIds(data.id);
-        setVisible(true);
-      }
-    } else {
-      setIds(data.id);
-      setVisible(true);
-    }
+    setIds(data.id);
+    setVisible(true);
   }
 
-  iniciada = nome.find((item) => item.status == "iniciada");
+  if (nome.length > 0) {
+    iniciada = nome.find((item) => item.status == "iniciada");
+  }
 
   const postWallet = (valor, wallet, verifica) => {
-    let id = user.id;
+    let id = token ? token.id : 1;
 
     const options = {
       method: "PUT",
@@ -124,12 +114,13 @@ export default function Index({ navigation, route }) {
       .catch(function (error) {});
   };
 
-  if (getaposta) {
-    dadosEscolhidos = getaposta.map((item) => item.nome);
+  if (aposta) {
+    dadosEscolhidos = aposta.map((item) => item.nome);
     resultadoJogo = numeros.map((item) => item.nome);
-    valorApostado = getaposta.map((item) => item.valor);
-    imagemDaosEscolhidos = getaposta.find((item) => item.img);
-    getaposta.forEach((element) => {
+    valorApostado = aposta.map((item) => item.valor);
+    imagemDaosEscolhidos = aposta.find((item) => item.img);
+
+    aposta.forEach((element) => {
       aposta_id = element.jogo_id;
     });
 
@@ -144,8 +135,6 @@ export default function Index({ navigation, route }) {
         { id: resultado.resultd3 },
       ];
     }
-
-    getUser(user.id);
   }
 
   function selecionar(data) {
@@ -155,6 +144,75 @@ export default function Index({ navigation, route }) {
     }
     let dadosValor = select.map((item) => item.valor);
     setArray_valor_apostado(dadosValor);
+  }
+
+  function cancel(data) {
+    for (let index = 0; index < select.length; index++) {
+      const element = select[index].id;
+
+      if (element == data.id) {
+        select.splice(index, 1);
+      }
+    }
+  }
+
+  function urls() {
+    const options4 = {
+      method: "GET",
+      url: "https://rutherles.site/api/url",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization:
+          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+      },
+    };
+
+    axios
+      .request(options4)
+      .then(function (response) {
+        setUrl(response.data);
+
+        response.data.forEach((element) => {
+          setUrl(element.url);
+        });
+      })
+      .catch(function (error) {});
+  }
+
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../../assets/dado.wav")
+    );
+
+    setSound(sound);
+
+    ///////console.warn("Playing Sound");
+    await sound.playAsync();
+  }
+
+  async function playSound1() {
+    ///////console.warn("Loading Sound1");
+    const { sound1 } = await Audio.Sound.createAsync(
+      require("../../../assets/win.mp3")
+    );
+
+    setSound1(sound1);
+
+    ///////console.warn("Playing Sound1");
+    await sound1.playAsync();
+  }
+
+  async function playSound2() {
+    ///////console.warn("Loading Sound2");
+    const { sound2 } = await Audio.Sound.createAsync(
+      require("../../../assets/lose.wav")
+    );
+
+    setSound2(sound2);
+
+    ///////console.warn("Playing Sound2");
+    await sound2.playAsync();
   }
 
   function apostas() {
@@ -178,13 +236,17 @@ export default function Index({ navigation, route }) {
 
     var total = selecionados.reduce(getTotal, 0);
     function getTotal(total, item) {
+      //console.error(countObject[item.id]);
       return item.valor * item.mult * countObject[item.id] + total;
     }
 
     valor = total;
+    //console.error("valorrr");
+
+    console.info(valor);
   }
 
-  if (getaposta) {
+  if (aposta) {
     apostas();
   }
 
@@ -225,42 +287,71 @@ export default function Index({ navigation, route }) {
           return valores;
         });
 
-        storeAposta(dados);
-        getApostas();
+        ////console.warn(totais)
 
-        let email = user.email;
+        let email = token.email;
         let valorapostadoT = totais;
+        setAposta(dados);
         postWallet(-totais, carteira, true);
-        PostJogada(user.nome, user.id, dadosE, email, valorapostadoT);
+
+        PostJogada(token.nome, token.id, JSON.stringify(dadosE) , email, valorapostadoT);
       }
     }
   }
 
   if (resultado && valor > 0 && aposta_id == resultado.id && verificaAposta) {
     postWallet(valor, carteira);
-
-    let resposta = true;
+    PutAdm(
+      parseInt(saldoadm) - parseInt(valor),
+      parseInt(ganhos),
+      parseInt(perdas) + parseInt(valor),
+      parseInt(apostasadm) + 1
+    );
 
     setTimeout(() => {
+      setAposta(null);
       setSelect([]);
+
+
+      const storeSelect = async (value) => {
+        try {
+          const jsonValue = JSON.stringify(value)
+          await AsyncStorage.setItem('@storage_Key', jsonValue)
+        } catch (e) {
+          // saving error
+        }
+      }
+
+      storeSelect([])
+
+
+
+
+
       setVerificaAposta(true);
-      storeAposta(null);
     }, 10000);
   }
 
   if (resultado && valor == 0 && aposta_id == resultado.id && verificaAposta) {
     let valorApostado = "";
 
-    getaposta.forEach((element) => {
+    aposta.forEach((element) => {
       valorApostado = element.valor;
     });
-    let resposta = false;
-    setTimeout(() => {
-      setSelect([]);
-      storeAposta(null);
+    //playSound2();
 
+    postWallet(-valorApostado, carteira);
+    PutAdm(
+      parseInt(saldoadm) + parseInt(valorApostado),
+      parseInt(ganhos) + parseInt(valorApostado),
+      parseInt(perdas),
+      parseInt(apostasadm) + 1
+    );
+
+    setTimeout(() => {
+      setAposta(null);
+      setSelect([]);
       setVerificaAposta(true);
-      getApostas();
     }, 10000);
   }
 
@@ -316,7 +407,7 @@ export default function Index({ navigation, route }) {
               color: "gray",
             }}
           >
-            {user.nome ? user.nome.split(" ")[0] : "usuario"}
+            {token ? token.nome : <></>}
           </Text>
         </View>
 
@@ -328,7 +419,7 @@ export default function Index({ navigation, route }) {
               color: "#a2d5ab",
             }}
           >
-            {user ? "R$ " + parseInt(user.carteira).toFixed(2) : 0.0}
+            R$ {carteira ? parseInt(carteira).toFixed(2) : <></>}
           </Text>
         </View>
 
@@ -403,6 +494,23 @@ export default function Index({ navigation, route }) {
 
       <ScrollView>
         <View style={{ marginTop: 5 }}>
+          {resultado &&
+          aposta_id == resultado.id &&
+          resultado.status == "finalizada" ? (
+            <View
+              style={{ flexDirection: "row", marginTop: 10, marginBottom: 10 }}
+            >
+              <Alerta
+                array={resultado}
+                dados={dadosEscolhidos}
+                resultado={resultadoJogo}
+                valor={valor}
+              />
+            </View>
+          ) : (
+            <></>
+          )}
+
           {iniciada ? (
             <View
               style={{
@@ -411,11 +519,11 @@ export default function Index({ navigation, route }) {
               }}
             >
               <YoutubePlayer
-                height={getaposta ? 300 : 170}
+                height={aposta ? 300 : 170}
                 play={false}
-                videoId={url}
+                videoId={url ? url : ""}
               />
-              {getaposta ? (
+              {aposta ? (
                 <View
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
@@ -427,7 +535,7 @@ export default function Index({ navigation, route }) {
               )}
 
               <Center>
-                {iniciada && !getaposta ? (
+                {iniciada && !aposta ? (
                   <ScrollView key={dados.key} horizontal>
                     <FlatGrid
                       verti
@@ -488,6 +596,17 @@ export default function Index({ navigation, route }) {
                               useNativeIOS={false}
                               options={[
                                 {
+                                  label: "Cancelar Aposta",
+                                  iconSource: iconCancel,
+                                  onPress: () => setSelect([]),
+                                },
+
+                                {
+                                  label: "Cancelar Dado",
+
+                                  onPress: () => cancel({ id: item.id }),
+                                },
+                                {
                                   label: "R$ " + sala.valor1.toFixed(2),
                                   onPress: () =>
                                     selecionar({
@@ -538,7 +657,7 @@ export default function Index({ navigation, route }) {
                   <></>
                 )}
               </Center>
-              {iniciada && !getaposta ? (
+              {iniciada && !aposta ? (
                 <View style={styles.button}>
                   <Button
                     size="lg"
@@ -577,32 +696,10 @@ export default function Index({ navigation, route }) {
               marginBottom: 30,
             }}
           >
-            {resultado &&
-            aposta_id == resultado.id &&
-            select.length > 0 &&
-            resultado.status == "finalizada" &&
-            valor !== "false" ? (
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 10,
-                  marginBottom: 10,
-                }}
-              >
-                <Alerta
-                  array={resultado}
-                  dados={dadosEscolhidos}
-                  resultado={resultadoJogo}
-                  valor={valor}
-                />
-              </View>
-            ) : (
-              <Image
-                style={{ width: "30%", height: 130, margin: 3 }}
-                source={carregamento}
-              />
-            )}
-
+            <Image
+              style={{ width: "30%", height: 130, margin: 3 }}
+              source={carregamento}
+            />
             <Text style={styles.title}>Aguardando nova rodada...</Text>
 
             {resultado && aposta_id == resultado.id ? (
@@ -666,6 +763,16 @@ export default function Index({ navigation, route }) {
                             message={"teste"}
                             useNativeIOS={false}
                             options={[
+                              {
+                                label: "Cancelar Aposta",
+                                iconSource: iconCancel,
+                                onPress: () => setSelect([]),
+                              },
+
+                              {
+                                label: "Cancelar Dado",
+                                onPress: () => cancel({ id: item.id }),
+                              },
                               {
                                 label: "R$ " + sala.valor1.toFixed(2),
                                 onPress: () =>

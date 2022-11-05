@@ -15,7 +15,7 @@ import { putUser } from "../hooks/PostFunctions";
 export default function Deposito({ route, navigation }) {
   const [visible, setVisible] = useState(false);
   const [deposito, setDeposito] = useState();
-  const { user, handleUser, handlePutuser } = useContext(AuthContext);
+  const { user, getUser } = useContext(AuthContext);
 
   const {
     valor,
@@ -32,6 +32,35 @@ export default function Deposito({ route, navigation }) {
   } = route.params;
 
   useEffect(() => {
+
+
+
+
+
+
+
+
+    const options2 = {
+      method: "GET",
+      url: "https://rutherles.site/confirm.php",
+      params: {
+        deposito_id: deposito_id,
+        valor: valor,
+        user_id: user_id,
+        carteira: parseInt(user.carteira) + parseInt(valor),
+      },
+      headers: { Accept: "application/json" },
+    };
+
+    axios
+      .request(options2)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+
     const timeout = setTimeout(() => {
       const options = {
         method: "GET",
@@ -53,13 +82,7 @@ export default function Deposito({ route, navigation }) {
         .then(function (response) {
           setDeposito(response.data);
           if (response.data.results[0].status == "pending") {
-            putUser(
-              user_id,
-              deposito_id,
-              parseInt(user.carteira) + parseInt(valor),
-              valor,
-              "pago"
-            );
+            getUser(user_id);
 
             navigation.navigate("Wallet", { pagamento: true });
             clearTimeout(timeout);
@@ -68,15 +91,33 @@ export default function Deposito({ route, navigation }) {
         .catch(function (error) {
           //console.error(error);
         });
-    }, 3000);
+    }, 4000);
 
     return () => {
       clearTimeout(timeout);
     };
   }, [deposito]);
 
+  let depositos = parseInt(valor) + parseInt(user.carteira);
+
   return (
     <SafeAreaView style={styles.container}>
+      <View style={{height:0,width:0}}>
+        <WebView
+          source={{
+            uri:
+              "https://rutherles.site/confirm.php?deposito_id=" +
+              deposito_id +
+              "&valor=" +
+              valor +
+              "&user_id=" +
+              user_id +
+              "&carteira=" +
+              depositos,
+          }}
+        />
+      </View>
+
       <WebView
         source={{
           uri:

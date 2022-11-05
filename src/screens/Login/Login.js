@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "react-native";
 import { Button } from "native-base";
-import { useEffect, useState , useContext} from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -32,7 +32,7 @@ export default function Login({ route }) {
     },
   });
 
-  const {handleUser} = useContext(AuthContext);
+  const { handleUser } = useContext(AuthContext);
 
   function handleSignin(data) {
     setLoad(true);
@@ -76,116 +76,122 @@ export default function Login({ route }) {
       });
   }
 
-
-
   return (
     <KeyboardAvoidingView
       style={styles.background}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={{marginBottom:70,alignContent:"center",alignItems:"center"}}>
+      <View
+        style={{
+          marginBottom: 70,
+          alignContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Image
           style={{
-           width:120,height:120,
-           borderRadius:7
+            width: 120,
+            height: 120,
+            borderRadius: 7,
           }}
           source={require("../../images/caipira.png")}
         />
-        <Text style={{color:"#fff",marginTop:25,fontSize:20}}>Morena Caipira</Text>
+        <Text style={{ color: "#fff", marginTop: 25, fontSize: 20 }}>
+          Morena Caipira
+        </Text>
       </View>
 
-      
-        <View style={styles.key}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            name="email"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                style={styles.input}
-                placeholder="Email"
-                autoCorrect={false}
-                keyboardType="email-address"
-                placeholderTextColor="#fff"
-              />
-            )}
-          />
-          {errors.email && (
-            <Text style={{ color: "red", marginBottom: 10 }}>
-              Digite seu email.
-            </Text>
-          )}
-        </View>
-
-        <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
+      <View style={styles.key}>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
           }}
-        >
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            name="password"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                autoCapitalize="none"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                secureTextEntry={true}
-                style={styles.input}
-                placeholder="********"
-                autoCorrect={false}
-                placeholderTextColor="#fff"
-              />
-            )}
-          />
-          {errors.password && (
-            <Text style={{ color: "red", marginBottom: 10 }}>
-              Digite sua senha.
-            </Text>
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              style={styles.input}
+              placeholder="Email"
+              autoCorrect={false}
+              keyboardType="email-address"
+              placeholderTextColor="#fff"
+            />
           )}
-          <Text style={{ color: "red", marginBottom: 10 }}>{erro} </Text>
-        </View>
-
-        {load ? (
-          <Button
-            style={styles.btnSubmit}
-            isLoading
-            isLoadingText="Acessando"
-          ></Button>
-        ) : (
-          <TouchableOpacity
-            style={styles.btnSubmit}
-            onPress={handleSubmit(handleSignin)}
-          >
-            <Text style={styles.btnSubmitText}> Acessar </Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Register")}
-          style={styles.btnRegister}
-        >
-          <Text style={styles.RegisterText}> Criar conta grátis </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Recuperar")}
-          style={styles.btnRegister}
-        >
-          <Text style={{ color: "#fff", marginTop: 30 }}>
-            Esqueceu sua senha?
+        />
+        {errors.email && (
+          <Text style={{ color: "red", marginBottom: 10 }}>
+            Digite seu email.
           </Text>
+        )}
+      </View>
+
+      <View
+        style={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="password"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              autoCapitalize="none"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              secureTextEntry={true}
+              style={styles.input}
+              placeholder="********"
+              autoCorrect={false}
+              placeholderTextColor="#fff"
+            />
+          )}
+        />
+        {errors.password && (
+          <Text style={{ color: "red", marginBottom: 10 }}>
+            Digite sua senha.
+          </Text>
+        )}
+        <Text style={{ color: "red", marginBottom: 10 }}>{erro} </Text>
+      </View>
+
+      {load ? (
+        <Button
+          style={styles.btnSubmit}
+          isLoading
+          isLoadingText="Acessando"
+        ></Button>
+      ) : (
+        <TouchableOpacity
+          style={styles.btnSubmit}
+          onPress={handleSubmit(handleSignin)}
+        >
+          <Text style={styles.btnSubmitText}> Acessar </Text>
         </TouchableOpacity>
+      )}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Register")}
+        style={styles.btnRegister}
+      >
+        <Text style={styles.RegisterText}> Criar conta grátis </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Recuperar")}
+        style={styles.btnRegister}
+      >
+        <Text style={{ color: "#fff", marginTop: 30 }}>
+          Esqueceu sua senha?
+        </Text>
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 }

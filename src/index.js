@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -33,9 +33,6 @@ import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
 import Faq from "./screens/faq/Faq";
 import Withdrow from "./screens/Wallet/components/Saque";
-import { LogBox } from "react-native";
-
-LogBox.ignoreLogs(["Warning: ..."]);
 
 const icons = {
   Home: {
@@ -132,14 +129,13 @@ export function Tabs() {
 }
 export default function App() {
   const { token, loading } = LoginApi();
+  const { getUser, getPedido, getJogada } = useContext(AuthContext);
 
-  const { user, handleUser } = useContext(AuthContext);
-  const [load4, setLoad] = useState(true);
-
-  if (token && load4) {
-    handleUser(token.id);
-    setLoad(false);
-  }
+  useEffect(() => {
+    getUser(token.id);
+    getPedido(token.id);
+    getJogada(token.id);
+  }, [token]);
 
   return (
     <NativeBaseProvider>

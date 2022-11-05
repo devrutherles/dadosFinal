@@ -57,7 +57,6 @@ export default function Wallet({ route, navigation }) {
 
   if (pagamento && load) {
     alert("Depositado com sucesso!");
-    handleUser(user.id);
     setLoad(false);
   }
 

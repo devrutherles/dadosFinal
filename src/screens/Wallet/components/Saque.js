@@ -87,9 +87,9 @@ export default function Withdrow() {
 
     axios(config)
       .then(function (response) {
-        //console.error(JSON.stringify(response.data));
+        console.error(JSON.stringify(response.data));
         setLoad(false);
-        getPedido();
+        
         Alert.alert(
           "Pedido enviado",
           "Ja estamos com seu pedido de saque, voce tem 48h para receber",
@@ -110,7 +110,7 @@ export default function Withdrow() {
         );
       })
       .catch(function (error) {
-        //console.error(error);
+        console.error(error);
       });
   }
 
