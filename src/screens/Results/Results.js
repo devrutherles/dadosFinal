@@ -27,101 +27,96 @@ import {
 } from "./styles";
 
 export default function Results({ navigation, route }) {
-  const { jogada, user ,getJogada } = useContext(AuthContext);
-
-
-
+  const { jogada, user, getJogada } = useContext(AuthContext);
 
   let jogadas = jogada.filter((item) => item.user_id == user.id);
 
-
   useEffect(() => {
-  getJogada()
+    getJogada();
   }, []);
 
-
-    return (
-      <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
-        <View style={{ marginTop: 25 }}>
-          <Text style={styles.title2}>Minhas Apostas</Text>
-        </View>
-        <View
-          style={{
-            position: "absolute",
-            marginTop: "50%",
-            alignContent: "center",
-            alignSelf: "center",
-            justifyContent: "center",
-          }}
-        >
-          {jogada.length == 0 ? (
+  return (
+    <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
+      <View style={{ marginTop: 25 }}>
+        <Text style={styles.title2}>Minhas Apostas</Text>
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          marginTop: "50%",
+          alignContent: "center",
+          alignSelf: "center",
+          justifyContent: "center",
+        }}
+      >
+        {jogada.length == 0 ? (
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#000",
+              justifyContent: "center",
+            }}
+          >
             <View
               style={{
                 flex: 1,
                 backgroundColor: "#000",
                 justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: "#000",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View>
-                  <Text style={styles.title2}>Você ainda não tem jogadas</Text>
-                </View>
-               
+              <View>
+                <Text style={styles.title2}>Você ainda não tem jogadas</Text>
               </View>
             </View>
-          ) : (
-            <></>
-          )}
-        </View>
+          </View>
+        ) : (
+          <></>
+        )}
+      </View>
 
-        {jogadas
-          .slice(0)
-          .reverse()
-          .map((jogo) => (
-            <View style={{ backgroundColor: "#000", marginTop: 20 }}>
-              <Card>
-                <CardBody>
-                  <CardDetails>
-                    <CardInfo>
-                      {"Data " + moment(jogo.created_at).format("DD/MM/Y")}
-                    </CardInfo>
+      {jogadas
+        .slice(0)
+        .reverse()
+        .map((jogo) => (
+          <View style={{ backgroundColor: "#000", marginTop: 20 }}>
+            <Card>
+              <CardBody>
+                <CardDetails>
+                  <CardInfo>
+                    {"Data " + moment(jogo.created_at).format("DD/MM/Y")}
+                  </CardInfo>
 
-                    <CardInfo>
-                      {"Valor apostado R$  " + parseInt(jogo.valor).toFixed(2)}
-                    </CardInfo>
-                  </CardDetails>
+                  <CardInfo>
+                    {"Valor apostado R$  " + parseInt(jogo.valor).toFixed(2)}
+                  </CardInfo>
+                </CardDetails>
 
-                  <Img source={require("../../images/dador.png")} />
-                </CardBody>
+                <Img
+                  style={{ width: 60, height: 60 }}
+                  source={require("../../images/dador.png")}
+                />
+              </CardBody>
 
-                <AddButton>
-                  <AntDesign name="creditcard" size={30} color="#0DB060" />
-                  <AddLabel>
-                    {"ID# " +
-                      jogo.id +
-                      " " +
-                      jogo.status +
-                      " " +
-                      "R$ " +
-                      jogo.premio +
-                      " R$"}
-                  </AddLabel>
-                </AddButton>
-              </Card>
+              <AddButton>
+                <AntDesign name="creditcard" size={30} color="#0DB060" />
+                <AddLabel>
+                  {"ID# " +
+                    jogo.id +
+                    " " +
+                    jogo.status +
+                    " " +
+                    "R$ " +
+                    jogo.premio}
+                </AddLabel>
+              </AddButton>
+            </Card>
 
-              <View></View>
-            </View>
-          ))}
-      </ScrollView>
-    );
-  
+            <View></View>
+          </View>
+        ))}
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -14,7 +14,6 @@ import Playes from "./components/Header1";
 import Alerta from "./components/Alert";
 import { PostJogada } from "../hooks/PostFunctions";
 
-
 export default function Index({ navigation, route }) {
   const carregamento = require("../../../assets/img/dice.gif");
 
@@ -24,7 +23,7 @@ export default function Index({ navigation, route }) {
   const cancelRef = useRef(null);
   const [select, setSelect] = useState([]);
   const [ids, setIds] = useState();
-  let valor = null
+  let valor = null;
   const [sala, setSala] = useState({
     sala: 1,
     valor1: 1,
@@ -36,7 +35,7 @@ export default function Index({ navigation, route }) {
   });
 
   const [array_valor_apostado, setArray_valor_apostado] = useState();
-  const { iniciada, numeros, resultado,nome , criada} = useAposta();
+  const { iniciada, numeros, resultado, nome, criada } = useAposta();
 
   const {
     user,
@@ -49,7 +48,7 @@ export default function Index({ navigation, route }) {
     storeAposta,
     getaposta,
     putSelect,
-    texto
+    texto,
   } = useContext(AuthContext);
 
   const salas = [
@@ -60,8 +59,6 @@ export default function Index({ navigation, route }) {
 
   const carteira = user.carteira;
   const { url } = useUrl();
-
-
 
   function dado(data) {
     if (select.length > 0) {
@@ -88,8 +85,6 @@ export default function Index({ navigation, route }) {
     let dadosValor = select.map((item) => item.valor);
     setArray_valor_apostado(dadosValor);
   }
-
-
 
   function navigateA() {
     navigation.navigate("Wallet");
@@ -127,7 +122,7 @@ export default function Index({ navigation, route }) {
         });
 
         storeAposta(dados);
-        putSelect(select)
+        putSelect(select);
         putaposta_id(iniciada.id);
         editCarteira(parseInt(carteira) - parseInt(totais), user.id);
         PostJogada(user.nome, user.id, dadosE, user.email, totais, iniciada.id);
@@ -135,8 +130,7 @@ export default function Index({ navigation, route }) {
         getJogada();
 
         setTimeout(() => {
-          setSelect([])
-          
+          setSelect([]);
         }, 2000);
       }
     }
@@ -182,7 +176,7 @@ export default function Index({ navigation, route }) {
           justifyContent: "space-between",
           alignItems: "center",
           marginHorizontal: 10,
-          marginTop: "15%",
+          marginTop: "10%",
         }}
       >
         <View>
@@ -240,7 +234,9 @@ export default function Index({ navigation, route }) {
         </Text>
       </View>
 
-      {iniciada.length == 0 && getaposta.length == 0 && resultado.length != 0  ? (
+      {iniciada.length == 0 &&
+      getaposta.length == 0 &&
+      resultado.length != 0 ? (
         <View style={{ flexDirection: "row", marginTop: 13 }}>
           <ScrollView horizontal>
             <Cab></Cab>
@@ -293,13 +289,13 @@ export default function Index({ navigation, route }) {
         <View style={{ marginTop: 5 }}>
           <View
             style={{
-              height: 300,
+              height: 500,
               marginTop: 10,
             }}
           >
             {nome && iniciada.length != 0 ? (
               <YoutubePlayer
-                height={getaposta[0] ? 350 : 170}
+                height={getaposta[0] ? 230 : 170}
                 play={true}
                 videoId={url}
               />
@@ -375,9 +371,9 @@ export default function Index({ navigation, route }) {
                                 style={{
                                   position: "absolute",
                                   backgroundColor: "#fee672",
-                                  width: 28,
-                                  height: 25,
-                                  borderRadius: 7,
+                                  width: 33,
+                                  height: 22,
+                                  borderRadius: 100,
                                   marginTop: 2,
                                   top: -15,
                                   alignContent: "space-between",
@@ -385,7 +381,9 @@ export default function Index({ navigation, route }) {
                                   alignSelf: "center",
                                 }}
                               >
-                                <Text>${jogo.valor}</Text>
+                                <Text style={{ marginTop: 2 }}>
+                                  ${jogo.valor}
+                                </Text>
                               </View>
                             ) : (
                               <></>

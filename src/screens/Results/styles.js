@@ -139,7 +139,7 @@ export const Img = styled.Image`
 export const AddButton = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  margin-top: -23px;
+  margin-top: 5px;
 `;
 
 export const AddLabel = styled.Text`
