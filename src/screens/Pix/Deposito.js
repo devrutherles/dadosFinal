@@ -81,7 +81,7 @@ export default function Deposito({ route, navigation }) {
         .request(options)
         .then(function (response) {
           setDeposito(response.data);
-          if (response.data.results[0].status == "pending") {
+          if (response.data.results[0].status == "approved") {
             getUser(user_id);
 
             navigation.navigate("Wallet", { pagamento: true });

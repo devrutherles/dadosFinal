@@ -43,7 +43,7 @@ import { AuthContext } from "../hooks/auth";
 export default function Wallet({ route, navigation }) {
   const [isVisible, setIsVisible] = useState(true);
   const [useBalance, setUseBalance] = useState(true);
-  const { user } = useContext(AuthContext);
+  const { user ,getUser } = useContext(AuthContext);
   function handleToggleVisibility() {
     setIsVisible((prevState) => !prevState);
   }
@@ -53,12 +53,18 @@ export default function Wallet({ route, navigation }) {
     setUseBalance((prevState) => !prevState);
   }
 
+ 
   const { pagamento } = route.params ? route.params : false;
 
   if (pagamento && load) {
     alert("Depositado com sucesso!");
     setLoad(false);
   }
+
+  useEffect(() => {
+getUser(user.id)
+   
+  }, []);
 
   return (
     <Wrapper>

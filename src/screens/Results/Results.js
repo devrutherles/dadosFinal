@@ -39,35 +39,7 @@ export default function Results({ navigation, route }) {
   getJogada()
   }, []);
 
-  if (jogada < 0) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#000",
-          justifyContent: "center",
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#000",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View>
-            <Text style={styles.title2}>Você ainda não tem apostas</Text>
-          </View>
-          <View>
-            <TouchableOpacity onPress={() => navigation.navigate("Pay")}>
-              <Text style={styles.title3}>Faça sua primeira aposta</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  } else {
+
     return (
       <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
         <View style={{ marginTop: 25 }}>
@@ -81,7 +53,33 @@ export default function Results({ navigation, route }) {
             alignSelf: "center",
             justifyContent: "center",
           }}
-        ></View>
+        >
+          {jogada.length == 0 ? (
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#000",
+                justifyContent: "center",
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: "#000",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <View>
+                  <Text style={styles.title2}>Você ainda não tem jogadas</Text>
+                </View>
+               
+              </View>
+            </View>
+          ) : (
+            <></>
+          )}
+        </View>
 
         {jogadas
           .slice(0)
@@ -105,7 +103,16 @@ export default function Results({ navigation, route }) {
 
                 <AddButton>
                   <AntDesign name="creditcard" size={30} color="#0DB060" />
-                  <AddLabel>{"ID# " + jogo.id + " " + jogo.status +" "+ "R$ " + jogo.premio + " R$"}</AddLabel>
+                  <AddLabel>
+                    {"ID# " +
+                      jogo.id +
+                      " " +
+                      jogo.status +
+                      " " +
+                      "R$ " +
+                      jogo.premio +
+                      " R$"}
+                  </AddLabel>
                 </AddButton>
               </Card>
 
@@ -114,7 +121,7 @@ export default function Results({ navigation, route }) {
           ))}
       </ScrollView>
     );
-  }
+  
 }
 
 const styles = StyleSheet.create({

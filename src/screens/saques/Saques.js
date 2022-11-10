@@ -26,14 +26,33 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function Saques() {
-  const { pedido, user } = useContext(AuthContext);
+  const { pedido, user ,getPedido} = useContext(AuthContext);
   ////console.error(pedido);
 
-  let pedidos = pedido.filter((item) => item.user_id == user.id);
+  let pedidos = pedido.slice(0).reverse().filter((item) => item.user_id == user.id);
   const navigation = useNavigation();
 
-  if (pedido < 0) {
+  useEffect(() => {
+ getPedido()
+
+   
+  }, []);
+
     return (
+      <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
+        <View
+          style={{
+            position: "absolute",
+            marginTop: "50%",
+            alignContent: "center",
+            alignSelf: "center",
+            justifyContent: "center",
+          }}
+        ></View>
+
+
+  {pedido.length == 0 ?
+    
       <View
         style={{
           flex: 1,
@@ -59,19 +78,8 @@ export default function Saques() {
           </View>
         </View>
       </View>
-    );
-  } else {
-    return (
-      <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
-        <View
-          style={{
-            position: "absolute",
-            marginTop: "50%",
-            alignContent: "center",
-            alignSelf: "center",
-            justifyContent: "center",
-          }}
-        ></View>
+    
+ : <></> }
 
         <View style={{ backgroundColor: "#000", marginTop: 30 }}>
           {pedidos.map((item) => (
@@ -113,7 +121,7 @@ export default function Saques() {
       </ScrollView>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   card: {
