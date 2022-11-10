@@ -13,11 +13,18 @@ import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import email from "react-native-email";
 import { Linking } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../hooks/auth";
+import { DialogDirectionsEnum } from "react-native-ui-lib/src/incubator/Dialog";
+
+
+
+
 export function Recuperar() {
   const [status, setStatus] = useState(null);
+  const {email, setEmail} = useContext(AuthContext);
   const {
     control,
     handleSubmit,
@@ -47,10 +54,8 @@ export function Recuperar() {
 
     axios(config)
       .then(function (response) {
-        ////console.error(JSON.stringify(response.data));
-        navigation.navigate("Codigo", {
-          email: data.email,
-        });
+        setEmail(data.email)
+        navigation.navigate("Codigo");
       })
       .catch(function (error) {
         console.log(error);
@@ -134,7 +139,6 @@ const styles = StyleSheet.create({
 
 export function Codigo({ params, navigation, route }) {
   const [load, setLoad] = useState(false);
-  const { email } = route.params;
   const {
     control,
     handleSubmit,
@@ -200,9 +204,11 @@ export function Codigo({ params, navigation, route }) {
 }
 
 export function Senha({ route }) {
+
+const {email} = useContext(AuthContext);
+
   let id = "";
   const navigation = useNavigation();
-  const { email } = route.params;
   const [load, setLoad] = useState(false);
   const {
     control,
@@ -232,10 +238,12 @@ export function Senha({ route }) {
       .then(function (response) {
         let usuarios = response.data;
         let user = usuarios.find((item) => item.email == email);
-        id = user.id;
+        console.log(user)
+        let id = user.id;
 
         if (dados.senha1 == dados.senha2) {
-          navigation.navigate("Login");
+          //console.error(dados.senha1)
+          
           var data = JSON.stringify({
             password: dados.senha1,
           });
@@ -244,8 +252,7 @@ export function Senha({ route }) {
             method: "put",
             url: "http://rutherles.site/api/usuario/" + id,
             headers: {
-              Authorization:
-                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1dGhlcmxlcy5zaXRlL2FwaS9sb2dpbiIsImlhdCI6MTY2NzIwNjc2OCwiZXhwIjoyMjY2NTM3NDc5OTg4LCJuYmYiOjE2NjcyMDY3NjgsImp0aSI6IjQ0Q2szeWVzWXpFdzNkbUciLCJzdWIiOiI4MSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZfDOFYHldK62hgJwUBmxtAvk1WzYtvJAcTnoI1xGs9Y",
+              
               "Content-Type": "application/json",
             },
             data: data,
@@ -255,6 +262,7 @@ export function Senha({ route }) {
             .then(function (response) {
               //console.error(JSON.stringify(response.data));
               alert("senha alterada com sucesso");
+              navigation.navigate("Login");
             })
             .catch(function (error) {
               //console.error(error);
@@ -298,7 +306,7 @@ export function Senha({ route }) {
                 onChangeText={onChange}
                 value={value}
                 autoCapitalize="none"
-                keyboardType="numeric"
+                
               />
             )}
           />

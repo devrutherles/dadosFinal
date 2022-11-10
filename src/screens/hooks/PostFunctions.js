@@ -1,14 +1,44 @@
 import React from "react";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-export function PostJogada(usuario, user_id, jogada, email, valor) {
+
+export const storeJogada_id = async (value) => {
+  try {
+    await AsyncStorage.setItem("@jogada", value);
+  } catch (e) {
+  }
+};
+
+export function putJogada(data,id,premio){
+
+  const options = {
+    method: "PUT",
+    url: "https://rutherles.site/api/jogada/" + id,
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    data: { status: data , premio:premio },
+  };
+
+  axios
+    .request(options)
+    .then(function (response) {
+     // console.log(response.data);
+    })
+    .catch(function (error) {
+      //console.error(error);
+    });
+}
+
+export function PostJogada(usuario, user_id, jogada, email, valor,rodada) {
   var data = JSON.stringify({
     usuario: usuario,
     user_id: user_id,
     valor: valor,
     jogada: jogada,
     email: email,
+    status:"apostado",
+    rodada,rodada
   });
 
 
@@ -24,6 +54,13 @@ export function PostJogada(usuario, user_id, jogada, email, valor) {
 
   axios(config)
     .then(function (response) {
+     let jogada_id = response.data.id.toString();
+     storeJogada_id(jogada_id);
+
+     //console.error(jogada_id);
+
+
+
       //console.warn(JSON.stringify(response.data));
     })
     .catch(function (error) {

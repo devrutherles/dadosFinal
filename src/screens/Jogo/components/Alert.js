@@ -9,7 +9,7 @@ import React from "react";
 import { CloseIcon, Box, Progress, Image } from "native-base";
 
 export default function Alerta(props) {
-  const { valor, dados, resultado, img, array } = props;
+  const { valor,  array } = props;
   let image = "";
   let dadosV = "";
   const [imagem, setImagem] = React.useState();

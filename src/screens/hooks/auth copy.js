@@ -38,7 +38,7 @@ export default function AuthProvider({ children }) {
       .request(options)
       .then(function (response) {
         setUser(response.data[0]);
-        console.error(response.data);
+        //console.error(response.data);
       })
       .catch(function (error) {});
   }
@@ -54,7 +54,7 @@ export default function AuthProvider({ children }) {
     axios
       .request(options)
       .then(function (response) {
-        console.error(response.data);
+        //console.error(response.data);
 
         setUser(response.data[0]);
         //console.error(response.data);
@@ -74,7 +74,7 @@ export default function AuthProvider({ children }) {
     axios
       .request(options)
       .then(function (response) {
-        console.error(response.data);
+       // console.error(response.data);
 
         let pedidos = response.data.filter((item) => item.user_id == user.id);
         setPedido(pedidos);
@@ -95,7 +95,7 @@ export default function AuthProvider({ children }) {
       .request(options)
 
       .then(function (response) {
-        console.error(response.data);
+        //console.error(response.data);
 
         let jogadas = response.data.filter((item) => item.user_id == user.id);
         //console.error(jogadas);

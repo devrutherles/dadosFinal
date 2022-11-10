@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,6 +11,7 @@ import WalletScreen from "../src/screens/Wallet";
 import Config from "../src/screens/config";
 import Profile from "../src/screens/profile";
 import { NativeBaseProvider } from "native-base";
+import { View } from "react-native";
 import {
   AntDesign,
   Ionicons,
@@ -33,9 +34,7 @@ import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
 import Faq from "./screens/faq/Faq";
 import Withdrow from "./screens/Wallet/components/Saque";
-import { LogBox } from "react-native";
 
-LogBox.ignoreLogs(["Warning: ..."]);
 
 const icons = {
   Home: {
@@ -60,6 +59,17 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export function Tabs() {
+
+  const { token, loading } = LoginApi();
+
+  const { user, handleUser, getUser } = useContext(AuthContext);
+  const [load4, setLoad] = useState(true);
+
+  useEffect(() => {
+    getUser(token.id);
+  }, [token]);
+
+
   return (
     <Tab.Navigator
       initialRouteName="Pay"
@@ -133,16 +143,33 @@ export function Tabs() {
 export default function App() {
   const { token, loading } = LoginApi();
 
-  const { user, handleUser } = useContext(AuthContext);
-  const [load4, setLoad] = useState(true);
+  const { getUser, getJogada, getPedido, getApostas } = useContext(AuthContext);
+  const [splas, setSplash] = useState(true);
 
-  if (token && load4) {
-    handleUser(token);
-    setLoad(false);
-  }
+  useEffect(() => {
+    getUser(token.id)
+    getJogada()
+    getPedido()
+    getApostas()
+   
+  }, [token]);
+
+setTimeout(() => {
+  setSplash(false);
+}, 200);
 
   return (
     <NativeBaseProvider>
+      {splas ? <View style={{backgroundColor:"#000",justifyContent:"center",
+      alignContent:"center",alignItems:"center",height:"100%",width:"100%"}}>
+
+
+<Spinner size={"lg"} />
+
+
+
+      </View> : <></>}
+
       {loading ? (
         <NavigationContainer>
           <Stack.Navigator initialRouteName={token ? "Pay" : "Login"}>
@@ -290,15 +317,17 @@ export default function App() {
               component={Pix}
               options={{
                 headerShown: false,
-                title: "detalhes",
+                title: "Pagamento",
               }}
             />
             <Stack.Screen
               name="Deposito"
               component={Deposito}
               options={{
-                headerShown: false,
-                title: "detalhes",
+                 title: "Saques",
+                headerStyle: {
+                  backgroundColor: "#fff",
+                },
               }}
             />
           </Stack.Navigator>

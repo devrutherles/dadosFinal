@@ -55,10 +55,10 @@ export default function Deposito({ route, navigation }) {
     axios
       .request(options2)
       .then(function (response) {
-        console.log(response.data);
+       // console.log(response.data);
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
 
     const timeout = setTimeout(() => {
@@ -103,6 +103,8 @@ export default function Deposito({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{height:0,width:0}}>
+       
+       
         <WebView
           source={{
             uri:

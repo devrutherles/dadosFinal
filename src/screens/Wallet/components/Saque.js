@@ -21,34 +21,14 @@ export default function Withdrow() {
   let metodo = "pix";
 
   const { user, getPedido } = useContext(AuthContext);
-  const [user1, setUser1] = React.useState();
-  const [loader, setloader] = React.useState(false);
-  let users = "";
 
-  if (loader) {
-    users = JSON.parse(user);
-  }
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@user");
-        if (value !== null) {
-          ///console.log()(value);
-          setUser1(value);
-          setloader(true);
-        }
-      } catch (e) {
-        // error reading value
-      }
-    };
 
-    getData();
-  }, []);
   function saque(value) {
     setValor(value);
   }
 
+  const carteira = user.carteira
   const [load, setLoad] = useState(false);
   const navigation = useNavigation();
   const {
@@ -59,7 +39,6 @@ export default function Withdrow() {
   } = useForm({
     defaultValues: {
       pix: "",
-      email: "",
       op: "",
       conta: "",
       digito: "",
@@ -82,18 +61,20 @@ export default function Withdrow() {
   }
 
   function handlesolicitar(data) {
+          
+
     setLoad(true);
     var datas = JSON.stringify({
-      usuario: users.nome,
-      user_id: users.id,
+      usuario: user.nome,
+      user_id: user.id,
       cpf: data.cpf,
       pix: data.pix,
       banco: data.banco,
       op: data.op,
       ag: data.ag,
-      email: users.email,
       status: "pendente",
       conta: data.conta,
+      email: user.email,
       digito: data.digito,
       metodo: metodo,
       valor: data.valor ? data.valor : valor,
@@ -109,8 +90,8 @@ export default function Withdrow() {
     };
 
     axios(config)
-      .then(function (response) {
-        console.error(JSON.stringify(response.data));
+      .then(function(response){
+        //console.error(response.data);
         setLoad(false);
 
         Alert.alert(
@@ -136,10 +117,10 @@ export default function Withdrow() {
         console.log("Api call error");
         alert(error.message);
       });
+
+      getPedido();
   }
-  function handleSignin(data) {
-    ///console.log()(data);
-  }
+  
   return (
     <View style={styles.container}>
       <ScrollView w="100%">
@@ -250,7 +231,7 @@ export default function Withdrow() {
                 <Controller
                   control={control}
                   rules={{
-                    required: true,
+                    
                   }}
                   name="pix"
                   render={({ field: { onChange, onBlur, value } }) => (
@@ -321,7 +302,7 @@ export default function Withdrow() {
                   <Controller
                     control={control}
                     rules={{
-                      required: true,
+                      
                     }}
                     name="banco"
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -341,7 +322,7 @@ export default function Withdrow() {
                   <Controller
                     control={control}
                     rules={{
-                      required: true,
+                      
                     }}
                     name="ag"
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -362,7 +343,7 @@ export default function Withdrow() {
                   <Controller
                     control={control}
                     rules={{
-                      required: true,
+                      
                     }}
                     name="op"
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -424,7 +405,7 @@ export default function Withdrow() {
                   <Controller
                     control={control}
                     rules={{
-                      required: true,
+                      
                     }}
                     name="conta"
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -445,7 +426,7 @@ export default function Withdrow() {
                   <Controller
                     control={control}
                     rules={{
-                      required: true,
+                      
                     }}
                     name="digito"
                     render={({ field: { onChange, onBlur, value } }) => (

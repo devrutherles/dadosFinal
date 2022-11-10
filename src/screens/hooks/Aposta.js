@@ -1,9 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import axios from "axios";
-import { LogBox } from "react-native";
 
-LogBox.ignoreLogs(["Warning: ..."]);
 export function ApostarApi(valor, nome, email, jogada, id) {
   var data = JSON.stringify({
     usuario: nome,

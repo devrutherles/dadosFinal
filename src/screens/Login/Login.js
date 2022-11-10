@@ -32,7 +32,7 @@ export default function Login({ route }) {
     },
   });
 
-  const { handleUser } = useContext(AuthContext);
+  const {getUser } = useContext(AuthContext);
 
   function handleSignin(data) {
     setLoad(true);
@@ -65,13 +65,12 @@ export default function Login({ route }) {
       .then(function (response) {
         storeUser(response.data.user[0]);
         setToken(response.data.authorisation.token);
-        handleUser(response.data.user[0].id);
         setLoad(false);
+        getUser(response.data.user[0]);
         navigation.navigate("tab");
       })
       .catch(function (error) {
         setLoad(false);
-        //console.error(error);
         setErro("Email ou senha incorretos");
       });
   }

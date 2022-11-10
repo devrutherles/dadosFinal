@@ -27,9 +27,17 @@ import {
 } from "./styles";
 
 export default function Results({ navigation, route }) {
-  const { jogada, user } = useContext(AuthContext);
+  const { jogada, user ,getJogada } = useContext(AuthContext);
+
+
+
 
   let jogadas = jogada.filter((item) => item.user_id == user.id);
+
+
+  useEffect(() => {
+  getJogada()
+  }, []);
 
   if (jogada < 0) {
     return (
@@ -75,32 +83,35 @@ export default function Results({ navigation, route }) {
           }}
         ></View>
 
-        {jogadas.map((jogo) => (
-          <View style={{ backgroundColor: "#000", marginTop: 20 }}>
-            <Card>
-              <CardBody>
-                <CardDetails>
-                  <CardInfo>
-                    {"Data " + moment(jogo.created_at).format("DD/MM/Y")}
-                  </CardInfo>
+        {jogadas
+          .slice(0)
+          .reverse()
+          .map((jogo) => (
+            <View style={{ backgroundColor: "#000", marginTop: 20 }}>
+              <Card>
+                <CardBody>
+                  <CardDetails>
+                    <CardInfo>
+                      {"Data " + moment(jogo.created_at).format("DD/MM/Y")}
+                    </CardInfo>
 
-                  <CardInfo>
-                    {"Valor R$  " + parseInt(jogo.valor).toFixed(2)}
-                  </CardInfo>
-                </CardDetails>
+                    <CardInfo>
+                      {"Valor apostado R$  " + parseInt(jogo.valor).toFixed(2)}
+                    </CardInfo>
+                  </CardDetails>
 
-                <Img source={require("../../images/dador.png")} />
-              </CardBody>
+                  <Img source={require("../../images/dador.png")} />
+                </CardBody>
 
-              <AddButton>
-                <AntDesign name="creditcard" size={30} color="#0DB060" />
-                <AddLabel>{"Rodada " + jogo.id}</AddLabel>
-              </AddButton>
-            </Card>
+                <AddButton>
+                  <AntDesign name="creditcard" size={30} color="#0DB060" />
+                  <AddLabel>{"ID# " + jogo.id + " " + jogo.status +" "+ "R$ " + jogo.premio + " R$"}</AddLabel>
+                </AddButton>
+              </Card>
 
-            <View></View>
-          </View>
-        ))}
+              <View></View>
+            </View>
+          ))}
       </ScrollView>
     );
   }
