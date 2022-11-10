@@ -239,11 +239,16 @@ export default function Index({ navigation, route }) {
           #Sala {sala.sala} Maximo R$ {sala.valor3.toFixed(2)}{" "}
         </Text>
       </View>
-      <View style={{ flexDirection: "row", marginTop: 13 }}>
-        <ScrollView horizontal>
-          <Cab></Cab>
-        </ScrollView>
-      </View>
+
+      {iniciada.length == 0 && getaposta.length == 0 && resultado.length != 0  ? (
+        <View style={{ flexDirection: "row", marginTop: 13 }}>
+          <ScrollView horizontal>
+            <Cab></Cab>
+          </ScrollView>
+        </View>
+      ) : (
+        <></>
+      )}
 
       <View
         style={{
@@ -288,8 +293,7 @@ export default function Index({ navigation, route }) {
         <View style={{ marginTop: 5 }}>
           <View
             style={{
-              height: 500,
-              backgroundColor: "#000",
+              height: 300,
               marginTop: 10,
             }}
           >
@@ -319,13 +323,17 @@ export default function Index({ navigation, route }) {
                 justifyContent: "center",
                 alignItems: "center",
                 flaxDirection: "row",
-                marginTop: 20,
+                marginTop: 0,
               }}
             >
               <Text style={styles.title}>
                 {!iniciada.id && !getaposta.jogo_id ? texto : <></>}
 
-                {iniciada.length != 0 && getaposta[0] ? "Partida em andamento..." : <></>}
+                {iniciada.length != 0 && getaposta[0] ? (
+                  "Partida em andamento..."
+                ) : (
+                  <></>
+                )}
               </Text>
               {iniciada.length == 0 ? <Spinner size="sm" /> : <></>}
             </View>
