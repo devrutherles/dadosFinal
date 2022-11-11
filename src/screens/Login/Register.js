@@ -78,7 +78,7 @@ export default function Register() {
       },
       data: {
         name: data.nome,
-        email: data.email,
+        email: data.email.toLowerCase(),
         password: data.senha,
         telefone: data.telefone,
         cpf: data.cpf,
@@ -178,6 +178,7 @@ export default function Register() {
               value={value}
               placeholder="exemplo@email.com"
               placeholderTextColor={"#fff"}
+              autoCapitalize="none"
             />
           )}
         />
@@ -306,6 +307,7 @@ export default function Register() {
               secureTextEntry={true}
               placeholder="********"
               placeholderTextColor={"#fff"}
+              autoCapitalize="none"
             />
           )}
         />

@@ -32,7 +32,7 @@ export default function Login({ route }) {
     },
   });
 
-  const {getUser } = useContext(AuthContext);
+  const { getUser } = useContext(AuthContext);
 
   function handleSignin(data) {
     setLoad(true);
@@ -57,7 +57,7 @@ export default function Login({ route }) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      data: { email: data.email, password: data.password },
+      data: { email: data.email.toLowerCase(), password: data.password },
     };
 
     axios
