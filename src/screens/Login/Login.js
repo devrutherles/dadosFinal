@@ -57,7 +57,7 @@ export default function Login({ route }) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      data: { email: data.email.toLowerCase(), password: data.password },
+      data: { email: data.email.toLowerCase().trim(), password: data.password },
     };
 
     axios

@@ -9,16 +9,44 @@ export default function AuthProvider({ children }) {
   const [pedido, setPedido] = useState([]);
 
   const [jogada, setJogada] = useState([]);
-  const [email, setEmail] = useState([]);
+  const [user_email, setUser_email] = useState([]);
   const [select, setSelect] = useState([]);
   const [texto, setTexto] = useState("Atualizando");
   const [onPedido, setonePedido] = useState();
   const [getaposta, setGetaposta] = useState([]);
   const [jogada_id, setJogada_id] = useState("");
   const [deposito, setDeposito] = useState([]);
+  const [user_id, setUser_id] = useState("");
+
   const [url, setUrl] = useState([]);
 
+ function GetUserByemail(data){
 
+  const options = {
+    method: "GET",
+    url: "https://rutherles.site/api/usuarios",
+    headers: { Accept: "application/json" },
+  };
+
+  axios
+    .request(options)
+    .then(function (response) {
+     
+let alluser = response.data
+let userId = alluser.find(
+  (item) => item.email == data || item.email == data.toLowerCase().trim()
+);
+
+setUser_id(userId.id);
+
+
+
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+
+ }
 
 
  const getJogada_id = async () => {
@@ -99,6 +127,10 @@ function postDeposito(data) {
 
  function putAlerta(data) {
    setAlertR(data);
+ }
+
+function postUser_id(data) {
+   setUser_id(data);
  }
 
 
@@ -190,17 +222,20 @@ function postDeposito(data) {
         putaposta_id,
         jogada,
         alertaR,
+        postUser_id,
+        user_id,
         getJogada_id,
         jogada_id,
         storeDeposito,
+        GetUserByemail,
         getDeposito,
         putTexto,
         texto,
         setAlertR,
-        email,
+        user_email,
         putAlerta,
         deposito,
-        setEmail,
+        setUser_email,
         putSelect,
         select,
         storeAposta,

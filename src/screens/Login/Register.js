@@ -73,7 +73,7 @@ export default function Register() {
       },
       data: {
         name: data.nome,
-        email: data.email.toLowerCase(),
+        email: data.email.toLowerCase().trim(),
         password: data.senha,
         telefone: data.telefone,
         cpf: data.cpf,

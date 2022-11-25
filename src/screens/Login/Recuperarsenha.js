@@ -19,12 +19,13 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../hooks/auth";
 import { DialogDirectionsEnum } from "react-native-ui-lib/src/incubator/Dialog";
 
-
+import {useEffect} from "react";
 
 
 export function Recuperar() {
   const [status, setStatus] = useState(null);
-  const {email, setEmail} = useContext(AuthContext);
+  const { email, setEmail, postUser_id,  GetUserByemail, user_id } =
+    useContext(AuthContext);
   const {
     control,
     handleSubmit,
@@ -41,7 +42,7 @@ export function Recuperar() {
   let codigo = Math.floor(Math.random() * 20000);
 
   function sendEmail(data) {
-    setLoad(true);
+    setLoad(false);
     var config = {
       method: "get",
       url:
@@ -52,14 +53,13 @@ export function Recuperar() {
       headers: {},
     };
 
-    axios(config)
-      .then(function (response) {
-        setEmail(data.email)
-        navigation.navigate("Codigo");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+ 
+     
+     GetUserByemail(data.email)
+
+     navigation.navigate("Codigo")
+
+
   }
 
   return (
@@ -149,11 +149,14 @@ export function Codigo({ params, navigation, route }) {
     },
   });
 
+  
+
+
+ 
+
   function sendSenha() {
     setLoad(true);
-    navigation.navigate("Senha", {
-      email: email,
-    });
+    navigation.navigate("Senha");
   }
 
   return (
@@ -205,7 +208,7 @@ export function Codigo({ params, navigation, route }) {
 
 export function Senha({ route }) {
 
-const {email} = useContext(AuthContext);
+const { user_id } = useContext(AuthContext);
 
   let id = "";
   const navigation = useNavigation();
@@ -223,61 +226,43 @@ const {email} = useContext(AuthContext);
 
   function senhas(dados) {
     setLoad(true);
-    const options2 = {
-      method: "GET",
-      url: "https://rutherles.site/api/usuarios",
-      headers: {
-        Accept: "application/json",
-        Authorization:
-          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1dGhlcmxlcy5zaXRlL2FwaS9sb2dpbiIsImlhdCI6MTY2NzIwNjc2OCwiZXhwIjoyMjY2NTM3NDc5OTg4LCJuYmYiOjE2NjcyMDY3NjgsImp0aSI6IjQ0Q2szeWVzWXpFdzNkbUciLCJzdWIiOiI4MSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZfDOFYHldK62hgJwUBmxtAvk1WzYtvJAcTnoI1xGs9Y",
-      },
-    };
+    
 
-    axios
-      .request(options2)
-      .then(function (response) {
-        let usuarios = response.data;
-        let user = usuarios.find(
-          (item) => item.email.toLowerCase() == email.toLowerCase()
-        );
-        console.log(user)
-        let id = user.id;
+       
 
         if (dados.senha1 == dados.senha2) {
-          //console.error(dados.senha1)
+         
+
+
+
+const options = {
+  method: "PUT",
+  url: "https://rutherles.site/api/usuario/" + user_id,
+  headers: { Accept: "application/json", "Content-Type": "application/json" },
+  data: { password: dados.senha1 },
+};
+
+axios
+  .request(options)
+  .then(function (response) {
+    console.log(response.data);
+    setLoad(false);
+
+    alert("senha alterada com sucesso");
+    navigation.navigate("Login");
+  })
+  .catch(function (error) {
+    console.error(error);
+  });
           
-          var data = JSON.stringify({
-            password: dados.senha1,
-          });
+        
 
-          var config = {
-            method: "put",
-            url: "http://rutherles.site/api/usuario/" + id,
-            headers: {
-              
-              "Content-Type": "application/json",
-            },
-            data: data,
-          };
-
-          axios(config)
-            .then(function (response) {
-            console.error(response.data);
-              setLoad(false);
-
-              alert("senha alterada com sucesso");
-             //navigation.navigate("Login");
-            })
-            .catch(function (error) {
-            console.error(error);
-            });
+         
         } else {
           alert("as senhas não sao iguais!");
         }
-      })
-      .catch(function (error) {
-        //console.error(error);
-      });
+      
+      
   }
 
   return (
