@@ -32,7 +32,7 @@ export default function Login({ route }) {
     },
   });
 
-  const { getUser } = useContext(AuthContext);
+  const {getUser } = useContext(AuthContext);
 
   function handleSignin(data) {
     setLoad(true);
@@ -57,7 +57,7 @@ export default function Login({ route }) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      data: { email: data.email.toLowerCase(), password: data.password },
+      data: { email: data.email, password: data.password },
     };
 
     axios
@@ -66,7 +66,9 @@ export default function Login({ route }) {
         storeUser(response.data.user[0]);
         setToken(response.data.authorisation.token);
         setLoad(false);
-        getUser(response.data.user[0]);
+        getUser(response.data.user[0].id);
+        global.id = response.data.user[0].id;
+        global.user = response.data.user[0];
         navigation.navigate("tab");
       })
       .catch(function (error) {

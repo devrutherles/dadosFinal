@@ -12,45 +12,8 @@ const dadov4 = require("../../../../assets/img/dadoV4.png");
 const dadov5 = require("../../../../assets/img/dadoV5.png");
 const dadov6 = require("../../../../assets/img/dadoV6.png");
 
-export const optionsLab = [
-  {
-    label: "Cancelar Aposta",
-    onPress: () => cancel({ id: item.id }),
-  },
-  {
-    label: "R$ 2,00",
-    onPress: () =>
-      selecionar({
-        id: item.id,
-        valor: 2,
-        cor: item.cor,
-        mult: item.mult,
-        key: item.key,
-      }),
-  },
-  {
-    label: "R$ 5,00",
-    onPress: () =>
-      selecionar({
-        id: item.id,
-        valor: 5,
-        cor: item.cor,
-        mult: item.mult,
-        key: item.key,
-      }),
-  },
-  {
-    label: "R$ 10,00",
-    onPress: () =>
-      selecionar({
-        id: item.id,
-        valor: 10,
-        cor: item.cor,
-        mult: item.mult,
-        key: item.key,
-      }),
-  },
-];
+
+ 
 
 export const dados = [
   {
@@ -117,8 +80,12 @@ export const dados = [
     nome: "Dado Branco 6, ",
   },
 
+
+
+  
+  
   {
-    key: 7,
+    key: 19,
     id: "dadov1",
     imagem: dadov1,
     imagem2: "http://orvalhosj.com/dadoV1.png",
@@ -129,7 +96,7 @@ export const dados = [
   },
 
   {
-    key: 8,
+    key: 20,
     id: "dadov2",
     imagem: dadov2,
     color: "#0c0c0e",
@@ -139,7 +106,7 @@ export const dados = [
   },
 
   {
-    key: 9,
+    key: 21,
     id: "dadov3",
     imagem: dadov3,
     color: "#0c0c0e",
@@ -149,7 +116,7 @@ export const dados = [
   },
 
   {
-    key: 10,
+    key: 22,
     id: "dadov4",
     imagem: dadov4,
     imagem2: "http://orvalhosj.com/dadoV4.png",
@@ -160,7 +127,7 @@ export const dados = [
   },
 
   {
-    key: 11,
+    key: 23,
     id: "dadov5",
     imagem: dadov5,
     imagem2: "http://orvalhosj.com/dadoV5.png",
@@ -171,7 +138,7 @@ export const dados = [
   },
 
   {
-    key: 12,
+    key: 24,
     id: "dadov6",
     imagem: dadov6,
     imagem2: "http://orvalhosj.com/dadoV6.png",

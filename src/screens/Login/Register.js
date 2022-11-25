@@ -20,12 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DateTimePicker } from "react-native-ui-lib/src/components/dateTimePicker";
 export default function Register() {
   const navigation = useNavigation();
-  //salvar token
-  const setToken = async (value) => {
-    try {
-      await AsyncStorage.setItem("@token", value);
-    } catch (e) {}
-  };
+
   const [date, setDate] = React.useState(new Date());
   const [cep, setCep] = React.useState("");
   const [lop, setLop] = React.useState(true);
@@ -78,7 +73,7 @@ export default function Register() {
       },
       data: {
         name: data.nome,
-        email: data.email.toLowerCase(),
+        email: data.email,
         password: data.senha,
         telefone: data.telefone,
         cpf: data.cpf,
@@ -178,7 +173,6 @@ export default function Register() {
               value={value}
               placeholder="exemplo@email.com"
               placeholderTextColor={"#fff"}
-              autoCapitalize="none"
             />
           )}
         />
@@ -307,7 +301,6 @@ export default function Register() {
               secureTextEntry={true}
               placeholder="********"
               placeholderTextColor={"#fff"}
-              autoCapitalize="none"
             />
           )}
         />

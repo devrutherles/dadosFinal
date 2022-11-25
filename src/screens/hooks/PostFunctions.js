@@ -2,46 +2,41 @@ import React from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-
 export const storeJogada_id = async (value) => {
   try {
     await AsyncStorage.setItem("@jogada", value);
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
-export function putJogada(data,id,premio){
-
+export function putJogada(data, id, premio) {
   const options = {
     method: "PUT",
     url: "https://rutherles.site/api/jogada/" + id,
     headers: { Accept: "application/json", "Content-Type": "application/json" },
-    data: { status: data , premio:premio },
+    data: { status: data, premio: premio },
   };
 
   axios
     .request(options)
     .then(function (response) {
-     // console.log(response.data);
+      // console.log(response.data);
     })
     .catch(function (error) {
       //console.error(error);
     });
 }
 
-export function PostJogada(usuario, user_id, jogada, email, valor,rodada) {
+export function PostJogada(usuario, user_id, jogada, email, valor, rodada) {
   var data = JSON.stringify({
     usuario: usuario,
     user_id: user_id,
     valor: valor,
     jogada: jogada,
     email: email,
-    status:"apostado",
-    rodada,rodada
+    status: "apostado",
+    rodada,
+    rodada,
   });
-
-
 
   var config = {
     method: "post",
@@ -54,12 +49,10 @@ export function PostJogada(usuario, user_id, jogada, email, valor,rodada) {
 
   axios(config)
     .then(function (response) {
-     let jogada_id = response.data.id.toString();
-     storeJogada_id(jogada_id);
+      let jogada_id = response.data.id.toString();
+       storeJogada_id(jogada_id);
 
-     //console.error(jogada_id);
-
-
+      //console.error(jogada_id);
 
       //console.warn(JSON.stringify(response.data));
     })
@@ -68,73 +61,59 @@ export function PostJogada(usuario, user_id, jogada, email, valor,rodada) {
     });
 }
 
+export function postDeposito(valor, user_id, deposito_id) {
+  const options = {
+    method: "POST",
+    url: "https://rutherles.site/api/depositos",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    data: {
+      valor: valor,
+      user_id: user_id,
+      deposito_id: deposito_id,
+      status: "pago",
+    },
+  };
 
-
-
-export function PutAdm(banca,ganhos,perdas,apostas){
-
-
-    var data = JSON.stringify({
-        "banca": banca,
-        "ganhos": ganhos,
-        "perdas": perdas,
-        "apostas": apostas
-      });
-      
-      var config = {
-        method: 'put',
-        url: 'https://rutherles.site/api/adm/1',
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
-      
-      axios(config)
-      .then(function (response) {
-        ///console.log()(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        ///console.log()(error);
-      });
-
-
+  axios
+    .request(options)
+    .then(function (response) {
+      console.error(response.data);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
 }
 
+export function putUser(
+  user_id,
+  deposito_id,
+  carteira,
+  valor_deposito,
+  status
+) {
+  var data = JSON.stringify({
+    deposito_id: deposito_id,
+    deposito: status,
+    valor_deposito: valor_deposito,
+    carteira: carteira,
+  });
 
-export function putUser (user_id,deposito_id,carteira,valor_deposito,status){
-   
+  var config = {
+    method: "put",
+    url: "https://rutherles.site/api/usuario/" + user_id,
+    headers: {
+      Authorization:
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
 
-    var data = JSON.stringify({
-        "deposito_id": deposito_id,
-        "deposito": status,
-        "valor_deposito":valor_deposito,
-        "carteira" :   carteira
-
-      });
-      
-      var config = {
-        method: 'put',
-        url: 'https://rutherles.site/api/usuario/'+ user_id,
-        headers: { 
-          'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM', 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
-      
-      axios(config)
-      .then(function (response) {
-        ///console.log()(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        ///console.log()(error);
-      });
-      
-
-
+  axios(config)
+    .then(function (response) {
+      ///console.log()(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      ///console.log()(error);
+    });
 }
-
-
-
-  

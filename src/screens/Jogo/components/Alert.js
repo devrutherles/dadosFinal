@@ -66,6 +66,14 @@ export default function Alerta(props) {
                   source={{ uri: array.imgd3 }}
                 />
               </View>
+
+              <View>
+                <Image
+                  alt=""
+                  style={styles.imagem}
+                  source={{ uri: array.imgd4 }}
+                />
+              </View>
             </View>
           ) : (
             <></>

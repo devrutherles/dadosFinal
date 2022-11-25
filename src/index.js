@@ -143,7 +143,7 @@ export function Tabs() {
 export default function App() {
   const { token, loading } = LoginApi();
 
-  const { getUser, getJogada, getPedido, getApostas } = useContext(AuthContext);
+  const { getUser, getDeposito, getJogada, getPedido, getApostas } = useContext(AuthContext);
   const [splas, setSplash] = useState(true);
 
   useEffect(() => {
@@ -151,6 +151,9 @@ export default function App() {
     getJogada()
     getPedido()
     getApostas()
+    getDeposito()
+
+    console.error(token)
    
   }, [token]);
 

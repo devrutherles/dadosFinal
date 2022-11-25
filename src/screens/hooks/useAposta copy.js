@@ -39,26 +39,14 @@ export function useAposta() {
   putTexto("Aguardando nova rodada ...");
 
   useEffect(() => {
-        // storeAposta([]);
-
-
-
-
     getApostas();
 
     const timeout = setTimeout(() => {
-
-      console.error(user.id)
-
-
-
-      
-
-
-      getUser(global.id ? global.id : user.id);
+      getUser(user.id);
       getJogada_id();
 
-      // console.error(jogada_id)
+      //console.error(jogoID);
+        //storeAposta([]);
 
       const options = {
         method: "GET",
@@ -88,8 +76,7 @@ export function useAposta() {
           setCriada([]);
         }
 
-        //console.error(aposta_id)
-        if (resultados && getaposta[0].jogo_id) {
+        if (resultados && jogoID) {
           putTexto("Aguardando resultado");
           let numeros = [
             { id: resultados.resultd1 },
@@ -98,6 +85,7 @@ export function useAposta() {
             { id: resultados.resultd4 },
           ];
 
+
           const obj2 = select;
           const obj1 = numeros;
           const result = obj2.map((obj) => ({
@@ -105,47 +93,45 @@ export function useAposta() {
             isPresent: obj1.some(({ id }) => id === obj.id),
           }));
 
-let selecionadosMorena = result.filter((item) => item.isPresent === true && item.id.split('')[4] == 'p');
-let selecionadosCaipira = result.filter(
-  (item) => item.isPresent === true && item.id.split("")[4] != "p"
-);
+          let selecionados = "";
 
-let countObject = numeros.reduce(function (count, currentValue) {
-  return (
-    count[currentValue.id]
-      ? ++count[currentValue.id]
-      : (count[currentValue.id] = 1),
-    count
-  );
-}, {});
+          if (result.length == 1) {
+            selecionados = result.find((car) => car.isPresent === true);
+          } else {
+            selecionados = result.filter((car) => car.isPresent === true);
+          }
 
-   var totalMorena = selecionadosMorena.reduce(getTotal, 0);
-   function getTotal(total, item) {
-     return (
-       parseInt(getaposta[0].valorMorena) * countObject[item.id] +
-       parseInt(getaposta[0].valorMorena)
-     );
-   }
+          let dadoBranco = selecionados.filter(
+            (item) => item.id.split("")[4] == "p"
+          );
+          let valorBranco = dadoBranco.map((item) => item.valor);
+          var somaBranco = valorBranco.reduce(function (soma, i) {
+            return soma + i;
+          });
 
-   let vcaipira = selecionadosCaipira.length * getaposta[0].valorCaipira * 4;
-   valor = totalMorena + vcaipira;
+          let valorDadoBranco = somaBranco * dadoBranco.length + somaBranco;
 
+          let dadoVermelho = selecionados.filter(
+            (item) => item.id.split("")[4] == "v"
+          );
 
+          let valorVermelho = dadoVermelho.map((item) => item.valor);
 
+          let valorDadoVermelho = valorVermelho[0]
+            ? valorVermelho[0] * 4 + valorVermelho[0]
+            : 0;
 
+          console.error(dadoBranco);
 
+          valor = valorDadoVermelho + valorDadoBranco;
 
-
-
-          if (getaposta[0].jogo_id) {
-           putAlerta({ valor: valor, resultado: resultados });
-           editCarteira(parseInt(carteira) + parseInt(valor), user.id);
-           storeAposta([]);
-           putSelect([]);
-           getApostas();
-           setResultado(resultados);
-          // putAlerta("");
-
+          if (getaposta[0].jogo_id && 1==9) {
+            putAlerta({ valor: valor, resultado: resultados });
+            editCarteira(parseInt(carteira) + parseInt(valor), user.id);
+            storeAposta([]);
+            putSelect([]);
+            getApostas();
+            setResultado(resultados);
 
             putTexto("Aguardando nova rodada");
 

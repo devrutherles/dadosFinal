@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react";
 import axios from "axios";
 export const AuthContext = createContext({});
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Deposito from '../Pix/Deposito';
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(false);
@@ -14,20 +15,20 @@ export default function AuthProvider({ children }) {
   const [onPedido, setonePedido] = useState();
   const [getaposta, setGetaposta] = useState([]);
   const [jogada_id, setJogada_id] = useState("");
+  const [deposito, setDeposito] = useState([]);
+  const [url, setUrl] = useState([]);
+
 
 
 
  const getJogada_id = async () => {
-  try {
-    const value = await AsyncStorage.getItem("@jogada");
-    if (value !== null) {
-      setJogada_id(value);
-      //console.error(value)
-
-    }
-  } catch (e) {
-    // error reading value
-  }
+ try {
+   const value = await AsyncStorage.getItem("@jogada");
+   if (value !== null) {
+     setJogada_id(value);
+   }
+ } catch (e) {
+ }
 };
 
 
@@ -35,6 +36,23 @@ const storeAposta = async (value) => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem("@apostas", jsonValue);
+  } catch (e) {}
+};
+
+const storeDeposito = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem("@deposito", jsonValue);
+  } catch (e) {}
+};
+
+
+const getDeposito = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem("@deposito");
+    return jsonValue != null
+      ? setDeposito(JSON.parse(jsonValue))
+      : setDeposito([]);
   } catch (e) {}
 };
 
@@ -57,6 +75,19 @@ const getApostas = async () => {
     setAposta_id(data)
 }
 
+ function getUrl(data) {
+   setUrl(data);
+ }
+
+ function postUser (data) {
+setUser(data)
+
+ }
+
+function postDeposito(data) {
+  setDeposito(data);
+}
+
  function putTexto(data) {
    setTexto(data);
  }
@@ -77,7 +108,7 @@ const getApostas = async () => {
   function getUser(data) {
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/usuario/" + data,
+      url: "https://rutherles.site/api/usuario/" + data ,
       headers: { Accept: "application/json" },
     };
 
@@ -86,13 +117,11 @@ const getApostas = async () => {
       .request(options)
       .then(function (response) {
         setUser(response.data[0]);
-        //console.error(response.data);
       })
       .catch(function (error) {});
   }
 
   function editCarteira ( carteira , id) {
-  //console.error(id);
 
     const options = {
       method: "PUT",
@@ -119,10 +148,8 @@ const getApostas = async () => {
     axios
       .request(options)
       .then(function (response) {
-        //console.error(response.data);
 
         let pedidos = response.data.filter((item) => item.user_id == id);
-        //console.error(pedidos);
         setPedido(response.data);
       })
       .catch(function (error) {});
@@ -141,7 +168,6 @@ const getApostas = async () => {
 
       .then(function (response) {
         setJogada(response.data);
-        //console.error(response.data)
       })
       .catch(function (error) {});
   }
@@ -156,6 +182,9 @@ const getApostas = async () => {
         getPedido,
         aposta_id,
         getUser,
+        getUrl,
+        postUser,
+        url,
         pedido,
         getJogada,
         putaposta_id,
@@ -163,11 +192,14 @@ const getApostas = async () => {
         alertaR,
         getJogada_id,
         jogada_id,
+        storeDeposito,
+        getDeposito,
         putTexto,
         texto,
         setAlertR,
         email,
         putAlerta,
+        deposito,
         setEmail,
         putSelect,
         select,

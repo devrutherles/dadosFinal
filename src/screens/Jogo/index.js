@@ -1,12 +1,25 @@
 import { Ionicons } from "@expo/vector-icons";
 import { React, useState, useEffect, useRef, useContext } from "react";
-import { StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ImageBackground,
+} from "react-native";
 import { View, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
 import { FlatGrid } from "react-native-super-grid";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { Center, Spinner, Text, AlertDialog, Button } from "native-base";
+import {
+  Center,
+  Spinner,
+  Text,
+  AlertDialog,
+  Button,
+  HStack,
+} from "native-base";
 import { useAposta } from "../hooks/useAposta";
-import { useUrl } from "../hooks/useUrl";
 import { AuthContext } from "../hooks/auth";
 import { dados, optionsLab, jogadores } from "./components/variaveis";
 import Cab from "./components/Header";
@@ -16,7 +29,12 @@ import { PostJogada } from "../hooks/PostFunctions";
 
 export default function Index({ navigation, route }) {
   const carregamento = require("../../../assets/img/dice.gif");
+  const [valorMorena, setValorMorena] = useState(0);
+    const [apostado, setApostado] = useState(false);
 
+  const [valorCaipira, setValorCaipira] = useState(0);
+  const chip = require("../../../assets/img/chip.png");
+  const chip1 = require("../../../assets/img/chip1.png");
   const [visible, setVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
@@ -49,6 +67,7 @@ export default function Index({ navigation, route }) {
     getaposta,
     putSelect,
     texto,
+    url
   } = useContext(AuthContext);
 
   const salas = [
@@ -58,30 +77,43 @@ export default function Index({ navigation, route }) {
   ];
 
   const carteira = user.carteira;
-  const { url } = useUrl();
 
-  function dado(data) {
-    if (select.length > 0) {
-      if (select.find((item) => item.id == data.id)) {
-        let teste = select.find((item) => item.id == data.id);
-
-        let teste2 = select.filter((item) => item != teste);
-        setSelect(teste2);
-      } else {
-        setIds(data.id);
-        setVisible(true);
-      }
-    } else {
-      setIds(data.id);
-      setVisible(true);
-    }
-  }
-
+  let selectMorena = select.filter(
+    (item) => item.id.split("")[4] == "p"
+  ).length;
+  let selectCaipira = select.filter(
+    (item) => item.id.split("")[4] == "v"
+  ).length;
   function selecionar(data) {
-    let dado = select.find((dado) => dado.id === aposta_id);
-    if (!dado) {
-      select.push(data);
+    if (data.id.split("")[4] == "p" && valorMorena == 0) {
+      alert("Por favor escolha o valor da aposta Morena");
+    } else if (data.id.split("")[4] == "v" && valorCaipira == 0) {
+      alert("Por favor escolha o valor da aposta Caipira");
+    } else {
+      if (select.length == 0) {
+        select.push(data);
+      } else {
+        let dados = select.find((dado) => dado.id == data.id);
+
+        if (!dados) {
+          if (selectMorena > 3  ) {
+            alert("Você não pode apostar mais que 3 números no morena");
+             var nesSelect = select.filter((item) => item.id !== data.id);
+             setSelect(nesSelect);
+          } else {
+            if (selectCaipira > 0 && selectMorena == 3) {
+              alert("Você não pode apostar mais que 1 número no caipira");
+            } else {
+              select.push(data);
+            }
+          }
+        } else {
+          var nesSelect = select.filter((item) => item.id !== data.id);
+          setSelect(nesSelect);
+        }
+      }
     }
+
     let dadosValor = select.map((item) => item.valor);
     setArray_valor_apostado(dadosValor);
   }
@@ -91,49 +123,67 @@ export default function Index({ navigation, route }) {
     setIsOpen(false);
   }
   function jogarD() {
-    let totais = array_valor_apostado.reduce((total, numero) => total + numero);
+    setApostado(true)
+ 
+   let valorB = selectMorena > 0 ? valorMorena : 0
+   let valorV = selectCaipira > 0 ? valorCaipira : 0;
 
-    if (carteira < 2) {
-      setIsOpen(true);
+
+    let totais = valorB + valorV;
+
+    if(selectMorena > 3 || selectCaipira > 1){
+      alert("Você não pode apostar mais que 3 números no morena e 1 no caipira")
+    } else{
+  if (carteira < 1) {
+    setIsOpen(true);
+  } else {
+    if (select.length < 1) {
+      alert("Você precisa selecionar pelo menos um dado");
+    } else if (carteira < totais) {
+      alert("Saldo insuficiente para essa aposta");
     } else {
-      if (select.length < 1) {
-        alert("Você precisa selecionar pelo menos um dado");
-      } else if (carteira < totais) {
-        alert("Saldo insuficiente para essa aposta");
-      } else {
-        let dadosApostados = select.map((item) => item.id);
-        let da = {
-          jogada: dadosApostados,
+      let dadosApostados = select.map((item) => item.id);
+      let da = {
+        jogada: dadosApostados,
+      };
+
+      let dadosE = JSON.stringify(da);
+
+      let dados = select.map((item) => {
+        let valores = {
+          jogo_id: iniciada.id,
+          nome: item.nome,
+          img: item.img,
+          dados: item.id,
+          valor: totais,
+          resultado: true,
+          valorCaipira: valorCaipira,
+          valorMorena: valorMorena,
         };
 
-        let dadosE = JSON.stringify(da);
+        return valores;
+      });
 
-        let dados = select.map((item) => {
-          let valores = {
-            jogo_id: iniciada.id,
-            nome: item.nome,
-            img: item.img,
-            dados: item.id,
-            valor: totais,
-            resultado: true,
-          };
+      storeAposta(dados);
+      putSelect(select);
+      putaposta_id(iniciada.id);
+      editCarteira(parseInt(carteira) - parseInt(totais), user.id);
+      PostJogada(user.nome, user.id, dadosE, user.email, totais, iniciada.id);
+      getApostas();
+      getJogada();
+      setValorCaipira(0);
+      setValorMorena(0);
+      setApostado(false);
 
-          return valores;
-        });
 
-        storeAposta(dados);
-        putSelect(select);
-        putaposta_id(iniciada.id);
-        editCarteira(parseInt(carteira) - parseInt(totais), user.id);
-        PostJogada(user.nome, user.id, dadosE, user.email, totais, iniciada.id);
-        getApostas();
-        getJogada();
-
-        setTimeout(() => {
-          setSelect([]);
-        }, 2000);
-      }
+      setTimeout(() => {
+      setSelect([]);
+      }, 2000);
     }
+  }
+    }
+
+  
   }
 
   return (
@@ -173,10 +223,9 @@ export default function Index({ navigation, route }) {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           alignItems: "center",
-          marginHorizontal: 10,
-          marginTop: "10%",
+          marginTop: "15%",
         }}
       >
         <View>
@@ -212,7 +261,7 @@ export default function Index({ navigation, route }) {
           style={{
             fontSize: 28,
             fontWeight: "bold",
-            marginLeft: 10,
+            justifyContent: "space-around",
             color: "#a2d5ab",
           }}
         >
@@ -222,8 +271,7 @@ export default function Index({ navigation, route }) {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
-          margin: 10,
+          justifyContent: "space-around",
           marginTop: 30,
         }}
       >
@@ -234,42 +282,39 @@ export default function Index({ navigation, route }) {
         </Text>
       </View>
 
-      {iniciada.length == 0 &&
-      getaposta.length == 0 &&
-      resultado.length != 0 ? (
-        <View style={{ flexDirection: "row", marginTop: 13 }}>
-          <ScrollView horizontal>
-            <Cab></Cab>
-          </ScrollView>
-        </View>
-      ) : (
-        <></>
-      )}
+      <View style={{ flexDirection: "row", marginTop: 13 }}>
+        <ScrollView horizontal>
+          <Cab></Cab>
+        </ScrollView>
+      </View>
 
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           alignItems: "center",
-          margin: 10,
-          marginBottom: 10,
+          marginTop: 10,
         }}
       >
-        <ScrollView horizontal style={{ paddingHorizontal: 5 }}>
-          {salas.map((element) => (
-            <TouchableOpacity
-              key={element.id}
-              style={{
-                backgroundColor: element.sala == sala.sala ? sala.cor : "gray",
-                width: 110,
-                margin: 10,
-                height: 30,
-                borderRadius: 7,
+        {salas.map((element) => (
+          <TouchableOpacity
+            key={element.id}
+            style={{
+              backgroundColor: element.sala == sala.sala ? sala.cor : "gray",
+              width: "30%",
 
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              onPress={() => {
+              height: 30,
+              borderRadius: 7,
+
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => {
+              if (select.length > 0) {
+                alert(
+                  "Você precisa finalizar a aposta atual, ou cancelar os dados selecionados"
+                );
+              } else {
                 setSala({
                   sala: element.sala,
                   cor: "#a2d5ab",
@@ -277,200 +322,375 @@ export default function Index({ navigation, route }) {
                   valor2: element.valor2,
                   valor3: element.valor3,
                 });
-              }}
-            >
-              <Text style={{ fontSize: 16 }}>Sala{element.sala}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
-      <ScrollView>
-        <View style={{ marginTop: 5 }}>
-          <View
-            style={{
-              height: 500,
-              marginTop: 10,
+              }
             }}
           >
-            {nome && iniciada.length != 0 ? (
-              <YoutubePlayer
-                height={getaposta[0] ? 230 : 170}
-                play={true}
-                videoId={url}
-              />
-            ) : (
-              <></>
-            )}
+            <Text style={{ fontSize: 16 }}>Sala{element.sala}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
-            {alertaR.length != 0 && iniciada.length == 0 ? (
-              <View>
-                <Alerta
-                  valor={alertaR.valor}
-                  array={alertaR.resultado}
-                ></Alerta>
-              </View>
-            ) : (
-              <></>
-            )}
+      {alertaR.length != 0 && iniciada.length == 0 ? (
+        <View style={{ marginTop: 20, marginBottom: 10 }}>
+          <Alerta valor={alertaR.valor} array={alertaR.resultado}></Alerta>
+        </View>
+      ) : (
+        <></>
+      )}
 
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flaxDirection: "row",
-                marginTop: 0,
-              }}
-            >
-              <Text style={styles.title}>
-                {!iniciada.id && !getaposta.jogo_id ? texto : <></>}
-
-                {iniciada.length != 0 && getaposta[0] ? (
-                  "Partida em andamento..."
-                ) : (
-                  <></>
-                )}
-              </Text>
-              {iniciada.length == 0 ? <Spinner size="sm" /> : <></>}
-            </View>
-
-            <Center>
-              <ScrollView key={dados.key} horizontal>
-                {iniciada.length != 0 && getaposta.length == 0 ? (
-                  <FlatGrid
-                    verti
-                    itemDimension={50}
-                    data={dados}
-                    style={styles.gridView}
-                    spacing={10}
-                    renderItem={({ item }) => (
-                      <View
-                        key={item.id}
-                        style={[
-                          styles.itemContainer,
-                          {
-                            backgroundColor: select.find(
-                              (car) => car.id === item.id
-                            )
-                              ? "#fee672"
-                              : "#000",
-                          },
-                        ]}
-                      >
-                        <TouchableOpacity onPress={() => dado({ id: item.id })}>
-                          <Image
-                            key={item.key}
-                            style={{ width: 55, height: 55, marginLeft: 5 }}
-                            source={item.imagem}
-                          />
-
-                          {select.map((jogo) =>
-                            jogo.id == item.id ? (
-                              <View
-                                key={jogo.nome}
-                                style={{
-                                  position: "absolute",
-                                  backgroundColor: "#fee672",
-                                  width: 33,
-                                  height: 22,
-                                  borderRadius: 100,
-                                  marginTop: 2,
-                                  top: -15,
-                                  alignContent: "space-between",
-                                  alignItems: "center",
-                                  alignSelf: "center",
-                                }}
-                              >
-                                <Text style={{ marginTop: 2 }}>
-                                  ${jogo.valor}
-                                </Text>
-                              </View>
-                            ) : (
-                              <></>
-                            )
-                          )}
-                        </TouchableOpacity>
-
-                        {item.id == ids ? (
-                          <ActionSheet
-                            title={"Escolha o valor"}
-                            message={"teste"}
-                            useNativeIOS={false}
-                            options={[
-                              {
-                                label: "R$ " + sala.valor1.toFixed(2),
-                                onPress: () =>
-                                  selecionar({
-                                    id: item.id,
-                                    valor: sala.valor1,
-                                    mult: item.mult,
-                                    key: item.key,
-                                    nome: item.nome,
-                                    img: item.imagem2,
-                                  }),
-                              },
-                              {
-                                label: "R$ " + sala.valor2.toFixed(2),
-                                onPress: () =>
-                                  selecionar({
-                                    id: item.id,
-                                    valor: sala.valor2,
-                                    mult: item.mult,
-                                    key: item.key,
-                                    nome: item.nome,
-                                    img: item.imagem2,
-                                  }),
-                              },
-                              {
-                                label: "R$ " + sala.valor3.toFixed(2),
-                                onPress: () =>
-                                  selecionar({
-                                    id: item.id,
-                                    valor: sala.valor3,
-                                    mult: item.mult,
-                                    key: item.key,
-                                    nome: item.nome,
-                                    img: item.imagem2,
-                                  }),
-                              },
-                            ]}
-                            visible={visible}
-                            onDismiss={() => setVisible(false)}
-                          />
-                        ) : (
-                          <></>
-                        )}
-                      </View>
-                    )}
-                  />
-                ) : (
-                  <></>
-                )}
-              </ScrollView>
-            </Center>
-
-            <View style={styles.button}>
-              {iniciada.length != 0 && getaposta.length < 1 ? (
-                <Button
-                  size="lg"
-                  onPress={jogarD}
-                  backgroundColor={"#a2d5ab"}
-                  style={{ width: "90%", borderRadius: 7 }}
-                  variant={"solid"}
-                  _text={{
-                    color: "#1F2937",
-                  }}
-                  px="3"
-                >
-                  Apostar
-                </Button>
-              ) : (
-                <></>
-              )}
-            </View>
+      {nome && iniciada.length != 0 ? (
+        <View style={{ marginTop: 30 }}>
+          <YoutubePlayer
+            height={iniciada.length != 0 && getaposta[0] ? "55%" : "1%"}
+            play={false}
+            videoId={url}
+            resumePlayAndroid={true}
+          />
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.title}>Partida em andamento...</Text>
           </View>
         </View>
-      </ScrollView>
+      ) : (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 30,
+          }}
+        >
+          <Text style={styles.title}>{texto}</Text>
+          <Spinner size="sm" />
+        </View>
+      )}
+
+      <View>
+        {iniciada.length != 0 && getaposta.length < 1 ? (
+          <View>
+            <HStack mt={3} mb={5} justifyContent={"space-around"}>
+              <View>
+                <Text style={{ color: "#fff" }}>Valor morena</Text>
+              </View>
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ color: "#fff" }}>Valor caipira</Text>
+              </View>
+            </HStack>
+            <HStack justifyContent={"space-around"}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "33%",
+                  justifyContent: "space-between",
+                  marginBottom: 20,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    if (valorMorena == 0) {
+                      setValorMorena(sala.valor1);
+                    } else {
+                      setValorMorena(0);
+                    }
+                  }}
+                  style={{
+                    width: 35,
+                    height: 35,
+                    justifyContent: "center",
+                    borderRadius: 50,
+                    borderEndWidth: 1,
+                    backfaceVisibility: "visible",
+                    overflow: "visible",
+                    borderRadius: 5,
+
+                    backgroundColor:
+                      valorMorena == sala.valor1 ? "#daa520" : "#000",
+                  }}
+                >
+                  <Image style={{ width: 35, height: 35 }} source={chip} />
+                  <Text
+                    style={{
+                      color: "#000",
+                      position: "absolute",
+                      alignSelf: "center",
+                      fontWeight: "bold",
+
+                      fontSize: 10,
+                    }}
+                  >
+                    {sala.valor1}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (valorMorena == 0) {
+                      setValorMorena(sala.valor2);
+                    } else {
+                      setValorMorena(0);
+                    }
+                  }}
+                  style={{
+                    width: 35,
+                    height: 35,
+                    justifyContent: "center",
+                    backfaceVisibility: "visible",
+                    overflow: "visible",
+                    backgroundColor:
+                      valorMorena == sala.valor2 ? "#daa520" : "#000",
+                    borderRadius: 5,
+                  }}
+                >
+                  <Image style={{ width: 35, height: 35 }} source={chip} />
+                  <Text
+                    style={{
+                      color: "#000",
+                      position: "absolute",
+                      alignSelf: "center",
+                      fontWeight: "bold",
+                      fontSize: 10,
+                    }}
+                  >
+                    {sala.valor2}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (valorMorena == 0) {
+                      setValorMorena(sala.valor3);
+                    } else {
+                      setValorMorena(0);
+                    }
+                  }}
+                  style={{
+                    width: 35,
+                    height: 35,
+                    justifyContent: "center",
+                    borderRadius: 5,
+
+                    backfaceVisibility: "visible",
+                    overflow: "visible",
+                    backgroundColor:
+                      valorMorena == sala.valor3 ? "#daa520" : "#000",
+                  }}
+                >
+                  <Image style={{ width: 35, height: 35 }} source={chip} />
+                  <Text
+                    style={{
+                      color: "#000",
+                      position: "absolute",
+                      alignSelf: "center",
+                      fontWeight: "bold",
+                      fontSize: 10,
+                    }}
+                  >
+                    {sala.valor3}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "33%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    if (valorCaipira == 0) {
+                      setValorCaipira(sala.valor1);
+                    } else {
+                      setValorCaipira(0);
+                    }
+                  }}
+                  style={{
+                    width: 35,
+                    height: 35,
+                    borderRadius: 5,
+
+                    justifyContent: "center",
+                    backfaceVisibility: "visible",
+                    overflow: "visible",
+                    backgroundColor:
+                      valorCaipira == sala.valor1 ? "#daa520" : "#000",
+                  }}
+                >
+                  <Image style={{ width: 35, height: 35 }} source={chip1} />
+                  <Text
+                    style={{
+                      color: "#fff",
+                      position: "absolute",
+                      alignSelf: "center",
+                      fontWeight: "bold",
+                      fontSize: 10,
+                    }}
+                  >
+                    {sala.valor1}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (valorCaipira == 0) {
+                      setValorCaipira(sala.valor2);
+                    } else {
+                      setValorCaipira(0);
+                    }
+                  }}
+                  style={{
+                    width: 35,
+                    borderRadius: 5,
+
+                    height: 35,
+                    justifyContent: "center",
+                    backfaceVisibility: "visible",
+                    overflow: "visible",
+                    backgroundColor:
+                      valorCaipira == sala.valor2 ? "#daa520" : "#000",
+                  }}
+                >
+                  <Image style={{ width: 35, height: 35 }} source={chip1} />
+                  <Text
+                    style={{
+                      color: "#fff",
+                      position: "absolute",
+                      alignSelf: "center",
+                      fontWeight: "bold",
+                      fontSize: 10,
+                    }}
+                  >
+                    {sala.valor2}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (valorCaipira == 0) {
+                      setValorCaipira(sala.valor3);
+                    } else {
+                      setValorCaipira(0);
+                    }
+                  }}
+                  style={{
+                    width: 35,
+                    height: 35,
+                    borderRadius: 5,
+
+                    justifyContent: "center",
+                    backfaceVisibility: "visible",
+                    overflow: "visible",
+                    backgroundColor:
+                      valorCaipira == sala.valor3 ? "#daa520" : "#000",
+                  }}
+                >
+                  <Image style={{ width: 35, height: 35 }} source={chip1} />
+                  <Text
+                    style={{
+                      color: "#fff",
+                      position: "absolute",
+                      alignSelf: "center",
+                      fontWeight: "bold",
+                      fontSize: 10,
+                    }}
+                  >
+                    {sala.valor3}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </HStack>
+          </View>
+        ) : (
+          <></>
+        )}
+
+        {iniciada.length != 0 && getaposta.length < 1 ? (
+          <FlatList
+            numColumns={6}
+            data={dados}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={{
+                  width: "15%",
+
+                  justifyContent: "space-around",
+                  height: 55,
+                  margin: 3,
+                  display: "flex",
+                  overflow: "visible",
+
+                  borderRadius: 1,
+                }}
+                onPress={() =>
+                  selecionar({
+                    id: item.id,
+                    valor: sala.valor1,
+                    mult: item.mult,
+                    key: item.key,
+                    nome: item.nome,
+                    img: item.imagem2,
+                  })
+                }
+              >
+                <Center>
+                  <ImageBackground
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: 5,
+                      borderWidth: 3,
+
+                      borderColor: select.find((car) => car.id === item.id)
+                        ? "#a2d5ab"
+                        : "#000",
+                    }}
+                    source={item.imagem}
+                  />
+                </Center>
+              </TouchableOpacity>
+            )}
+          />
+        ) : (
+          <></>
+        )}
+      </View>
+      <View style={styles.button}>
+        {apostado ? (
+          <Button
+            disabled
+            size="lg"
+            onPress={jogarD}
+            backgroundColor={"#a2d5ab"}
+            style={{ width: "90%", borderRadius: 7 }}
+            variant={"solid"}
+            _text={{
+              color: "#1F2937",
+            }}
+            px="3"
+            isLoading
+            isLoadingText="Apostando"
+          >
+            Apostando
+          </Button>
+        ) : iniciada.length != 0 && getaposta.length < 1 ? (
+          <Button
+            size="lg"
+            onPress={jogarD}
+            backgroundColor={"#a2d5ab"}
+            style={{ width: "90%", borderRadius: 7 }}
+            variant={"solid"}
+            _text={{
+              color: "#1F2937",
+            }}
+            px="3"
+          >
+            Apostar
+          </Button>
+        ) : (
+          <></>
+        )}
+      </View>
     </View>
   );
 }
@@ -479,6 +699,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 50,
   },
   gridView: {
     width: 400,
@@ -508,7 +729,7 @@ const styles = StyleSheet.create({
     color: "gray",
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 10,
+    marginTop: 1,
     marginBottom: 10,
   },
   title1: {

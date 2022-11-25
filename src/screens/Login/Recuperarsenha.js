@@ -19,9 +19,12 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../hooks/auth";
 import { DialogDirectionsEnum } from "react-native-ui-lib/src/incubator/Dialog";
 
+
+
+
 export function Recuperar() {
   const [status, setStatus] = useState(null);
-  const { email, setEmail } = useContext(AuthContext);
+  const {email, setEmail} = useContext(AuthContext);
   const {
     control,
     handleSubmit,
@@ -51,8 +54,7 @@ export function Recuperar() {
 
     axios(config)
       .then(function (response) {
-        setEmail(data.email);
-        setLoad(false);
+        setEmail(data.email)
         navigation.navigate("Codigo");
       })
       .catch(function (error) {
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function Codigo({ navigation, route }) {
+export function Codigo({ params, navigation, route }) {
   const [load, setLoad] = useState(false);
   const {
     control,
@@ -148,6 +150,7 @@ export function Codigo({ navigation, route }) {
   });
 
   function sendSenha() {
+    setLoad(true);
     navigation.navigate("Senha", {
       email: email,
     });
@@ -201,7 +204,8 @@ export function Codigo({ navigation, route }) {
 }
 
 export function Senha({ route }) {
-  const { email } = useContext(AuthContext);
+
+const {email} = useContext(AuthContext);
 
   let id = "";
   const navigation = useNavigation();
@@ -224,6 +228,8 @@ export function Senha({ route }) {
       url: "https://rutherles.site/api/usuarios",
       headers: {
         Accept: "application/json",
+        Authorization:
+          "Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1dGhlcmxlcy5zaXRlL2FwaS9sb2dpbiIsImlhdCI6MTY2NzIwNjc2OCwiZXhwIjoyMjY2NTM3NDc5OTg4LCJuYmYiOjE2NjcyMDY3NjgsImp0aSI6IjQ0Q2szeWVzWXpFdzNkbUciLCJzdWIiOiI4MSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZfDOFYHldK62hgJwUBmxtAvk1WzYtvJAcTnoI1xGs9Y",
       },
     };
 
@@ -231,15 +237,13 @@ export function Senha({ route }) {
       .request(options2)
       .then(function (response) {
         let usuarios = response.data;
-
-        let user = usuarios.find((item) => item.email == email.toLowerCase());
-        console.error(user);
-
+        let user = usuarios.find((item) => item.email == email);
+        console.log(user)
         let id = user.id;
-        console.error(user);
+
         if (dados.senha1 == dados.senha2) {
           //console.error(dados.senha1)
-
+          
           var data = JSON.stringify({
             password: dados.senha1,
           });
@@ -248,6 +252,7 @@ export function Senha({ route }) {
             method: "put",
             url: "http://rutherles.site/api/usuario/" + id,
             headers: {
+              
               "Content-Type": "application/json",
             },
             data: data,
@@ -255,10 +260,11 @@ export function Senha({ route }) {
 
           axios(config)
             .then(function (response) {
-              //console.error(JSON.stringify(response.data));
-              alert("senha alterada com sucesso");
+            console.error(JSON.stringify(response.data));
               setLoad(false);
-              navigation.navigate("Login");
+
+              alert("senha alterada com sucesso");
+             // navigation.navigate("Login");
             })
             .catch(function (error) {
               //console.error(error);
@@ -275,7 +281,7 @@ export function Senha({ route }) {
   return (
     <KeyboardAvoidingView
       style={styles.background}
-      behavior={Platform.OS === "ios" ? "padding" : null}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <Center style={{ backgroundColor: "#000" }}>
         <VStack justifyContent="flex-end" w="100%" maxW="300">
@@ -302,6 +308,7 @@ export function Senha({ route }) {
                 onChangeText={onChange}
                 value={value}
                 autoCapitalize="none"
+                
               />
             )}
           />

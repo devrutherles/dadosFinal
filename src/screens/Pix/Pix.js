@@ -18,7 +18,7 @@ export default function Pix() {
   const [valor, setValor] = React.useState();
   const logo = require("../../images/pix.png");
   const navigation = useNavigation();
-  const { user } = useContext(AuthContext);
+  const { user, storeDeposito, getDeposito } = useContext(AuthContext);
 
   function pix(value) {
     setValor(value);
@@ -26,11 +26,20 @@ export default function Pix() {
 
   function pagar() {
     let deposito_id = Math.floor(Math.random() * 65536) + user.id;
+
+    storeDeposito({
+      deposito_id: deposito_id,
+      valor: valor ? valor : text,
+      user_id: user.id,
+    });
+
+    getDeposito()
+
     navigation.navigate("Deposito", {
       valor: valor ? valor : text,
       deposito_id: deposito_id,
       deposito_id_tabela: "77",
-      carteira: user ? user.carteira : 0,
+      carteira: user.carteira ,
       user_id: user.id,
       nome: user.nome,
       cep: user.cep,
