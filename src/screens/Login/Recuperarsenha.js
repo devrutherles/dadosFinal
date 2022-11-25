@@ -19,12 +19,11 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../hooks/auth";
 import { DialogDirectionsEnum } from "react-native-ui-lib/src/incubator/Dialog";
 
-import {useEffect} from "react";
-
+import { useEffect } from "react";
 
 export function Recuperar() {
   const [status, setStatus] = useState(null);
-  const { email, setEmail, postUser_id,  GetUserByemail, user_id } =
+  const { email, setEmail, postUser_id, GetUserByemail, user_id } =
     useContext(AuthContext);
   const {
     control,
@@ -53,19 +52,15 @@ export function Recuperar() {
       headers: {},
     };
 
- 
-     
-     GetUserByemail(data.email)
+    GetUserByemail(data.email);
 
-     navigation.navigate("Codigo")
-
-
+    navigation.navigate("Codigo");
   }
 
   return (
     <KeyboardAvoidingView
       style={styles.background}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : <></>}
     >
       <Center style={{ backgroundColor: "#000" }}>
         <Image
@@ -149,11 +144,6 @@ export function Codigo({ params, navigation, route }) {
     },
   });
 
-  
-
-
- 
-
   function sendSenha() {
     setLoad(true);
     navigation.navigate("Senha");
@@ -162,7 +152,7 @@ export function Codigo({ params, navigation, route }) {
   return (
     <KeyboardAvoidingView
       style={styles.background}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : <></>}
     >
       <Center style={{ backgroundColor: "#000" }}>
         <VStack justifyContent="flex-end" w="100%" maxW="300">
@@ -207,8 +197,7 @@ export function Codigo({ params, navigation, route }) {
 }
 
 export function Senha({ route }) {
-
-const { user_id } = useContext(AuthContext);
+  const { user_id } = useContext(AuthContext);
 
   let id = "";
   const navigation = useNavigation();
@@ -226,49 +215,39 @@ const { user_id } = useContext(AuthContext);
 
   function senhas(dados) {
     setLoad(true);
-    
 
-       
+    if (dados.senha1 == dados.senha2) {
+      const options = {
+        method: "PUT",
+        url: "https://rutherles.site/api/usuario/" + user_id,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: { password: dados.senha1 },
+      };
 
-        if (dados.senha1 == dados.senha2) {
-         
+      axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+          setLoad(false);
 
-
-
-const options = {
-  method: "PUT",
-  url: "https://rutherles.site/api/usuario/" + user_id,
-  headers: { Accept: "application/json", "Content-Type": "application/json" },
-  data: { password: dados.senha1 },
-};
-
-axios
-  .request(options)
-  .then(function (response) {
-    console.log(response.data);
-    setLoad(false);
-
-    alert("senha alterada com sucesso");
-    navigation.navigate("Login");
-  })
-  .catch(function (error) {
-    console.error(error);
-  });
-          
-        
-
-         
-        } else {
-          alert("as senhas não sao iguais!");
-        }
-      
-      
+          alert("senha alterada com sucesso");
+          navigation.navigate("Login");
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    } else {
+      alert("as senhas não sao iguais!");
+    }
   }
 
   return (
     <KeyboardAvoidingView
       style={styles.background}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : <></>}
     >
       <Center style={{ backgroundColor: "#000" }}>
         <VStack justifyContent="flex-end" w="100%" maxW="300">
@@ -295,7 +274,6 @@ axios
                 onChangeText={onChange}
                 value={value}
                 autoCapitalize="none"
-                
               />
             )}
           />
