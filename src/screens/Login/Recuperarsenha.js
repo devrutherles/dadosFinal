@@ -46,7 +46,7 @@ export function Recuperar() {
       method: "get",
       url:
         "https://orvalhosj.com/envioemail.php?email=" +
-        data.email +
+        data.email.toLowerCase() +
         "&codigo=" +
         codigo,
       headers: {},
@@ -237,7 +237,9 @@ const {email} = useContext(AuthContext);
       .request(options2)
       .then(function (response) {
         let usuarios = response.data;
-        let user = usuarios.find((item) => item.email == email);
+        let user = usuarios.find(
+          (item) => item.email.toLowerCase() == email.toLowerCase()
+        );
         console.log(user)
         let id = user.id;
 
@@ -260,14 +262,14 @@ const {email} = useContext(AuthContext);
 
           axios(config)
             .then(function (response) {
-            console.error(JSON.stringify(response.data));
+            console.error(response.data);
               setLoad(false);
 
               alert("senha alterada com sucesso");
-             // navigation.navigate("Login");
+             //navigation.navigate("Login");
             })
             .catch(function (error) {
-              //console.error(error);
+            console.error(error);
             });
         } else {
           alert("as senhas não sao iguais!");
