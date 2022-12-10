@@ -38,7 +38,7 @@ export default function Deposito({ route, navigation }) {
       <WebView
         source={{
           uri:
-            "https://rutherles.site/pix?deposito_id=" +
+            "https://morenacaipira.com/pix?deposito_id=" +
             deposito_id +
             "&valor=" +
             valor +

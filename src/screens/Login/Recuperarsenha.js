@@ -45,7 +45,7 @@ export function Recuperar() {
     var config = {
       method: "get",
       url:
-        "https://orvalhosj.com/envioemail.php?email=" +
+        "https://morenacaipira.com/envioemail.php?email=" +
         data.email.toLowerCase() +
         "&codigo=" +
         codigo,
@@ -219,7 +219,7 @@ export function Senha({ route }) {
     if (dados.senha1 == dados.senha2) {
       const options = {
         method: "PUT",
-        url: "https://rutherles.site/api/usuario/" + user_id,
+        url: "https://morenacaipira.com/api/usuario/" + user_id,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

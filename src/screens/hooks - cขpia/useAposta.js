@@ -18,7 +18,7 @@ export function useAposta(cart) {
     const timeout = setTimeout(() => {
       const options = {
         method: "GET",
-        url: "https://rutherles.site/api/rodada",
+        url: "https://morenacaipira.com/api/rodada",
         headers: { Accept: "application/json" },
       };
 
@@ -34,7 +34,7 @@ export function useAposta(cart) {
 
       const options2 = {
         method: "GET",
-        url: "https://rutherles.site/api/usuario/" + id,
+        url: "https://morenacaipira.com/api/usuario/" + id,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export function useAposta(cart) {
 
       const options3 = {
         method: "PUT",
-        url: "https://rutherles.site/api/usuario/81",
+        url: "https://morenacaipira.com/api/usuario/81",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

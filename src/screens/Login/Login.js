@@ -52,7 +52,7 @@ export default function Login({ route }) {
 
     const options = {
       method: "POST",
-      url: "https://rutherles.site/api/login",
+      url: "https://morenacaipira.com/api/login",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

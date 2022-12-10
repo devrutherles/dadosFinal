@@ -107,7 +107,7 @@ export default function Index({ navigation }) {
     const timeout = setTimeout(() => {
       const options = {
         method: "GET",
-        url: "https://rutherles.site/api/rodada",
+        url: "https://morenacaipira.com/api/rodada",
         headers: { Accept: "application/json" },
       };
 
@@ -168,7 +168,7 @@ export default function Index({ navigation }) {
 
     const options = {
       method: "PUT",
-      url: "https://rutherles.site/api/usuario/" + id,
+      url: "https://morenacaipira.com/api/usuario/" + id,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

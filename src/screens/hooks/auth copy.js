@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
   function handleUser(data) {
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/usuario/" + data,
+      url: "https://morenacaipira.com/api/usuario/" + data,
       headers: { Accept: "application/json" },
     };
 
@@ -29,7 +29,7 @@ export default function AuthProvider({ children }) {
   function getUser() {
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/usuario/" + token.id,
+      url: "https://morenacaipira.com/api/usuario/" + token.id,
       headers: { Accept: "application/json" },
     };
 
@@ -46,7 +46,7 @@ export default function AuthProvider({ children }) {
   function handlePutuser(carteira, status, id) {
     const options = {
       method: "PUT",
-      url: "https://rutherles.site/api/usuario/" + id,
+      url: "https://morenacaipira.com/api/usuario/" + id,
       headers: { Accept: "application/json" },
       data: { carteira: carteira, deposito: status },
     };
@@ -67,7 +67,7 @@ export default function AuthProvider({ children }) {
   function getPedido() {
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/pedido",
+      url: "https://morenacaipira.com/api/pedido",
       headers: { Accept: "application/json" },
     };
 
@@ -87,7 +87,7 @@ export default function AuthProvider({ children }) {
   function getJogada() {
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/pedido",
+      url: "https://morenacaipira.com/api/pedido",
       headers: { Accept: "application/json" },
     };
 

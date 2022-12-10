@@ -38,7 +38,7 @@ const Compra = (props) => {
 
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/usuario/" + id,
+      url: "https://morenacaipira.com/api/usuario/" + id,
       headers: {
         Accept: "application/json",
         Authorization:
@@ -63,7 +63,7 @@ const Compra = (props) => {
 
     const options2 = {
       method: "PUT",
-      url: "https://rutherles.site/api/usuario/" + id,
+      url: "https://morenacaipira.com/api/usuario/" + id,
       headers: {
         Accept: "application/json",
         Authorization:
@@ -83,7 +83,7 @@ const Compra = (props) => {
 
     const options3 = {
       method: "POST",
-      url: "https://rutherles.site/api/compra",
+      url: "https://morenacaipira.com/api/compra",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -122,7 +122,7 @@ const Compra = (props) => {
 
     const options4 = {
       method: "POST",
-      url: "https://rutherles.site/api/compras",
+      url: "https://morenacaipira.com/api/compras",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -143,7 +143,7 @@ const Compra = (props) => {
 
     const options6 = {
       method: "PUT",
-      url: "https://rutherles.site/api/jogo/" + props.jogo_id,
+      url: "https://morenacaipira.com/api/jogo/" + props.jogo_id,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -164,7 +164,7 @@ const Compra = (props) => {
 
     const options5 = {
       method: "POST",
-      url: "https://rutherles.site/api/compras",
+      url: "https://morenacaipira.com/api/compras",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

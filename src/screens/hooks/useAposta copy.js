@@ -50,7 +50,7 @@ export function useAposta() {
 
       const options = {
         method: "GET",
-        url: "https://rutherles.site/api/rodada",
+        url: "https://morenacaipira.com/api/rodada",
         headers: { Accept: "application/json" },
       };
 
@@ -187,7 +187,7 @@ export function useAposta() {
 
       const options5 = {
         method: "GET",
-        url: "https://rutherles.site/api/url",
+        url: "https://morenacaipira.com/api/url",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

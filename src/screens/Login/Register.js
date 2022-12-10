@@ -66,7 +66,7 @@ export default function Register() {
     setLoad(true);
     const options = {
       method: "POST",
-      url: "https://rutherles.site/api/cadastro",
+      url: "https://morenacaipira.com/api/cadastro",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

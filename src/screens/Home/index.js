@@ -11,7 +11,7 @@ import { HStack, Spinner } from "native-base";
 export default function Home() {
   const navigation = useNavigation();
 
-  const { jogos, loading } = JogosApi("https://rutherles.site/api/jogos");
+  const { jogos, loading } = JogosApi("https://morenacaipira.com/api/jogos");
   const [filter, setFilter] = React.useState();
   const [filtros, setFiltros] = React.useState();
   const [loop, setLoop] = React.useState(true);
@@ -35,7 +35,7 @@ export default function Home() {
   if (filter && filter && loop) {
     const options = {
       method: "POST",
-      url: "https://rutherles.site/api/banner",
+      url: "https://morenacaipira.com/api/banner",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

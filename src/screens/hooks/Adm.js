@@ -7,7 +7,7 @@ export function saldoAdm(){
 
 const options = {
   method: 'PUT',
-  url: 'https://rutherles.site/api/adm',
+  url: 'https://morenacaipira.com/api/adm',
   headers: {Accept: 'application/json'}
 };
 

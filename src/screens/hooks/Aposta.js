@@ -14,7 +14,7 @@ export function ApostarApi(valor, nome, email, jogada, id) {
 
   var config = {
     method: "post",
-    url: "https://rutherles.site/api/jogada",
+    url: "https://morenacaipira.com/api/jogada",
     headers: {
       "Content-Type": "application/json",
     },

@@ -41,7 +41,7 @@ export default function Pix() {
 
     const options = {
       method: "POST",
-      url: "https://rutherles.site/api/depositos",
+      url: "https://morenacaipira.com/api/depositos",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

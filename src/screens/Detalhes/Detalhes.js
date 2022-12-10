@@ -82,7 +82,7 @@ export default function Detalhes({ route }) {
 
     const options = {
       method: "GET",
-      url: "https://rutherles.site/api/usuario/" + id,
+      url: "https://morenacaipira.com/api/usuario/" + id,
       headers: {
         Accept: "application/json",
         Authorization:

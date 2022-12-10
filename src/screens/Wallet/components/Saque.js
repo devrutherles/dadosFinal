@@ -82,7 +82,7 @@ export default function Withdrow() {
 
     var config = {
       method: "post",
-      url: "https://rutherles.site/api/pedido",
+      url: "https://morenacaipira.com/api/pedido",
       headers: {
         "Content-Type": "application/json",
       },

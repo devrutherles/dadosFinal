@@ -96,7 +96,7 @@ export default function Index({ navigation }) {
 
     const options = {
       method: "PUT",
-      url: "https://rutherles.site/api/usuario/" + id,
+      url: "https://morenacaipira.com/api/usuario/" + id,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -159,7 +159,7 @@ export default function Index({ navigation }) {
   function urls() {
     const options4 = {
       method: "GET",
-      url: "https://rutherles.site/api/url",
+      url: "https://morenacaipira.com/api/url",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

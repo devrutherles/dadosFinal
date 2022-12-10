@@ -12,7 +12,7 @@ export function useUrl() {
   useEffect(() => {
     const options5 = {
       method: "GET",
-      url: "https://rutherles.site/api/url",
+      url: "https://morenacaipira.com/api/url",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

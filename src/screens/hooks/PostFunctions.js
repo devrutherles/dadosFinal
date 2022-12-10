@@ -11,7 +11,7 @@ export const storeJogada_id = async (value) => {
 export function putJogada(data, id, premio) {
   const options = {
     method: "PUT",
-    url: "https://rutherles.site/api/jogada/" + id,
+    url: "https://morenacaipira.com/api/jogada/" + id,
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     data: { status: data, premio: premio },
   };
@@ -40,7 +40,7 @@ export function PostJogada(usuario, user_id, jogada, email, valor, rodada) {
 
   var config = {
     method: "post",
-    url: "https://rutherles.site/api/jogada",
+    url: "https://morenacaipira.com/api/jogada",
     headers: {
       "Content-Type": "application/json",
     },
@@ -64,7 +64,7 @@ export function PostJogada(usuario, user_id, jogada, email, valor, rodada) {
 export function postDeposito(valor, user_id, deposito_id) {
   const options = {
     method: "POST",
-    url: "https://rutherles.site/api/depositos",
+    url: "https://morenacaipira.com/api/depositos",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     data: {
       valor: valor,
@@ -100,7 +100,7 @@ export function putUser(
 
   var config = {
     method: "put",
-    url: "https://rutherles.site/api/usuario/" + user_id,
+    url: "https://morenacaipira.com/api/usuario/" + user_id,
     headers: {
       Authorization:
         "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTM3LjE4NC40OC42Ny9hcGkvbG9naW4iLCJpYXQiOjE2NjIwMzY2NzksImV4cCI6MjI2NjUzMjMwOTg5OSwibmJmIjoxNjYyMDM2Njc5LCJqdGkiOiJObWxKdHczbmZUTWtLSFRSIiwic3ViIjoiODEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.qDXH1Mqh_MRK-zS5wYysCYgKht9yZB1YUOWUYgWKOaM",

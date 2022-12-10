@@ -39,7 +39,7 @@ export default function Faq({ navigation }) {
         onScroll={false}
         style={{ opacity: visible, height: "100%", backgroundColor: "#f0f2f5" }}
         source={{
-          uri: "https://orvalhosj.com/caipira/pages/faq.html",
+          uri: "https://morenacaipira.com/caipira/pages/faq.html",
         }}
       />
       <View style={{ alignItems: "center" }}>

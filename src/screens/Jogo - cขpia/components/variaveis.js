@@ -57,7 +57,7 @@ export const dados = [
     key: 1,
     id: "dadop1",
     imagem: dadop1,
-    imagem2: "http://orvalhosj.com/dadoP1.png",
+    imagem2: "http://morenacaipira.com/dadoP1.png",
     color: "#0c0c0e",
     mult: 2,
     nome: "Dado Branco 1, ",
@@ -67,7 +67,7 @@ export const dados = [
     key: 2,
     id: "dadop2",
     imagem: dadop2,
-    imagem2: "http://orvalhosj.com/dadoP2.png",
+    imagem2: "http://morenacaipira.com/dadoP2.png",
     color: "#0c0c0e",
     mult: 2,
     nome: "Dado Branco 2, ",
@@ -77,7 +77,7 @@ export const dados = [
     key: 3,
     id: "dadop3",
     imagem: dadop3,
-    imagem2: "http://orvalhosj.com/dadoP3.png",
+    imagem2: "http://morenacaipira.com/dadoP3.png",
 
     color: "#0c0c0e",
     mult: 2,
@@ -88,7 +88,7 @@ export const dados = [
     key: 4,
     id: "dadop4",
     imagem: dadop4,
-    imagem2: "http://orvalhosj.com/dadoP4.png",
+    imagem2: "http://morenacaipira.com/dadoP4.png",
 
     color: "#0c0c0e",
     mult: 2,
@@ -99,7 +99,7 @@ export const dados = [
     key: 5,
     id: "dadop5",
     imagem: dadop5,
-    imagem2: "http://orvalhosj.com/dadoP5.png",
+    imagem2: "http://morenacaipira.com/dadoP5.png",
 
     color: "#0c0c0e",
     mult: 2,
@@ -110,7 +110,7 @@ export const dados = [
     key: 6,
     id: "dadop6",
     imagem: dadop6,
-    imagem2: "http://orvalhosj.com/dadoP6.png",
+    imagem2: "http://morenacaipira.com/dadoP6.png",
 
     color: "#0c0c0e",
     mult: 2,
@@ -121,7 +121,7 @@ export const dados = [
     key: 7,
     id: "dadov1",
     imagem: dadov1,
-    imagem2: "http://orvalhosj.com/dadoV1.png",
+    imagem2: "http://morenacaipira.com/dadoV1.png",
 
     color: "#0c0c0e",
     mult: 4,
@@ -135,7 +135,7 @@ export const dados = [
     color: "#0c0c0e",
     mult: 4,
     nome: "Dado Vermelho 2, ",
-    imagem2: "http://orvalhosj.com/dadoV2.png",
+    imagem2: "http://morenacaipira.com/dadoV2.png",
   },
 
   {
@@ -145,14 +145,14 @@ export const dados = [
     color: "#0c0c0e",
     mult: 4,
     nome: "Dado Vermelho 3, ",
-    imagem2: "http://orvalhosj.com/dadoV3.png",
+    imagem2: "http://morenacaipira.com/dadoV3.png",
   },
 
   {
     key: 10,
     id: "dadov4",
     imagem: dadov4,
-    imagem2: "http://orvalhosj.com/dadoV4.png",
+    imagem2: "http://morenacaipira.com/dadoV4.png",
 
     color: "#0c0c0e",
     mult: 4,
@@ -163,7 +163,7 @@ export const dados = [
     key: 11,
     id: "dadov5",
     imagem: dadov5,
-    imagem2: "http://orvalhosj.com/dadoV5.png",
+    imagem2: "http://morenacaipira.com/dadoV5.png",
 
     color: "#0c0c0e",
     mult: 4,
@@ -174,7 +174,7 @@ export const dados = [
     key: 12,
     id: "dadov6",
     imagem: dadov6,
-    imagem2: "http://orvalhosj.com/dadoV6.png",
+    imagem2: "http://morenacaipira.com/dadoV6.png",
 
     color: "#0c0c0e",
     mult: 4,
