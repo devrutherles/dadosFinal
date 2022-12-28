@@ -20,7 +20,7 @@ export const dados = [
     key: 1,
     id: "dadop1",
     imagem: dadop1,
-    imagem2: "http://morenacaipira.com/dadoP1.png",
+    imagem2: "http://rles.site/dadoP1.png",
     color: "#0c0c0e",
     mult: 2,
     nome: "Dado Branco 1, ",

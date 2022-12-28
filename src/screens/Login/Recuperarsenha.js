@@ -11,7 +11,6 @@ import {
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import email from "react-native-email";
 import { Linking } from "react-native";
 import { useContext, useState } from "react";
 import axios from "axios";
@@ -45,11 +44,11 @@ export function Recuperar() {
     var config = {
       method: "get",
       url:
-        "https://morenacaipira.com/envioemail.php?email=" +
+        "https://morenacaipira.com/public/envioemail.php?email=" +
         data.email.toLowerCase() +
         "&codigo=" +
         codigo,
-      headers: {},
+      
     };
 
     GetUserByemail(data.email);

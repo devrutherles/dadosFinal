@@ -9,7 +9,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { View, ActionSheet } from "react-native-ui-lib"; //eslint-disable-line
-import { FlatGrid } from "react-native-super-grid";
 import YoutubePlayer from "react-native-youtube-iframe";
 import {
   Center,
@@ -342,7 +341,7 @@ export default function Index({ navigation, route }) {
         <View style={{ marginTop: 30 }}>
           <YoutubePlayer
             height={iniciada.length != 0 && getaposta[0] ? "55%" : "1%"}
-            play={false}
+            play={true}
             videoId={url}
             resumePlayAndroid={true}
           />
