@@ -50,7 +50,7 @@ export function PostJogada(usuario, user_id, jogada, email, valor, rodada) {
   axios(config)
     .then(function (response) {
       let jogada_id = response.data.id.toString();
-       storeJogada_id(jogada_id);
+      storeJogada_id(jogada_id);
 
       //console.error(jogada_id);
 
@@ -77,7 +77,7 @@ export function postDeposito(valor, user_id, deposito_id) {
   axios
     .request(options)
     .then(function (response) {
-      console.error(response.data);
+      console.log(response.data);
     })
     .catch(function (error) {
       console.error(error);

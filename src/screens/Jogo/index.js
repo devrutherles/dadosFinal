@@ -25,11 +25,12 @@ import Cab from "./components/Header";
 import Playes from "./components/Header1";
 import Alerta from "./components/Alert";
 import { PostJogada } from "../hooks/PostFunctions";
+import { set } from "react-native-reanimated";
 
 export default function Index({ navigation, route }) {
   const carregamento = require("../../../assets/img/dice.gif");
   const [valorMorena, setValorMorena] = useState(0);
-    const [apostado, setApostado] = useState(false);
+  const [apostado, setApostado] = useState(false);
 
   const [valorCaipira, setValorCaipira] = useState(0);
   const chip = require("../../../assets/img/chip.png");
@@ -66,7 +67,7 @@ export default function Index({ navigation, route }) {
     getaposta,
     putSelect,
     texto,
-    url
+    url,
   } = useContext(AuthContext);
 
   const salas = [
@@ -95,10 +96,10 @@ export default function Index({ navigation, route }) {
         let dados = select.find((dado) => dado.id == data.id);
 
         if (!dados) {
-          if (selectMorena > 3  ) {
+          if (selectMorena > 3) {
             alert("Você não pode apostar mais que 3 números no morena");
-             var nesSelect = select.filter((item) => item.id !== data.id);
-             setSelect(nesSelect);
+            var nesSelect = select.filter((item) => item.id !== data.id);
+            setSelect(nesSelect);
           } else {
             if (selectCaipira > 0 && selectMorena == 3) {
               alert("Você não pode apostar mais que 1 número no caipira");
@@ -122,67 +123,72 @@ export default function Index({ navigation, route }) {
     setIsOpen(false);
   }
   function jogarD() {
-    setApostado(true)
- 
-   let valorB = selectMorena > 0 ? valorMorena : 0
-   let valorV = selectCaipira > 0 ? valorCaipira : 0;
+    setApostado(true);
 
+    let valorB = selectMorena > 0 ? valorMorena : 0;
+    let valorV = selectCaipira > 0 ? valorCaipira : 0;
 
     let totais = valorB + valorV;
 
-    if(selectMorena > 3 || selectCaipira > 1){
-      alert("Você não pode apostar mais que 3 números no morena e 1 no caipira")
-    } else{
-  if (carteira < 1) {
-    setIsOpen(true);
-  } else {
-    if (select.length < 1) {
-      alert("Você precisa selecionar pelo menos um dado");
-    } else if (carteira < totais) {
-      alert("Saldo insuficiente para essa aposta");
+    if (selectMorena > 3 || selectCaipira > 1) {
+      alert(
+        "Você não pode apostar mais que 3 números no morena e 1 no caipira"
+      );
     } else {
-      let dadosApostados = select.map((item) => item.id);
-      let da = {
-        jogada: dadosApostados,
-      };
+      if (carteira < 1) {
+        setIsOpen(true);
+      } else {
+        if (select.length < 1) {
+          alert("Você precisa selecionar pelo menos um dado");
+        } else if (carteira < totais) {
+          alert("Saldo insuficiente para essa aposta");
+        } else {
+          let dadosApostados = select.map((item) => item.id);
+          let da = {
+            jogada: dadosApostados,
+          };
 
-      let dadosE = JSON.stringify(da);
+          let dadosE = JSON.stringify(da);
 
-      let dados = select.map((item) => {
-        let valores = {
-          jogo_id: iniciada.id,
-          nome: item.nome,
-          img: item.img,
-          dados: item.id,
-          valor: totais,
-          resultado: true,
-          valorCaipira: valorCaipira,
-          valorMorena: valorMorena,
-        };
+          let dados = select.map((item) => {
+            let valores = {
+              jogo_id: iniciada.id,
+              nome: item.nome,
+              img: item.img,
+              dados: item.id,
+              valor: totais,
+              resultado: true,
+              valorCaipira: valorCaipira,
+              valorMorena: valorMorena,
+            };
 
-        return valores;
-      });
+            return valores;
+          });
 
-      storeAposta(dados);
-      putSelect(select);
-      putaposta_id(iniciada.id);
-      editCarteira(parseInt(carteira) - parseInt(totais), user.id);
-      PostJogada(user.nome, user.id, dadosE, user.email, totais, iniciada.id);
-      getApostas();
-      getJogada();
-      setValorCaipira(0);
-      setValorMorena(0);
-      setApostado(false);
+          storeAposta(dados);
+          putSelect(select);
+          putaposta_id(iniciada.id);
+          editCarteira(parseInt(carteira) - parseInt(totais), user.id);
+          PostJogada(
+            user.nome,
+            user.id,
+            dadosE,
+            user.email,
+            totais,
+            iniciada.id
+          );
+          getApostas();
+          getJogada();
+          setValorCaipira(0);
+          setValorMorena(0);
+          setApostado(false);
 
-
-      setTimeout(() => {
-      setSelect([]);
-      }, 2000);
+          setTimeout(() => {
+            setSelect([]);
+          }, 2000);
+        }
+      }
     }
-  }
-    }
-
-  
   }
 
   return (
@@ -224,7 +230,7 @@ export default function Index({ navigation, route }) {
           flexDirection: "row",
           justifyContent: "space-around",
           alignItems: "center",
-          marginTop: "15%",
+          marginTop: "10%",
         }}
       >
         <View>
@@ -267,6 +273,7 @@ export default function Index({ navigation, route }) {
           <Ionicons name="wallet-outline" size={25} color="gray" />
         </View>
       </View>
+
       <View
         style={{
           flexDirection: "row",
@@ -281,7 +288,12 @@ export default function Index({ navigation, route }) {
         </Text>
       </View>
 
-      <View style={{ flexDirection: "row", marginTop: 13 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 13,
+        }}
+      >
         <ScrollView horizontal>
           <Cab></Cab>
         </ScrollView>
@@ -698,7 +710,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 10,
   },
   gridView: {
     width: 400,

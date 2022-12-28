@@ -39,21 +39,12 @@ export function useAposta() {
   putTexto("Aguardando nova rodada ...");
 
   useEffect(() => {
-        // storeAposta([]);
-
-
-
+    // storeAposta([]);
 
     getApostas();
 
     const timeout = setTimeout(() => {
-
-      console.error(user.id)
-
-
-
-      
-
+      console.log(user.id);
 
       getUser(global.id ? global.id : user.id);
       getJogada_id();
@@ -105,47 +96,42 @@ export function useAposta() {
             isPresent: obj1.some(({ id }) => id === obj.id),
           }));
 
-let selecionadosMorena = result.filter((item) => item.isPresent === true && item.id.split('')[4] == 'p');
-let selecionadosCaipira = result.filter(
-  (item) => item.isPresent === true && item.id.split("")[4] != "p"
-);
+          let selecionadosMorena = result.filter(
+            (item) => item.isPresent === true && item.id.split("")[4] == "p"
+          );
+          let selecionadosCaipira = result.filter(
+            (item) => item.isPresent === true && item.id.split("")[4] != "p"
+          );
 
-let countObject = numeros.reduce(function (count, currentValue) {
-  return (
-    count[currentValue.id]
-      ? ++count[currentValue.id]
-      : (count[currentValue.id] = 1),
-    count
-  );
-}, {});
+          let countObject = numeros.reduce(function (count, currentValue) {
+            return (
+              count[currentValue.id]
+                ? ++count[currentValue.id]
+                : (count[currentValue.id] = 1),
+              count
+            );
+          }, {});
 
-   var totalMorena = selecionadosMorena.reduce(getTotal, 0);
-   function getTotal(total, item) {
-     return (
-       parseInt(getaposta[0].valorMorena) * countObject[item.id] +
-       parseInt(getaposta[0].valorMorena)
-     );
-   }
+          var totalMorena = selecionadosMorena.reduce(getTotal, 0);
+          function getTotal(total, item) {
+            return (
+              parseInt(getaposta[0].valorMorena) * countObject[item.id] +
+              parseInt(getaposta[0].valorMorena)
+            );
+          }
 
-   let vcaipira = selecionadosCaipira.length * getaposta[0].valorCaipira * 4;
-   valor = totalMorena + vcaipira;
-
-
-
-
-
-
-
+          let vcaipira =
+            selecionadosCaipira.length * getaposta[0].valorCaipira * 4;
+          valor = totalMorena + vcaipira;
 
           if (getaposta[0].jogo_id) {
-           putAlerta({ valor: valor, resultado: resultados });
-           editCarteira(parseInt(carteira) + parseInt(valor), user.id);
-           storeAposta([]);
-           putSelect([]);
-           getApostas();
-           setResultado(resultados);
-          // putAlerta("");
-
+            putAlerta({ valor: valor, resultado: resultados });
+            editCarteira(parseInt(carteira) + parseInt(valor), user.id);
+            storeAposta([]);
+            putSelect([]);
+            getApostas();
+            setResultado(resultados);
+            // putAlerta("");
 
             putTexto("Aguardando nova rodada");
 
