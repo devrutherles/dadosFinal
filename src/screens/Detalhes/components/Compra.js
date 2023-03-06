@@ -31,7 +31,7 @@ const Compra = (props) => {
   }, []);
 
   function comprar() {
-    ///console.log()(Date.now());
+    /////console.log()(Date.now());
 
     users = JSON.parse(user);
     var id = users.id;
@@ -48,18 +48,18 @@ const Compra = (props) => {
     axios
       .request(options)
       .then(function (response) {
-        /////console.log()(response)
+        ///////console.log()(response)
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
 
     users = JSON.parse(user);
     var id = users.id;
 
-    ///console.log()(parseInt(props.carteira) - parseInt(props.valor));
-    ///console.log()(props.carteira);
-    ///console.log()(props.valor);
+    /////console.log()(parseInt(props.carteira) - parseInt(props.valor));
+    /////console.log()(props.carteira);
+    /////console.log()(props.valor);
 
     const options2 = {
       method: "PUT",
@@ -75,10 +75,10 @@ const Compra = (props) => {
       .request(options2)
       .then(function (response) {
         setCarteira(response.data[0].carteira);
-        ///console.log()(response);
+        /////console.log()(response);
       })
       .catch(function (error) {
-        //////console.error(error);
+        ////////console.error(error);
       });
 
     const options3 = {
@@ -105,10 +105,10 @@ const Compra = (props) => {
     axios
       .request(options3)
       .then(function (response) {
-        ///console.log()(response.data);
+        /////console.log()(response.data);
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
 
     const storeData = async (value) => {
@@ -138,7 +138,7 @@ const Compra = (props) => {
         storeData(response.data);
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
 
     const options6 = {
@@ -156,10 +156,10 @@ const Compra = (props) => {
     axios
       .request(options6)
       .then(function (response) {
-        ///console.log()(response.data);
+        /////console.log()(response.data);
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
 
     const options5 = {
@@ -177,14 +177,14 @@ const Compra = (props) => {
     axios
       .request(options5)
       .then(function (response) {
-        ///console.log()(response.data);
+        /////console.log()(response.data);
 
         navigation.navigate("Bilhetes", {
           bilhetes: response.data,
         });
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
   }
 

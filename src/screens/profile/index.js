@@ -28,7 +28,7 @@ export default function Profile() {
       try {
         const value = await AsyncStorage.getItem("@user");
         if (value !== null) {
-          ///console.log()(value);
+          /////console.log()(value);
           setUser(value);
           setloader(true);
         }
@@ -47,8 +47,9 @@ export default function Profile() {
   } = useForm({});
 
   function handleSignin(data) {
-    ///console.log()(data);
+    /////console.log()(data);
   }
+  //console.error(user);
   const navigation = useNavigation();
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -64,7 +65,7 @@ export default function Profile() {
                 onBlur={onBlur} //chamado quando text input é tocado
                 style={styles.input}
                 onChangeText={onChange}
-                value={users.nome}
+                value={users.name}
                 placeholder="Seu nome"
                 placeholderTextColor={"#fff"}
               />
@@ -132,7 +133,7 @@ export default function Profile() {
                 onBlur={onBlur} //chamado quando text input é tocado
                 style={styles.input}
                 onChangeText={onChange}
-                value={users.nascimento}
+                value={users.numero}
                 placeholder="00/00/0000"
                 placeholderTextColor={"#fff"}
               />

@@ -2,12 +2,23 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./auth";
 import { putJogada, postDeposito } from "./PostFunctions";
-import { useNavigation } from "@react-navigation/native";
+import {
+  getFocusedRouteNameFromRoute,
+  useNavigation,
+} from "@react-navigation/native";
 
 export function useAposta() {
   const [nome, setNome] = useState(false);
   const [resultado, setResultado] = useState([]);
   const [iniciada, setIniciada] = useState([]);
+  const [salavalue, setSalavalue] = useState([
+    { sala1v1: 1, sala1v2: 2, sala1v3: 4 },
+    { sala2v1: 4, sala2v2: 10, sala2v3: 20 },
+    { sala3v1: 20, sala3v2: 50, sala3v3: 100 },
+    { sala1cv1: 1, sala1cv2: 2, sala1cv3: 4 },
+    { sala2cv1: 4, sala2cv2: 10, sala2cv3: 20 },
+    { sala3cv1: 20, sala3cv2: 50, sala3cv3: 100 },
+  ]);
   const [criada, setCriada] = useState([]);
   const navigation = useNavigation();
   const {
@@ -30,6 +41,7 @@ export function useAposta() {
     deposito,
     editCarteira,
     getUser,
+    getSalaValue,
   } = useContext(AuthContext);
 
   let valor = "";
@@ -44,12 +56,10 @@ export function useAposta() {
     getApostas();
 
     const timeout = setTimeout(() => {
-      console.log(user.id);
-
       getUser(global.id ? global.id : user.id);
       getJogada_id();
 
-      // console.error(jogada_id)
+      // //console.error(jogada_id)
 
       const options = {
         method: "GET",
@@ -79,7 +89,7 @@ export function useAposta() {
           setCriada([]);
         }
 
-        //console.error(aposta_id)
+        ////console.error(aposta_id)
         if (resultados && getaposta[0].jogo_id) {
           putTexto("Aguardando resultado");
           let numeros = [
@@ -99,6 +109,7 @@ export function useAposta() {
           let selecionadosMorena = result.filter(
             (item) => item.isPresent === true && item.id.split("")[4] == "p"
           );
+          ////console.error(selecionadosMorena);
           let selecionadosCaipira = result.filter(
             (item) => item.isPresent === true && item.id.split("")[4] != "p"
           );
@@ -119,19 +130,20 @@ export function useAposta() {
               parseInt(getaposta[0].valorMorena)
             );
           }
-
+          var vmorena = totalMorena * selecionadosMorena.length;
           let vcaipira =
             selecionadosCaipira.length * getaposta[0].valorCaipira * 4;
-          valor = totalMorena + vcaipira;
+          valor = vmorena + vcaipira;
 
           if (getaposta[0].jogo_id) {
             putAlerta({ valor: valor, resultado: resultados });
+            ////console.error(valor);
             editCarteira(parseInt(carteira) + parseInt(valor), user.id);
             storeAposta([]);
             putSelect([]);
             getApostas();
             setResultado(resultados);
-            // putAlerta("");
+            //putAlerta("");
 
             putTexto("Aguardando nova rodada");
 
@@ -180,7 +192,7 @@ export function useAposta() {
               }
             })
             .catch(function (error) {
-              //console.error(error);
+              ////console.error(error);
             });
         }
       });
@@ -188,6 +200,7 @@ export function useAposta() {
       const options5 = {
         method: "GET",
         url: "https://morenacaipira.com/api/url",
+
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -200,23 +213,23 @@ export function useAposta() {
         .request(options5)
         .then(function (response) {
           let urls = response.data[0].url;
+          let sala = response.data[0].valor_sala;
+          //console.error(JSON.parse(sala));
           if (urls != url) {
             getUrl(urls);
-          } else {
-            <></>;
           }
-
-          response.data.forEach((element) => {
-            setUrl(element.url);
-          });
+          if (sala != salavalue) {
+            setSalavalue(JSON.parse(sala));
+          }
         })
+
         .catch(function (error) {});
-    }, 3000);
+    }, 5000);
 
     return () => {
       clearTimeout(timeout);
     };
   }, [nome]);
 
-  return { iniciada, resultado, nome, criada };
+  return { iniciada, resultado, nome, criada, salavalue };
 }

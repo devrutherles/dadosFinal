@@ -19,10 +19,10 @@ export function putJogada(data, id, premio) {
   axios
     .request(options)
     .then(function (response) {
-      // console.log(response.data);
+      // //console.log(response.data);
     })
     .catch(function (error) {
-      //console.error(error);
+      ////console.error(error);
     });
 }
 
@@ -52,12 +52,12 @@ export function PostJogada(usuario, user_id, jogada, email, valor, rodada) {
       let jogada_id = response.data.id.toString();
       storeJogada_id(jogada_id);
 
-      //console.error(jogada_id);
+      ////console.error(jogada_id);
 
-      //console.warn(JSON.stringify(response.data));
+      ////console.warn(JSON.stringify(response.data));
     })
     .catch(function (error) {
-      ///console.log()(error);
+      /////console.log()(error);
     });
 }
 
@@ -77,10 +77,10 @@ export function postDeposito(valor, user_id, deposito_id) {
   axios
     .request(options)
     .then(function (response) {
-      console.log(response.data);
+      //console.log(response.data);
     })
     .catch(function (error) {
-      console.error(error);
+      //console.error(error);
     });
 }
 
@@ -111,9 +111,9 @@ export function putUser(
 
   axios(config)
     .then(function (response) {
-      ///console.log()(JSON.stringify(response.data));
+      /////console.log()(JSON.stringify(response.data));
     })
     .catch(function (error) {
-      ///console.log()(error);
+      /////console.log()(error);
     });
 }

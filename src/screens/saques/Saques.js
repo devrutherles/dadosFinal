@@ -26,102 +26,101 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function Saques() {
-  const { pedido, user ,getPedido} = useContext(AuthContext);
-  ////console.error(pedido);
+  const { pedido, user, getPedido } = useContext(AuthContext);
+  //////console.error(pedido);
 
-  let pedidos = pedido.slice(0).reverse().filter((item) => item.user_id == user.id);
+  let pedidos = pedido
+    .slice(0)
+    .reverse()
+    .filter((item) => item.user_id == user.id);
   const navigation = useNavigation();
 
   useEffect(() => {
- getPedido()
-
-   
+    getPedido();
   }, []);
 
-    return (
-      <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
-        <View
-          style={{
-            position: "absolute",
-            marginTop: "50%",
-            alignContent: "center",
-            alignSelf: "center",
-            justifyContent: "center",
-          }}
-        ></View>
-
-
-  {pedido.length == 0 ?
-    
+  return (
+    <ScrollView style={{ backgroundColor: "#000", flex: 1 }}>
       <View
         style={{
-          flex: 1,
-          backgroundColor: "#000",
+          position: "absolute",
+          marginTop: "50%",
+          alignContent: "center",
+          alignSelf: "center",
           justifyContent: "center",
         }}
-      >
+      ></View>
+
+      {pedido.length == 0 ? (
         <View
           style={{
             flex: 1,
             backgroundColor: "#000",
             justifyContent: "center",
-            alignItems: "center",
           }}
         >
-          <View>
-            <Text style={styles.title2}>Você ainda não tem saques</Text>
-          </View>
-          <View>
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-              <Text style={styles.title3}>Solicite um saque</Text>
-            </TouchableOpacity>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#000",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <View>
+              <Text style={styles.title2}>Você ainda não tem saques</Text>
+            </View>
+            <View>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Text style={styles.title3}>Solicite um saque</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+      ) : (
+        <></>
+      )}
+
+      <View style={{ backgroundColor: "#000", marginTop: 30 }}>
+        {pedidos.map((item) => (
+          <Card style={{ marginBottom: 10 }}>
+            <CardBody>
+              <CardDetails>
+                <CardTitle>SAQUE# {item.id} </CardTitle>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <CardInfo style={{ fontSize: 15 }}>
+                    Status {item.status}{" "}
+                  </CardInfo>
+                  <CardInfo style={{ fontSize: 15 }}>
+                    Data {moment(item.created_at).format("DD/MM/Y")}
+                  </CardInfo>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <CardInfo style={{ fontSize: 15 }}>
+                    Valor {item.valor}
+                  </CardInfo>
+                  <CardInfo style={{ fontSize: 15 }}>
+                    Método {item.metodo}
+                  </CardInfo>
+                </View>
+              </CardDetails>
+            </CardBody>
+          </Card>
+        ))}
       </View>
-    
- : <></> }
-
-        <View style={{ backgroundColor: "#000", marginTop: 30 }}>
-          {pedidos.map((item) => (
-            <Card style={{ marginBottom: 10 }}>
-              <CardBody>
-                <CardDetails>
-                  <CardTitle>SAQUE# {item.id} </CardTitle>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <CardInfo style={{ fontSize: 15 }}>
-                      Status {item.status}{" "}
-                    </CardInfo>
-                    <CardInfo style={{ fontSize: 15 }}>
-                      Data {moment(item.created_at).format("DD/MM/Y")}
-                    </CardInfo>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <CardInfo style={{ fontSize: 15 }}>
-                      Valor {item.valor}
-                    </CardInfo>
-                    <CardInfo style={{ fontSize: 15 }}>
-                      Método {item.metodo}
-                    </CardInfo>
-                  </View>
-                </CardDetails>
-              </CardBody>
-            </Card>
-          ))}
-        </View>
-      </ScrollView>
-    );
-  }
-
+    </ScrollView>
+  );
+}
 
 const styles = StyleSheet.create({
   card: {

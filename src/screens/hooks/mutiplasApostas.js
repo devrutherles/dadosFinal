@@ -45,7 +45,7 @@ export function useAposta() {
       getUser(user.id);
       getJogada_id();
 
-      // console.error(jogada_id)
+      // //console.error(jogada_id)
       //  storeAposta([]);
 
       const options = {
@@ -76,7 +76,7 @@ export function useAposta() {
           setCriada([]);
         }
 
-        //console.error(aposta_id)
+        ////console.error(aposta_id)
         if (resultados && getaposta[0].jogo_id) {
           putTexto("Aguardando resultado");
           let numeros = [
@@ -93,24 +93,29 @@ export function useAposta() {
             isPresent: obj1.some(({ id }) => id === obj.id),
           }));
 
-  let selecionados = result.filter((car) => car.isPresent === true);
+          let selecionados = result.filter((car) => car.isPresent === true);
 
-  let dadosVermelhos = selecionados.filter((item) => item.id.split("")[4] == "v");
-  let valorVermelho = dadosVermelhos.map((item) => item.valor);
-  let somaValorVermelho = valorVermelho[0]
+          let dadosVermelhos = selecionados.filter(
+            (item) => item.id.split("")[4] == "v"
+          );
+          let valorVermelho = dadosVermelhos.map((item) => item.valor);
+          let somaValorVermelho = valorVermelho[0];
 
-    let dadosBrancos = selecionados.filter((item) => item.id.split("")[4] != "v");
-    let valorBranco = dadosBrancos.map((item) => item.valor);
-    let somaValorBranco = valorBranco.reduce(function (soma, i) {
-      return soma + i;
-    });
-    let valorDb = dadosBrancos.length * parseInt(somaValorBranco) + parseInt(somaValorBranco)
-    let valorDv = parseInt(somaValorVermelho) * 4 +  parseInt(somaValorVermelho)
-    valor = valorDb + valorDv
+          let dadosBrancos = selecionados.filter(
+            (item) => item.id.split("")[4] != "v"
+          );
+          let valorBranco = dadosBrancos.map((item) => item.valor);
+          let somaValorBranco = valorBranco.reduce(function (soma, i) {
+            return soma + i;
+          });
+          let valorDb =
+            dadosBrancos.length * parseInt(somaValorBranco) +
+            parseInt(somaValorBranco);
+          let valorDv =
+            parseInt(somaValorVermelho) * 4 + parseInt(somaValorVermelho);
+          valor = valorDb + valorDv;
 
-   console.error(valorDb);
-        
-          
+          //console.error(valorDb);
 
           if (getaposta[0].jogo_id) {
             putAlerta({ valor: valor, resultado: resultados });
@@ -167,7 +172,7 @@ export function useAposta() {
               }
             })
             .catch(function (error) {
-              //console.error(error);
+              ////console.error(error);
             });
         }
       });

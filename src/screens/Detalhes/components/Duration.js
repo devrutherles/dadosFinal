@@ -8,9 +8,9 @@ import {
 import React from "react";
 
 const Quantity = () => {
-  const[valor,setValor] = React.useState()
-  global.valor = valor
-  /////console.log()(global.valor)
+  const [valor, setValor] = React.useState();
+  global.valor = valor;
+  ///////console.log()(global.valor)
 
   return (
     <Center>
@@ -24,7 +24,7 @@ const Quantity = () => {
             endIcon: <CheckIcon size={5} />,
           }}
           mt="1"
-          onValueChange={itemValue => setValor(itemValue)}
+          onValueChange={(itemValue) => setValor(itemValue)}
         >
           <Select.Item label="1 Semana" value="1" />
           <Select.Item label="2 Semanas" value="2" />
@@ -32,7 +32,6 @@ const Quantity = () => {
           <Select.Item label="4 Semanas" value="4" />
           <Select.Item label="5 Semanas" value="5" />
         </Select>
-     
       </FormControl>
     </Center>
   );

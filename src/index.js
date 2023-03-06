@@ -1,4 +1,4 @@
-import React, { useContext, useState,useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -19,22 +19,21 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import PayButton from "./components/PayButton";
-
+import { Code } from "./screens/Register/Code";
 import Results from "../src/screens/Results/Results";
 import Detalhes from "../src/screens/Detalhes/Detalhes";
 import Login from "../src/screens/Login/Login";
-import Register from "../src/screens/Login/Register";
+import Register from "../src/screens/Register/index";
 import Pix from "../src/screens/Pix/Pix";
 import Deposito from "../src/screens/Pix/Deposito";
 import Jogo from "../src/screens/Jogo";
-
+import Email from "./screens/Register/Email";
 import SaquesConta from "./screens/saques/Saques";
 
 import { Recuperar, Codigo, Senha } from "./screens/Login/Recuperarsenha";
 import Chat from "./screens/chat/Chat";
 import Faq from "./screens/faq/Faq";
 import Withdrow from "./screens/Wallet/components/Saque";
-
 
 const icons = {
   Home: {
@@ -59,7 +58,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export function Tabs() {
-
   const { token, loading } = LoginApi();
 
   const { user, handleUser, getUser } = useContext(AuthContext);
@@ -68,7 +66,6 @@ export function Tabs() {
   useEffect(() => {
     getUser(token.id);
   }, [token]);
-
 
   return (
     <Tab.Navigator
@@ -143,35 +140,42 @@ export function Tabs() {
 export default function App() {
   const { token, loading } = LoginApi();
 
-  const { getUser, getDeposito, getJogada, getPedido, getApostas } = useContext(AuthContext);
+  const { getUser, getDeposito, getJogada, getPedido, getApostas } =
+    useContext(AuthContext);
   const [splas, setSplash] = useState(true);
 
   useEffect(() => {
-    getUser(token.id)
-    getJogada()
-    getPedido()
-    getApostas()
-    getDeposito()
+    getUser(token.id);
+    getJogada();
+    getPedido();
+    getApostas();
+    getDeposito();
 
-    console.error(token)
-   
+    //console.error(token);
   }, [token]);
 
-setTimeout(() => {
-  setSplash(false);
-}, 200);
+  setTimeout(() => {
+    setSplash(false);
+  }, 200);
 
   return (
     <NativeBaseProvider>
-      {splas ? <View style={{backgroundColor:"#000",justifyContent:"center",
-      alignContent:"center",alignItems:"center",height:"100%",width:"100%"}}>
-
-
-<Spinner size={"lg"} />
-
-
-
-      </View> : <></>}
+      {splas ? (
+        <View
+          style={{
+            backgroundColor: "#000",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <Spinner size={"lg"} />
+        </View>
+      ) : (
+        <></>
+      )}
 
       {loading ? (
         <NavigationContainer>
@@ -233,6 +237,14 @@ setTimeout(() => {
             <Stack.Screen
               name="Codigo"
               component={Codigo}
+              options={{
+                headerShown: false,
+                title: "Perfil",
+              }}
+            />
+            <Stack.Screen
+              name="Code"
+              component={Code}
               options={{
                 headerShown: false,
                 title: "Perfil",
@@ -316,6 +328,14 @@ setTimeout(() => {
               }}
             />
             <Stack.Screen
+              name="Email"
+              component={Email}
+              options={{
+                headerShown: false,
+                title: "detalhes",
+              }}
+            />
+            <Stack.Screen
               name="Pix"
               component={Pix}
               options={{
@@ -327,7 +347,7 @@ setTimeout(() => {
               name="Deposito"
               component={Deposito}
               options={{
-                 title: "Saques",
+                title: "Saques",
                 headerStyle: {
                   backgroundColor: "#fff",
                 },

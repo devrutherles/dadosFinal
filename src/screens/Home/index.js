@@ -48,7 +48,7 @@ export default function Home() {
     axios
       .request(options)
       .then(function (response) {
-        ///console.log()(response.data.sorteio[0]);
+        /////console.log()(response.data.sorteio[0]);
         setFiltros(response.data.sorteio);
         setLoop(false);
         if (!response.data.sorteio[0]) {
@@ -56,7 +56,7 @@ export default function Home() {
         }
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
   }
 

@@ -25,8 +25,7 @@ import Cab from "./components/Header";
 import Playes from "./components/Header1";
 import Alerta from "./components/Alert";
 import { PostJogada } from "../hooks/PostFunctions";
-import { set } from "react-native-reanimated";
-
+import axios from "axios";
 export default function Index({ navigation, route }) {
   const carregamento = require("../../../assets/img/dice.gif");
   const [valorMorena, setValorMorena] = useState(0);
@@ -47,6 +46,9 @@ export default function Index({ navigation, route }) {
     valor1: 1,
     valor2: 2,
     valor3: 4,
+    valorc1: 1,
+    valorc2: 2,
+    valorc3: 4,
     cor: "#a2d5ab",
     avatar: 4,
     avatar: "jgf",
@@ -54,7 +56,7 @@ export default function Index({ navigation, route }) {
 
   const [array_valor_apostado, setArray_valor_apostado] = useState();
   const { iniciada, numeros, resultado, nome, criada } = useAposta();
-
+  const { salavalue } = useAposta();
   const {
     user,
     putaposta_id,
@@ -69,11 +71,55 @@ export default function Index({ navigation, route }) {
     texto,
     url,
   } = useContext(AuthContext);
+  console.error(salavalue[3]);
+  useEffect(() => {
+    if (sala.sala == 1) {
+      setSala({
+        sala: 1,
+        valor1: salavalue[0]?.sala1v1,
+        valor2: salavalue[0]?.sala1v2,
+        valor3: salavalue[0]?.sala1v3,
+        valorc1: salavalue[3]?.sala1cv1,
+        valorc2: salavalue[3]?.sala1cv2,
+        valorc3: salavalue[3]?.sala1cv3,
+        cor: "#a2d5ab",
+        avatar: 4,
+        avatar: "jgf",
+      });
+    }
+  }, [salavalue && salavalue[0]]);
 
   const salas = [
-    { sala: 1, valor1: 1, valor2: 2, valor3: 4, avatar: "tg" },
-    { sala: 2, valor1: 4, valor2: 10, valor3: 20, avatar: "iuj" },
-    { sala: 3, valor1: 20, valor2: 50, valor3: 100, avatar: "oik" },
+    {
+      sala: 1,
+      valor1: salavalue[0]?.sala1v1,
+      valor2: salavalue[0]?.sala1v2,
+      valor3: salavalue[0]?.sala1v3,
+      valorc1: salavalue[3]?.sala1cv1,
+      valorc2: salavalue[3]?.sala1cv2,
+      valorc3: salavalue[3]?.sala1cv3,
+      avatar: "tg",
+    },
+    {
+      sala: 2,
+      valor1: salavalue[1]?.sala2v1,
+      valor2: salavalue[1]?.sala2v2,
+      valor3: salavalue[1]?.sala2v3,
+      valorc1: salavalue[4]?.sala2cv1,
+      valorc2: salavalue[4]?.sala2cv2,
+      valorc3: salavalue[4]?.sala2cv3,
+      avatar: "iuj",
+    },
+    {
+      sala: 3,
+      valor1: salavalue[2]?.sala3v1,
+      valor2: salavalue[2]?.sala3v2,
+      valor3: salavalue[2]?.sala3v3,
+      valorc1: salavalue[5]?.sala3cv1,
+      valorc2: salavalue[5]?.sala3cv2,
+      valorc3: salavalue[5]?.sala3cv3,
+      avatar: "oik",
+    },
   ];
 
   const carteira = user.carteira;
@@ -125,9 +171,9 @@ export default function Index({ navigation, route }) {
   function jogarD() {
     setApostado(true);
 
-    let valorB = selectMorena > 0 ? valorMorena : 0;
+    let valorB = selectMorena > 0 ? valorMorena * selectMorena : 0;
     let valorV = selectCaipira > 0 ? valorCaipira : 0;
-
+    ////console.warn(valorB);
     let totais = valorB + valorV;
 
     if (selectMorena > 3 || selectCaipira > 1) {
@@ -140,8 +186,10 @@ export default function Index({ navigation, route }) {
       } else {
         if (select.length < 1) {
           alert("Você precisa selecionar pelo menos um dado");
+          setApostado(false);
         } else if (carteira < totais) {
           alert("Saldo insuficiente para essa aposta");
+          setApostado(false);
         } else {
           let dadosApostados = select.map((item) => item.id);
           let da = {
@@ -284,7 +332,7 @@ export default function Index({ navigation, route }) {
         <Text style={{ color: "gray" }}>Jogadores Online</Text>
 
         <Text style={{ color: "gray" }}>
-          #Sala {sala.sala} Maximo R$ {sala.valor3.toFixed(2)}{" "}
+          #Sala {sala.sala} Maximo R$ {sala.valor3}
         </Text>
       </View>
 
@@ -332,6 +380,9 @@ export default function Index({ navigation, route }) {
                   valor1: element.valor1,
                   valor2: element.valor2,
                   valor3: element.valor3,
+                  valorc1: element.valorc1,
+                  valorc2: element.valorc2,
+                  valorc3: element.valorc3,
                 });
               }
             }}
@@ -512,7 +563,7 @@ export default function Index({ navigation, route }) {
                 <TouchableOpacity
                   onPress={() => {
                     if (valorCaipira == 0) {
-                      setValorCaipira(sala.valor1);
+                      setValorCaipira(sala.valorc1);
                     } else {
                       setValorCaipira(0);
                     }
@@ -526,7 +577,7 @@ export default function Index({ navigation, route }) {
                     backfaceVisibility: "visible",
                     overflow: "visible",
                     backgroundColor:
-                      valorCaipira == sala.valor1 ? "#daa520" : "#000",
+                      valorCaipira == sala.valorc1 ? "#daa520" : "#000",
                   }}
                 >
                   <Image style={{ width: 35, height: 35 }} source={chip1} />
@@ -539,13 +590,13 @@ export default function Index({ navigation, route }) {
                       fontSize: 10,
                     }}
                   >
-                    {sala.valor1}
+                    {sala.valorc1}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     if (valorCaipira == 0) {
-                      setValorCaipira(sala.valor2);
+                      setValorCaipira(sala.valorc2);
                     } else {
                       setValorCaipira(0);
                     }
@@ -559,7 +610,7 @@ export default function Index({ navigation, route }) {
                     backfaceVisibility: "visible",
                     overflow: "visible",
                     backgroundColor:
-                      valorCaipira == sala.valor2 ? "#daa520" : "#000",
+                      valorCaipira == sala.valorc2 ? "#daa520" : "#000",
                   }}
                 >
                   <Image style={{ width: 35, height: 35 }} source={chip1} />
@@ -572,13 +623,13 @@ export default function Index({ navigation, route }) {
                       fontSize: 10,
                     }}
                   >
-                    {sala.valor2}
+                    {sala.valorc2}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     if (valorCaipira == 0) {
-                      setValorCaipira(sala.valor3);
+                      setValorCaipira(sala.valorc3);
                     } else {
                       setValorCaipira(0);
                     }
@@ -592,7 +643,7 @@ export default function Index({ navigation, route }) {
                     backfaceVisibility: "visible",
                     overflow: "visible",
                     backgroundColor:
-                      valorCaipira == sala.valor3 ? "#daa520" : "#000",
+                      valorCaipira == sala.valorc3 ? "#daa520" : "#000",
                   }}
                 >
                   <Image style={{ width: 35, height: 35 }} source={chip1} />
@@ -605,7 +656,7 @@ export default function Index({ navigation, route }) {
                       fontSize: 10,
                     }}
                   >
-                    {sala.valor3}
+                    {sala.valorc3}
                   </Text>
                 </TouchableOpacity>
               </View>

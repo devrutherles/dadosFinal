@@ -9,12 +9,12 @@ import React from "react";
 import { CloseIcon, Box, Progress, Image } from "native-base";
 
 export default function Alerta(props) {
-  const { valor,  array } = props;
+  const { valor, array } = props;
   let image = "";
   let dadosV = "";
   const [imagem, setImagem] = React.useState();
 
-  ////console.warn(array.imgd1);
+  //////console.warn(array.imgd1);
 
   let valoS = JSON.stringify(valor);
 

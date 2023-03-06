@@ -18,25 +18,20 @@ import { useForm, Controller } from "react-hook-form";
 import { AuthContext } from "../hooks/auth";
 
 export default function Login({ route }) {
+  useEffect(() => {
+    var config = {
+      method: "get",
+      url: "https:/morenacaipira.com/api/usuarios",
+    };
 
-useEffect(() => {
- var config = {
-   method: "get",
-   url: "https:/morenacaipira.com/api/usuarios",
- };
-
- axios(config)
-   .then(function (response) {
-     console.log(JSON.stringify(response.data));
-   })
-   .catch(function (error) {
-     console.log(error);
-   });
-
-}, [])
-
-
-
+    axios(config)
+      .then(function (response) {
+        //console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        //console.log(error);
+      });
+  }, []);
 
   const navigation = useNavigation();
   const [erro, setErro] = useState();
@@ -52,7 +47,7 @@ useEffect(() => {
     },
   });
 
-  const {getUser } = useContext(AuthContext);
+  const { getUser } = useContext(AuthContext);
 
   function handleSignin(data) {
     setLoad(true);
@@ -83,7 +78,7 @@ useEffect(() => {
     axios
       .request(options)
       .then(function (response) {
-        console.error(response.data);
+        //console.error(response.data);
         storeUser(response.data.user[0]);
         setToken(response.data.authorisation.token);
         setLoad(false);
@@ -95,8 +90,7 @@ useEffect(() => {
       .catch(function (error) {
         setLoad(false);
         setErro("Email ou senha incorretos");
-                console.error(error);
-
+        //console.error(error);
       });
   }
 
@@ -203,7 +197,7 @@ useEffect(() => {
         </TouchableOpacity>
       )}
       <TouchableOpacity
-        onPress={() => navigation.navigate("Register")}
+        onPress={() => navigation.navigate("Email")}
         style={styles.btnRegister}
       >
         <Text style={styles.RegisterText}> Criar conta grátis </Text>

@@ -21,12 +21,12 @@ import { DateTimePicker } from "react-native-ui-lib/src/components/dateTimePicke
 export default function Register() {
   const navigation = useNavigation();
 
-  const [date, setDate] = React.useState(new Date());
-  const [cep, setCep] = React.useState("");
-  const [lop, setLop] = React.useState(true);
-  const [erro, setErro] = React.useState();
+  const [date, setDate] = useState(new Date());
+  const [cep, setCep] = useState("");
+  const [lop, setLop] = useState(true);
+  const [erro, setErro] = useState();
   const [load, setLoad] = useState(false);
-  const [endereco, setEndereco] = React.useState("");
+  const [endereco, setEndereco] = useState("");
 
   if (cep.length == 8 && lop) {
     const options = {
@@ -37,12 +37,12 @@ export default function Register() {
     axios
       .request(options)
       .then(function (response) {
-        ///console.log()(response.data);
+        /////console.log()(response.data);
         setEndereco(response.data);
         setLop(false);
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
   }
 
@@ -66,7 +66,7 @@ export default function Register() {
     setLoad(true);
     const options = {
       method: "POST",
-      url: "https://morenacaipira.com/api/cadastro",
+      url: "https://morenacaipira.com/api/cadastro/",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -82,6 +82,7 @@ export default function Register() {
         nascimento: date,
         estado: endereco.uf,
         cep: endereco.cep,
+        role: "user",
       },
     };
 
@@ -98,7 +99,9 @@ export default function Register() {
         }
       })
       .catch(function (error) {
-        setErro("Dados já cadastrados");
+        setErro(error.message);
+
+        setLoad(false);
       });
   }
   return (

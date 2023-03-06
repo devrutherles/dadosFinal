@@ -56,13 +56,13 @@ export default function Detalhes({ route }) {
   let users = "";
 
   useEffect(() => {
-    ///console.log()(cotas);
+    /////console.log()(cotas);
 
     const getData = async () => {
       try {
         const value = await AsyncStorage.getItem("@user");
         if (value !== null) {
-          ///console.log()(value);
+          /////console.log()(value);
           setUser(value);
           setloader(true);
         }
@@ -72,12 +72,12 @@ export default function Detalhes({ route }) {
     };
 
     getData();
-    ///console.log()(preco);
+    /////console.log()(preco);
   }, []);
 
   if (loader) {
     users = JSON.parse(user);
-    ///console.log()(users);
+    /////console.log()(users);
     var id = users.id;
 
     const options = {
@@ -94,10 +94,10 @@ export default function Detalhes({ route }) {
       .request(options)
       .then(function (response) {
         setCarteira(response.data[0].carteira);
-        ///console.log()(carteira);
+        /////console.log()(carteira);
       })
       .catch(function (error) {
-        ////console.error(error);
+        //////console.error(error);
       });
   }
   const navigation = useNavigation();

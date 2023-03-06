@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React, { useContext } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Divider } from "native-base";
 import {
@@ -12,48 +12,41 @@ import {
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import {token} from '../hooks/LoginApi'
+import { token } from "../hooks/LoginApi";
 import { AuthContext } from "../hooks/auth";
 
-
 export default function Config() {
-
   const { getUser, postUser } = useContext(AuthContext);
 
-const storeUser = async (value) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem("@user", jsonValue);
-  } catch (e) {}
-};
+  const storeUser = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@user", jsonValue);
+    } catch (e) {}
+  };
 
-
-  
   const removeValue = async () => {
     try {
       await AsyncStorage.removeItem("@token");
-    } catch (e) {
+    } catch (e) {}
 
-    }
-
-    ///console.log()("Done.");
+    /////console.log()("Done.");
   };
 
   const removeUser = async () => {
     try {
       await AsyncStorage.removeItem("@user");
     } catch (e) {
-      
-      console.error(e)
+      //console.error(e)
     }
 
-    ///console.log()("Done.");
+    /////console.log()("Done.");
   };
 
   function sair() {
     removeValue();
-    storeUser(false)
-    postUser("")
+    storeUser(false);
+    postUser("");
     navigation.navigate("Login");
   }
 

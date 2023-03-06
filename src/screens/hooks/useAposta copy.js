@@ -44,12 +44,12 @@ export function useAposta() {
     getApostas();
 
     const timeout = setTimeout(() => {
-      console.log(user.id);
+      //console.log(user.id);
 
       getUser(global.id ? global.id : user.id);
       getJogada_id();
 
-      // console.error(jogada_id)
+      // //console.error(jogada_id)
 
       const options = {
         method: "GET",
@@ -79,7 +79,7 @@ export function useAposta() {
           setCriada([]);
         }
 
-        //console.error(aposta_id)
+        ////console.error(aposta_id)
         if (resultados && getaposta[0].jogo_id) {
           putTexto("Aguardando resultado");
           let numeros = [
@@ -180,7 +180,7 @@ export function useAposta() {
               }
             })
             .catch(function (error) {
-              //console.error(error);
+              ////console.error(error);
             });
         }
       });

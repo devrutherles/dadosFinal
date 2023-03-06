@@ -21,7 +21,7 @@ export default function Alerta(props) {
   }
 
   const [tempo, setTempo] = React.useState(false);
-  ///console.log()(tempo);
+  /////console.log()(tempo);
   return (
     <ImageBackground
       imageStyle={{ borderRadius: 7 }}

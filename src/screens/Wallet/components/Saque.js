@@ -20,15 +20,13 @@ export default function Withdrow() {
   const [conta, setConta] = React.useState(false);
   let metodo = "pix";
 
-  const { user, getPedido, editCarteira , getUser } = useContext(AuthContext);
-
-
+  const { user, getPedido, editCarteira, getUser } = useContext(AuthContext);
 
   function saque(value) {
     setValor(value);
   }
 
-  const carteira = user.carteira
+  const carteira = user.carteira;
   const [load, setLoad] = useState(false);
   const navigation = useNavigation();
   const {
@@ -61,9 +59,6 @@ export default function Withdrow() {
   }
 
   function handlesolicitar(data) {
-          
-
-    
     var datas = JSON.stringify({
       usuario: user.nome,
       user_id: user.id,
@@ -89,52 +84,52 @@ export default function Withdrow() {
       data: datas,
     };
 
-    console.warn(typeof data.valor)
-   // console.error(typeof user.carteira);
+    //console.warn(typeof data.valor)
+    // //console.error(typeof user.carteira);
 
+    if (parseInt(data.valor) > parseInt(user.carteira)) {
+      alert(" o valor máximo do saque deve ser o seu saldo");
+    } else {
+      setLoad(true);
+      axios(config)
+        .then(function (response) {
+          setLoad(false);
+          editCarteira(
+            data.valor
+              ? parseInt(user.carteira) - parseInt(data.valor)
+              : parseInt(user.carteira) - parseInt(valor),
+            user.id
+          );
 
-  if (parseInt(data.valor) > parseInt(user.carteira)) {
-    alert(" o valor máximo do saque deve ser o seu saldo")
-  } else {
-    setLoad(true);
-    axios(config)
-      .then(function (response) {
-        setLoad(false);
-        editCarteira(
-          data.valor
-            ? parseInt(user.carteira) - parseInt(data.valor)
-            : parseInt(user.carteira) - parseInt(valor) , user.id
-        );
+          Alert.alert(
+            "Pedido enviado",
+            "Ja estamos com seu pedido de saque, voce tem 48h para receber",
+            [
+              {
+                text: "Acompanhar",
+                onPress: () => navigation.navigate("Saques"),
+              },
+              {
+                text: "Sair",
 
-        Alert.alert(
-          "Pedido enviado",
-          "Ja estamos com seu pedido de saque, voce tem 48h para receber",
-          [
+                style: "cancel",
+              },
+            ],
             {
-              text: "Acompanhar",
-              onPress: () => navigation.navigate("Saques"),
-            },
-            {
-              text: "Sair",
-              onPress: () => console.log("Sair"),
-              style: "cancel",
-            },
-          ],
-          {
-            cancelable: true,
-          }
-        );
-      })
-      .catch((error) => {
-        console.log("Api call error");
-        alert(error.message);
-      });
+              cancelable: true,
+            }
+          );
+        })
+        .catch((error) => {
+          //console.log("Api call error");
+          alert(error.message);
+        });
+    }
+
+    getPedido();
+    getUser(user.id);
   }
 
-      getPedido();
-      getUser(user.id);
-  }
-  
   return (
     <View style={styles.container}>
       <ScrollView w="100%">
@@ -150,8 +145,10 @@ export default function Withdrow() {
           }}
         >
           {user.carteira < 1 ? (
-            <View style={{alignItems:"center",marginTop:50}}>
-              <Text style={{color:"#fff",fontSize:20}}>Você não tem saldo disponível</Text>
+            <View style={{ alignItems: "center", marginTop: 50 }}>
+              <Text style={{ color: "#fff", fontSize: 20 }}>
+                Você não tem saldo disponível
+              </Text>
             </View>
           ) : (
             <View>

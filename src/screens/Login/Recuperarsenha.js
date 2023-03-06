@@ -48,7 +48,6 @@ export function Recuperar() {
         data.email.toLowerCase() +
         "&codigo=" +
         codigo,
-      
     };
 
     GetUserByemail(data.email);
@@ -229,14 +228,14 @@ export function Senha({ route }) {
       axios
         .request(options)
         .then(function (response) {
-          console.log(response.data);
+          //console.log(response.data);
           setLoad(false);
 
           alert("senha alterada com sucesso");
           navigation.navigate("Login");
         })
         .catch(function (error) {
-          console.error(error);
+          //console.error(error);
         });
     } else {
       alert("as senhas não sao iguais!");

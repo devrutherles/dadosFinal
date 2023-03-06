@@ -4,7 +4,7 @@ import React from "react";
 export default function Alerta(props) {
   const { valor, dados, resultado, img, array } = props;
 
-  ///console.log()(imagem);
+  /////console.log()(imagem);
 
   return (
     <View>

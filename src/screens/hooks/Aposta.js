@@ -23,9 +23,9 @@ export function ApostarApi(valor, nome, email, jogada, id) {
 
   axios(config)
     .then(function (response) {
-      //console.warn(JSON.stringify(response.data));
+      ////console.warn(JSON.stringify(response.data));
     })
     .catch(function (error) {
-      ///console.log()(error);
+      /////console.log()(error);
     });
 }
